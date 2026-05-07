@@ -47,6 +47,8 @@ import ReviewsBlockEditor from "./blocks/ReviewsBlockEditor"
 import CtaBlockEditor from "./blocks/CtaBlockEditor"
 import FaqBlockEditor from "./blocks/FaqBlockEditor"
 import StatBarEditor from "./blocks/StatBarEditor"
+import HomeHeroBlockEditor from "./blocks/HomeHeroBlockEditor"
+import ProductCardsEditor from "./blocks/ProductCardsEditor"
 
 // Block metadata
 const BLOCK_META: Record<BlockType, { label: string; color: string; defaultData: Record<string, unknown> }> = {
@@ -75,6 +77,8 @@ const BLOCK_META: Record<BlockType, { label: string; color: string; defaultData:
     cta_block: { label: "CTA Block", color: "bg-blue-100 text-blue-700", defaultData: { title: "", bookCallText: "Book a Free Call", whatsappText: "Chat on WhatsApp" } },
     faq: { label: "FAQ", color: "bg-slate-100 text-slate-700", defaultData: { items: [] } },
     stat_bar: { label: "Stat Bar", color: "bg-indigo-100 text-indigo-700", defaultData: { stats: [] } },
+    home_hero: { label: "Home Hero", color: "bg-blue-100 text-blue-800", defaultData: { title: "Life & Health Insurance Platform", badge: "IRDAI-Certified Expert Advisors", subtitle: "", primaryCta: { text: "Book Free Call", href: "/book-call" }, secondaryCta: { text: "Explore Plans", href: "/term-life" }, stats: [], showInquiryForm: true } },
+    product_cards: { label: "Product Cards", color: "bg-teal-100 text-teal-800", defaultData: { title: "What we cover", cards: [] } },
 }
 
 // Render the right editor for a block type
@@ -106,6 +110,8 @@ function BlockEditorSwitch({ block, onChange }: { block: Block; onChange: (data:
         case "cta_block": return <CtaBlockEditor data={d as any} onChange={onChange as any} />
         case "faq": return <FaqBlockEditor data={d as any} onChange={onChange as any} />
         case "stat_bar": return <StatBarEditor data={d as any} onChange={onChange as any} />
+        case "home_hero": return <HomeHeroBlockEditor data={d as any} onChange={onChange as any} />
+        case "product_cards": return <ProductCardsEditor data={d as any} onChange={onChange as any} />
         default: return <p className="text-xs text-slate-400">Unknown block type</p>
     }
 }
@@ -199,6 +205,7 @@ function AddBlockPicker({ onAdd }: { onAdd: (type: BlockType) => void }) {
         { label: "Tables", types: ["features_table", "comparison_table", "pros_cons_table", "plans_table", "insurer_metrics", "policy_features_list", "real_example_comparison"] },
         { label: "Interactive", types: ["insurer_selector", "calculator_embed", "frequently_compared"] },
         { label: "Social & CTAs", types: ["reviews", "cta_block", "faq"] },
+        { label: "Homepage", types: ["home_hero", "product_cards"] },
     ]
 
     return (

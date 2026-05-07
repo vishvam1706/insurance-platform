@@ -24,6 +24,8 @@ import ReviewsBlock from "./ReviewsBlock"
 import CtaBlock from "./CtaBlock"
 import FaqBlock from "./FaqBlock"
 import StatBar from "./StatBar"
+import HomeHeroBlock from "./HomeHeroBlock"
+import ProductCardsBlock from "./ProductCardsBlock"
 
 export default function PageRenderer({ blocks }: { blocks: Block[] }) {
     if (!blocks || blocks.length === 0) return null
@@ -58,6 +60,8 @@ export default function PageRenderer({ blocks }: { blocks: Block[] }) {
                     case "cta_block": return <CtaBlock key={block.id} data={d} />
                     case "faq": return <FaqBlock key={block.id} data={d} />
                     case "stat_bar": return <StatBar key={block.id} data={d} />
+                    case "home_hero": return <HomeHeroBlock key={block.id} data={d} />
+                    case "product_cards": return <ProductCardsBlock key={block.id} data={d} />
                     default: return null
                 }
             })}

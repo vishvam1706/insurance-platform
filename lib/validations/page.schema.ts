@@ -3,12 +3,12 @@ import { z } from "zod"
 export const BlockSchema = z.object({
     id: z.string(),
     type: z.string(),
-    data: z.record(z.string(), z.unknown()),
+    data: z.any(),
 })
 
 export const SeoSchema = z.object({
-    metaTitle: z.string().max(60).optional(),
-    metaDescription: z.string().max(160).optional(),
+    metaTitle: z.string().max(80).optional(),
+    metaDescription: z.string().max(200).optional(),
     keywords: z.array(z.string()).optional(),
 })
 

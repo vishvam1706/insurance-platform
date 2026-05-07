@@ -575,7 +575,24 @@ async function seed() {
         },
         blocks: [
             {
-                id: "b1",
+                id: "h1",
+                type: "home_hero",
+                data: {
+                    badge: "IRDAI-Certified Expert Advisors",
+                    title: "Life & Health Insurance Platform",
+                    subtitle: "A modern, full-stack platform for term life & health insurance — with advisor-led lead management and a powerful admin console.",
+                    primaryCta: { text: "Book Free Call", href: "/book-call" },
+                    secondaryCta: { text: "Explore Plans", href: "/term-life" },
+                    stats: [
+                        { value: "8,00,000+", label: "Customers Helped" },
+                        { value: "4.9/5", label: "Google Rating" },
+                        { value: "100%", label: "Free Consultation" },
+                    ],
+                    showInquiryForm: true,
+                },
+            },
+            {
+                id: "h2",
                 type: "stat_bar",
                 data: {
                     stats: [
@@ -587,12 +604,71 @@ async function seed() {
                 },
             },
             {
-                id: "b2",
+                id: "h3",
+                type: "product_cards",
+                data: {
+                    title: "What we cover",
+                    cards: [
+                        {
+                            title: "Term Life Insurance",
+                            desc: "Pure protection for your family. High cover at low premiums.",
+                            href: "/term-life",
+                            colorClass: "bg-blue-600",
+                        },
+                        {
+                            title: "Health Insurance",
+                            desc: "Comprehensive health coverage for you and your family.",
+                            href: "/health",
+                            colorClass: "bg-teal-600",
+                        },
+                    ],
+                },
+            },
+            {
+                id: "h4",
+                type: "benefits_list",
+                data: {
+                    title: "Why choose us?",
+                    items: [
+                        { heading: "100% Unbiased Advice", body: "We are not agents. We don't earn commissions. Our only job is to help you make the right decision." },
+                        { heading: "IRDAI-Certified Experts", body: "Our advisors are trained, certified, and held to the highest standards of insurance advisory in India." },
+                        { heading: "No Spam, Ever", body: "We will never bombard you with calls or messages. One call. One advisor. Zero pressure." },
+                        { heading: "Instant Digital Issuance", body: "Get your policy issued digitally in minutes — no paperwork, no agent visits." },
+                    ],
+                },
+            },
+            {
+                id: "h5",
                 type: "cta_block",
                 data: {
-                    title: "Get expert advice on the right insurance for you — completely free.",
+                    title: "Talk to an expert today and find the right insurance for you — completely free.",
                     bookCallText: "Book a Free Call",
                     whatsappText: "Chat on WhatsApp",
+                },
+            },
+            {
+                id: "h6",
+                type: "reviews",
+                data: {
+                    rating: 4.9,
+                    totalCount: 20915,
+                    items: [
+                        { name: "Amit Verma", initials: "AV", body: "Got my term insurance sorted in under 30 minutes. The advisor was incredibly patient and explained everything in simple language." },
+                        { name: "Sneha Patel", initials: "SP", body: "Best experience buying health insurance. No pressure, no hidden costs. Highly recommend this platform." },
+                        { name: "Rahul Sharma", initials: "RS", body: "I was confused between 3 policies. The advisor helped me compare them objectively and I got exactly what I needed." },
+                    ],
+                },
+            },
+            {
+                id: "h7",
+                type: "faq",
+                data: {
+                    items: [
+                        { question: "Is the consultation really free?", answer: "Yes, completely free. We do not charge advisory fees. Our revenue comes from insurers as referral fees, but this does not influence our recommendations." },
+                        { question: "How is this different from buying directly from an insurer?", answer: "You get unbiased advice across multiple insurers. We help you compare, clarify, and choose — something no single insurer's website can offer." },
+                        { question: "How long does it take to get a policy?", answer: "Most digital term and health policies are issued within 24-48 hours if all documents are submitted correctly." },
+                        { question: "Can I buy insurance for my parents?", answer: "Yes. We can help you get health insurance for senior parents and term insurance for anyone with an insurable income." },
+                    ],
                 },
             },
         ],

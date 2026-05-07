@@ -21,6 +21,11 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+/** Maps a pageKey to its public URL. 'home' → '/', everything else → '/pageKey' */
+function getPublicUrl(pageKey: string) {
+    return pageKey === "home" ? "/" : `/${pageKey}`
+}
+
 interface PageMeta {
     _id: string
     pageKey: string
@@ -176,7 +181,7 @@ export default function PagesList() {
                                             </Badge>
                                         )}
                                     </div>
-                                    <p className="text-xs text-slate-400 font-mono mt-0.5">/{page.pageKey}</p>
+                                    <p className="text-xs text-slate-400 font-mono mt-0.5">{getPublicUrl(page.pageKey)}</p>
                                     <div className="flex items-center gap-1 mt-0.5 text-xs text-slate-400">
                                         <Clock className="w-3 h-3" />
                                         {formatDateTime(page.updatedAt)}
@@ -188,7 +193,7 @@ export default function PagesList() {
                                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                                     {/* View public */}
                                     {page.published && (
-                                        <Link href={`/${page.pageKey}`} target="_blank">
+                                        <Link href={getPublicUrl(page.pageKey)} target="_blank">
                                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-blue-600">
                                                 <ExternalLink className="w-4 h-4" />
                                             </Button>

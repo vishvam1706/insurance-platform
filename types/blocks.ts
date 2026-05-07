@@ -24,6 +24,8 @@ export type BlockType =
     | "cta_block"
     | "stat_bar"
     | "faq"
+    | "home_hero"
+    | "product_cards"
 
 export interface Block {
     id: string
@@ -223,4 +225,26 @@ export interface StatBarData {
 // FAQ
 export interface FaqBlockData {
     items: { question: string; answer: string }[]
+}
+
+// Home Hero
+export interface HomeHeroBlockData {
+    badge?: string
+    title: string
+    subtitle?: string
+    primaryCta?: { text: string; href: string }
+    secondaryCta?: { text: string; href: string }
+    stats?: { value: string; label: string }[]
+    showInquiryForm?: boolean
+}
+
+// Product Cards
+export interface ProductCardsBlockData {
+    title: string
+    cards: {
+        title: string
+        desc: string
+        href: string
+        colorClass: string
+    }[]
 }

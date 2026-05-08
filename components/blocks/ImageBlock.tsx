@@ -4,8 +4,11 @@ import Image from "next/image"
 export default function ImageBlock({ data }: { data: ImageBlockData }) {
     if (!data.image) return null
     return (
-        <figure className="my-6">
-            <div className="rounded-xl overflow-hidden border border-slate-200">
+        <figure className="my-8">
+            <div
+                className="rounded-2xl overflow-hidden"
+                style={{ border: "1px solid #E5E7EB" }}
+            >
                 <Image
                     src={data.image}
                     alt={data.altText || ""}
@@ -15,7 +18,10 @@ export default function ImageBlock({ data }: { data: ImageBlockData }) {
                 />
             </div>
             {data.caption && (
-                <figcaption className="text-center text-xs text-slate-400 mt-2">
+                <figcaption
+                    className="text-center text-xs mt-2"
+                    style={{ color: "#9CA3AF", fontFamily: "var(--font-body)" }}
+                >
                     {data.caption}
                 </figcaption>
             )}

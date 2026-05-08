@@ -1,73 +1,114 @@
 import { HeroBlockData } from "@/types/blocks"
-import { Badge } from "@/components/ui/badge"
-import { CheckCircle2 } from "lucide-react"
+import { BadgeCheck, Clock, CalendarDays, UserCheck } from "lucide-react"
 import Image from "next/image"
 
-export default function HeroBlock({ data }: { data: HeroBlockData }) {
-    return (
-        <div className="mb-8">
-            {data.publishedDate && (
-                <p className="text-xs text-slate-400 mb-3">
-                    Published on: {data.publishedDate}
-                </p>
-            )}
-
-            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-6">
-                {data.title}
-            </h1>
-
-            {data.subtitle && (
-                <p className="text-lg text-slate-600 mb-6">{data.subtitle}</p>
-            )}
-
-            {(data.author || data.reviewer) && (
-                <div className="flex flex-wrap items-center gap-6 py-4 border-y border-slate-200">
-                    {data.author && (
-                        <Person
-                            label="Written by"
-                            name={data.author.name}
-                            role={data.author.role}
-                            avatar={data.author.avatar}
-                        />
-                    )}
-                    {data.reviewer && (
-                        <Person
-                            label="Reviewed by"
-                            name={data.reviewer.name}
-                            role={data.reviewer.role}
-                            avatar={data.reviewer.avatar}
-                        />
-                    )}
-                    {data.certificationId && (
-                        <div className="flex items-center gap-1.5 text-xs text-green-700 bg-green-50 border border-green-200 px-3 py-1.5 rounded-full">
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                            <span className="font-medium">Certified</span>
-                            <span className="text-green-500">{data.certificationId}</span>
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
-    )
+function formatDate(dateStr?: string) {
+    if (!dateStr) return null
+    const d = new Date(dateStr)
+    return d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
 }
 
-function Person({ label, name, role, avatar }: {
-    label: string; name: string; role: string; avatar?: string
-}) {
+export default function HeroBlock({ data }: { data: HeroBlockData }) {
+    const hasImage = Boolean(data.image)
+    const updatedStr = formatDate(data.updatedAt || data.publishedAt)
+
     return (
-        <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-full bg-slate-200 overflow-hidden shrink-0">
-                {avatar
-                    ? <Image src={avatar} alt={name} width={36} height={36} className="object-cover" />
-                    : <div className="w-full h-full flex items-center justify-center text-sm font-bold text-slate-500">
-                        {name.charAt(0)}
+        <div className="p-8 sm:p-10" style={{ borderBottom: "1px solid var(--border-light)" }}>
+            {/* ── Category badge ── */}
+            {data.category && (
+                <span className="badge-blue mb-5 inline-flex">
+                    {data.category}
+                </span>
+            )}
+
+            {/* ── Title + Image row ── */}
+            <div className={`${hasImage ? "grid sm:grid-cols-[1fr_auto] gap-8 items-start" : ""}`}>
+                <div>
+                    <h1
+                        className="text-3xl sm:text-4xl font-extrabold leading-tight mb-5"
+                        style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}
+                    >
+                        {data.title}
+                    </h1>
+
+                    {/* ── Meta row ── */}
+                    <div className="flex flex-wrap items-center gap-3 mb-6">
+                        {/* Author */}
+                        {data.author && (
+                            <div
+                                className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full"
+                                style={{ background: "var(--surface-muted)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
+                            >
+                                <UserCheck className="w-3.5 h-3.5" style={{ color: "var(--blue-600)" }} />
+                                Written by <span className="font-bold" style={{ color: "var(--text-primary)" }}>{data.author}</span>
+                            </div>
+                        )}
+
+                        {/* Reviewer */}
+                        {data.reviewer && (
+                            <div
+                                className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full"
+                                style={{ background: "#ECFDF5", color: "#065F46", border: "1px solid #A7F3D0" }}
+                            >
+                                <BadgeCheck className="w-3.5 h-3.5 text-green-600" />
+                                Reviewed by <span className="font-bold">{data.reviewer}</span>
+                            </div>
+                        )}
+
+                        {/* Date */}
+                        {updatedStr && (
+                            <div
+                                className="flex items-center gap-1.5 text-xs"
+                                style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}
+                            >
+                                <CalendarDays className="w-3.5 h-3.5" />
+                                Updated {updatedStr}
+                            </div>
+                        )}
+
+                        {/* Read time */}
+                        {data.readTime && (
+                            <div
+                                className="flex items-center gap-1.5 text-xs"
+                                style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}
+                            >
+                                <Clock className="w-3.5 h-3.5" />
+                                {data.readTime}
+                            </div>
+                        )}
                     </div>
-                }
-            </div>
-            <div>
-                <p className="text-xs text-slate-400">{label}</p>
-                <p className="text-sm font-semibold text-slate-900">{name}</p>
-                <p className="text-xs text-slate-500">{role}</p>
+
+                    {/* ── Subtitle / lead paragraph ── */}
+                    {data.subtitle && (
+                        <p
+                            className="text-base leading-relaxed p-4 rounded-2xl"
+                            style={{
+                                color: "var(--text-secondary)",
+                                background: "var(--blue-50)",
+                                border: "1px solid var(--blue-100)",
+                                fontFamily: "var(--font-body)",
+                            }}
+                        >
+                            {data.subtitle}
+                        </p>
+                    )}
+                </div>
+
+                {/* ── Featured image ── */}
+                {hasImage && (
+                    <div
+                        className="rounded-2xl overflow-hidden shrink-0 w-full sm:w-52"
+                        style={{ border: "1px solid var(--border)" }}
+                    >
+                        <Image
+                            src={data.image!}
+                            alt={data.imageAlt || data.title || ""}
+                            width={208}
+                            height={156}
+                            className="w-full object-cover"
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )

@@ -4,11 +4,9 @@ import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import PageRenderer from "@/components/blocks/PageRenderer"
 import Breadcrumb from "@/components/public/Breadcrumb"
-import InquiryForm from "@/components/public/InquiryForm"
+import ArticleLayout from "@/components/public/ArticleLayout"
 
-interface Props {
-    params: Promise<{ slug: string }>
-}
+interface Props { params: Promise<{ slug: string }> }
 
 async function getPage(slug: string) {
     "use cache"
@@ -24,7 +22,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params
     const page = await getPage(slug)
     if (!page) return { title: "Not Found" }
-
     const p = page as any
     return {
         title: p.seo?.metaTitle || p.title,
@@ -36,32 +33,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function HealthSlugPage({ params }: Props) {
     const { slug } = await params
     const page = await getPage(slug)
-
     if (!page) notFound()
-
     const p = page as any
 
     return (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <Breadcrumb items={[
-                { label: "Health Insurance", href: "/health" },
-                { label: p.title },
-            ]} />
-
-            <div className="grid lg:grid-cols-3 gap-10">
-                <article className="lg:col-span-2">
-                    <PageRenderer blocks={p.blocks || []} />
-                </article>
-                <aside className="lg:col-span-1">
-                    <div className="sticky top-24">
-                        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-                            <h3 className="font-semibold text-slate-900 mb-1 text-sm">Get Expert Advice</h3>
-                            <p className="text-slate-400 text-xs mb-4">Free consultation · No spam</p>
-                            <InquiryForm defaultType="health" />
-                        </div>
-                    </div>
-                </aside>
+        <>
+            {/* Breadcrumb bar */}
+            <div className="bg-white" style={{ borderBottom: "1px solid var(--border)" }}>
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-3">
+                    <Breadcrumb items={[
+                        { label: "Health Insurance", href: "/health" },
+                        { label: p.title },
+                    ]} />
+                </div>
             </div>
-        </div>
+
+            <ArticleLayout defaultType="health">
+                <PageRenderer blocks={p.blocks || []} />
+            </ArticleLayout>
+        </>
     )
 }

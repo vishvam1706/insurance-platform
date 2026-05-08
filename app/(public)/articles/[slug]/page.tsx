@@ -4,10 +4,9 @@ import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import PageRenderer from "@/components/blocks/PageRenderer"
 import Breadcrumb from "@/components/public/Breadcrumb"
+import ArticleLayout from "@/components/public/ArticleLayout"
 
-interface Props {
-    params: Promise<{ slug: string }>
-}
+interface Props { params: Promise<{ slug: string }> }
 
 async function getArticle(slug: string) {
     "use cache"
@@ -23,7 +22,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params
     const page = await getArticle(slug)
     if (!page) return { title: "Not Found" }
-
     const p = page as any
     return {
         title: p.seo?.metaTitle || p.title,
@@ -34,20 +32,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ArticleSlugPage({ params }: Props) {
     const { slug } = await params
     const page = await getArticle(slug)
-
     if (!page) notFound()
-
     const p = page as any
 
     return (
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <Breadcrumb items={[
-                { label: "Articles", href: "/articles" },
-                { label: p.title },
-            ]} />
-            <article>
+        <>
+            {/* Breadcrumb bar */}
+            <div className="bg-white" style={{ borderBottom: "1px solid var(--border)" }}>
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-3">
+                    <Breadcrumb items={[
+                        { label: "Articles", href: "/articles" },
+                        { label: p.title },
+                    ]} />
+                </div>
+            </div>
+
+            <ArticleLayout showSidebar={true}>
                 <PageRenderer blocks={p.blocks || []} />
-            </article>
-        </div>
+            </ArticleLayout>
+        </>
     )
 }

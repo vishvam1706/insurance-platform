@@ -5,26 +5,49 @@ export default function ComparisonTable({ data }: { data: ComparisonTableData })
     const rows = data.rows || []
 
     return (
-        <div className="my-8">
+        <div className="my-10">
             {data.title && (
-                <h2 className="text-xl font-semibold text-slate-900 mb-4">{data.title}</h2>
+                <h2
+                    className="text-2xl font-bold mb-5"
+                    style={{ fontFamily: "var(--font-heading)", color: "#111827" }}
+                >
+                    {data.title}
+                </h2>
             )}
-            <div className="overflow-x-auto rounded-xl border border-slate-200">
+            <div
+                className="overflow-x-auto rounded-2xl"
+                style={{ border: "1px solid #E5E7EB" }}
+            >
                 <table className="w-full text-sm">
                     <thead>
-                        <tr className="bg-slate-800 text-white">
+                        <tr style={{ background: "#F8F9FA", borderBottom: "1px solid #E5E7EB" }}>
                             {columns.map((col, i) => (
-                                <th key={i} className="text-left px-4 py-3 font-semibold">{col}</th>
+                                <th
+                                    key={i}
+                                    className="text-left px-5 py-3.5 font-semibold"
+                                    style={{ color: "#374151", fontFamily: "var(--font-heading)" }}
+                                >
+                                    {col}
+                                </th>
                             ))}
                         </tr>
                     </thead>
                     <tbody>
                         {rows.map((row, ri) => (
-                            <tr key={ri} className={ri % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                            <tr
+                                key={ri}
+                                style={{ background: ri % 2 === 0 ? "#FFFFFF" : "#F8F9FA" }}
+                            >
                                 {row.map((cell, ci) => (
                                     <td
                                         key={ci}
-                                        className={`px-4 py-3 border-b border-slate-100 leading-relaxed ${ci === 0 ? "font-medium text-slate-900" : "text-slate-700"}`}
+                                        className="px-5 py-3.5 leading-relaxed"
+                                        style={{
+                                            borderBottom: ri < rows.length - 1 ? "1px solid #F3F4F6" : "none",
+                                            color: ci === 0 ? "#111827" : "#6B7280",
+                                            fontWeight: ci === 0 ? 600 : 400,
+                                            fontFamily: "var(--font-body)",
+                                        }}
                                     >
                                         {cell}
                                     </td>

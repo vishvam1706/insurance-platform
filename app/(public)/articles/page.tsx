@@ -24,50 +24,85 @@ export default async function ArticlesPage() {
     const articles = await getArticles()
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="max-w-2xl mb-10">
-                <div className="flex items-center gap-2 text-blue-600 text-sm font-medium mb-3">
-                    <BookOpen className="w-4 h-4" /> Articles
-                </div>
-                <h1 className="text-3xl font-bold text-slate-900 mb-3">
-                    Insurance Articles & Guides
-                </h1>
-                <p className="text-slate-600">
-                    Expert content to help you make informed insurance decisions.
-                </p>
-            </div>
-
-            {articles.length === 0 ? (
-                <div className="text-center py-20 text-slate-400">
-                    <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-40" />
-                    <p>No articles published yet.</p>
-                </div>
-            ) : (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {articles.map((article: any) => (
-                        <Link
-                            key={article.pageKey}
-                            href={`/${article.pageKey}`}
-                            className="group border border-slate-200 rounded-xl p-5 hover:border-blue-300 hover:shadow-sm transition-all bg-white"
+        <>
+            {/* ── Hero ── */}
+            <section className="relative overflow-hidden bg-white">
+                <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
+                <div
+                    className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none"
+                    style={{ background: "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)" }}
+                />
+                <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-20">
+                    <div className="max-w-2xl">
+                        <span className="badge-blue mb-6 inline-flex">
+                            <BookOpen className="w-3 h-3" />
+                            Articles & Guides
+                        </span>
+                        <h1
+                            className="text-5xl font-extrabold leading-tight mb-5"
+                            style={{ fontFamily: "var(--font-heading)" }}
                         >
-                            <p className="text-xs text-slate-400 mb-2">
-                                {formatDate(article.updatedAt)}
-                            </p>
-                            <h2 className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors mb-2 leading-snug">
-                                {article.title}
-                            </h2>
-                            {article.seo?.metaDescription && (
-                                <p className="text-sm text-slate-500 line-clamp-2 mb-3">
-                                    {article.seo.metaDescription}
-                                </p>
-                            )}
-                            <span className="text-xs text-blue-600 font-medium flex items-center gap-1">
-                                Read article <ArrowRight className="w-3 h-3" />
-                            </span>
-                        </Link>
-                    ))}
+                            Read before you
+                            <br />
+                            <span className="gradient-text">buy any insurance.</span>
+                        </h1>
+                        <p className="text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                            Honest, expert-written content to help you make smarter insurance
+                            decisions for yourself and your family.
+                        </p>
+                    </div>
                 </div>
-            )}
-        </div>
+            </section>
+
+            {/* ── Articles grid ── */}
+            <section className="py-16" style={{ background: "var(--surface-muted)" }}>
+                <div className="max-w-7xl mx-auto px-6">
+                    {articles.length === 0 ? (
+                        <div className="text-center py-24">
+                            <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-10" />
+                            <p style={{ color: "var(--text-muted)" }}>No articles published yet.</p>
+                        </div>
+                    ) : (
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {articles.map((article: any, i: number) => (
+                                <Link
+                                    key={article.pageKey}
+                                    href={`/${article.pageKey}`}
+                                    className="group flex flex-col h-full rounded-3xl p-7 bg-white border border-gray-200 shadow-sm hover:border-blue-200 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 animate-fade-up"
+                                    style={{ animationDelay: `${i * 50}ms` }}
+                                >
+                                    <p
+                                        className="text-xs font-semibold uppercase tracking-widest mb-4"
+                                        style={{ color: "var(--text-muted)" }}
+                                    >
+                                        {formatDate(article.updatedAt)}
+                                    </p>
+                                    <h2
+                                        className="font-bold text-lg mb-3 leading-snug group-hover:text-blue-600 transition-colors flex-grow"
+                                        style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}
+                                    >
+                                        {article.title}
+                                    </h2>
+                                    {article.seo?.metaDescription && (
+                                        <p
+                                            className="text-sm line-clamp-2 mb-5 leading-relaxed"
+                                            style={{ color: "var(--text-secondary)" }}
+                                        >
+                                            {article.seo.metaDescription}
+                                        </p>
+                                    )}
+                                    <span
+                                        className="inline-flex items-center gap-1.5 text-sm font-bold mt-auto group-hover:gap-3 transition-all"
+                                        style={{ color: "var(--blue-600)" }}
+                                    >
+                                        Read article <ArrowRight className="w-4 h-4" />
+                                    </span>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+        </>
     )
 }

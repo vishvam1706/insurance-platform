@@ -5,23 +5,25 @@ export default function DittosTake({ data }: { data: DittosTakeData }) {
     return (
         <div
             className="my-10 rounded-2xl p-6"
-            style={{
-                background: "#EFF6FF",
-                border: "1px solid #BFDBFE",
-            }}
+            style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)" }}
         >
             <div className="flex items-center gap-2.5 mb-3">
-                <Lightbulb className="w-5 h-5" style={{ color: "#2563EB" }} />
+                <div
+                    className="w-7 h-7 rounded-lg flex items-center justify-center"
+                    style={{ background: "var(--brand)", flexShrink: 0 }}
+                >
+                    <Lightbulb className="w-4 h-4 text-white" />
+                </div>
                 <h3
                     className="font-bold"
-                    style={{ fontFamily: "var(--font-heading)", color: "#1E40AF" }}
+                    style={{ fontFamily: "var(--font-heading)", color: "#065F46" }}
                 >
                     {data.title || "Ditto's Take"}
                 </h3>
             </div>
             <div
                 className="text-sm leading-relaxed prose prose-sm max-w-none"
-                style={{ color: "#374151", fontFamily: "var(--font-body)" }}
+                style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}
                 dangerouslySetInnerHTML={{ __html: data.body || "" }}
             />
         </div>

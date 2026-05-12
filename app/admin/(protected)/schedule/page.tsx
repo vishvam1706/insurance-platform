@@ -9,7 +9,7 @@ export default function SchedulePage() {
         <div className="space-y-5">
             <div>
                 <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
-                    <CalendarClock className="w-6 h-6 text-blue-600" />
+                    <CalendarClock className="w-6 h-6 text-emerald-600" />
                     Call Schedule
                 </h1>
                 <p className="text-slate-500 text-sm mt-1">
@@ -30,7 +30,7 @@ export default function SchedulePage() {
                     Fully booked
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded bg-blue-600 inline-block" />
+                    <span className="w-3 h-3 rounded bg-emerald-600 inline-block" />
                     Selected day
                 </div>
             </div>

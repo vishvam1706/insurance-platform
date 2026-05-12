@@ -41,7 +41,7 @@ export default function NumberedCardsEditor({ data, onChange }: Props) {
                 {cards.map((card, i) => (
                     <div key={i} className="border border-slate-200 rounded-lg p-3 space-y-2">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-blue-600">#{card.number}</span>
+                            <span className="text-xs font-bold text-emerald-600">#{card.number}</span>
                             <Button type="button" variant="ghost" size="sm" onClick={() => removeCard(i)} className="h-6 w-6 p-0 text-slate-400 hover:text-red-500">
                                 <Trash2 className="w-3 h-3" />
                             </Button>

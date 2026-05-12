@@ -2,34 +2,32 @@ import { StatBarData } from "@/types/blocks"
 
 export default function StatBar({ data }: { data: StatBarData }) {
     return (
-        <div
-            className="my-10 rounded-2xl py-8 px-6"
-            style={{ background: "#F8F9FA", border: "1px solid #E5E7EB" }}
-        >
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                {(data.stats || []).map((stat, i) => (
-                    <div
-                        key={i}
-                        className="text-center"
-                        style={{
-                            borderRight: i < (data.stats?.length ?? 0) - 1 ? "1px solid #E5E7EB" : "none",
-                        }}
-                    >
-                        <p
-                            className="text-2xl sm:text-3xl font-extrabold"
-                            style={{ fontFamily: "var(--font-heading)", color: "#111827" }}
-                        >
-                            {stat.value}
-                        </p>
-                        <p
-                            className="text-xs mt-1.5 font-medium"
-                            style={{ color: "#9CA3AF", fontFamily: "var(--font-body)" }}
-                        >
-                            {stat.label}
-                        </p>
-                    </div>
-                ))}
+        <section className="py-10" style={{ background: "#FFFFFF" }}>
+            <div className="max-w-7xl mx-auto px-6">
+                <div
+                    className="rounded-3xl px-8 py-10 grid grid-cols-2 sm:grid-cols-4 gap-8"
+                    style={{
+                        background: "linear-gradient(135deg, #0F172A 0%, #134E4A 100%)",
+                    }}
+                >
+                    {(data.stats || []).map((stat: any, i: number) => (
+                        <div key={i} className="text-center">
+                            <p
+                                className="text-3xl font-extrabold mb-1"
+                                style={{ fontFamily: "var(--font-heading)", color: "var(--brand)" }}
+                            >
+                                {stat.value}
+                            </p>
+                            <p
+                                className="text-xs font-medium"
+                                style={{ color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-body)" }}
+                            >
+                                {stat.label}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>
+        </section>
     )
 }

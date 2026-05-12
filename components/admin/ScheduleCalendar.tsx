@@ -62,7 +62,7 @@ export default function ScheduleCalendar() {
     return (
         <div className="space-y-5">
             {/* Week navigation */}
-            <div className="flex items-center justify-between bg-white rounded-xl border border-slate-200 p-4">
+            <div className="flex items-center justify-between bg-white rounded-xl border border-slate-200 p-2 sm:p-4 gap-1 sm:gap-2">
                 <Button
                     variant="outline"
                     size="sm"
@@ -72,7 +72,7 @@ export default function ScheduleCalendar() {
                     <ChevronLeft className="w-4 h-4" />
                 </Button>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto flex-1 justify-center px-1">
                     {weekDays.map((day) => {
                         const daySlots = weekSlots.find((d) => format(d.date, "yyyy-MM-dd") === format(day, "yyyy-MM-dd"))
                         const totalSlots = daySlots?.slots.length ?? 0
@@ -86,24 +86,24 @@ export default function ScheduleCalendar() {
                                 onClick={() => !isPast && setSelectedDate(day)}
                                 disabled={isPast}
                                 className={cn(
-                                    "flex flex-col items-center px-3 py-2 rounded-lg transition-all text-sm min-w-[64px]",
+                                    "flex flex-col items-center px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-all text-sm min-w-[48px] sm:min-w-[64px] shrink-0",
                                     isSelected
-                                        ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                                        ? "bg-emerald-600 text-white shadow-lg shadow-emerald-500/20"
                                         : isPast
                                             ? "opacity-40 cursor-not-allowed text-slate-400"
                                             : "hover:bg-slate-100 text-slate-700"
                                 )}
                             >
-                                <span className="text-xs font-medium uppercase tracking-wide">
+                                <span className="text-[10px] sm:text-xs font-medium uppercase tracking-wide">
                                     {format(day, "EEE")}
                                 </span>
-                                <span className={cn("text-lg font-bold", isToday(day) && !isSelected && "text-blue-600")}>
+                                <span className={cn("text-base sm:text-lg font-bold", isToday(day) && !isSelected && "text-emerald-600")}>
                                     {format(day, "d")}
                                 </span>
                                 {!isPast && totalSlots > 0 && (
                                     <span className={cn(
-                                        "text-xs mt-0.5",
-                                        isSelected ? "text-blue-100" : freeSlots > 0 ? "text-green-600" : "text-red-400"
+                                        "text-[10px] sm:text-xs mt-0.5",
+                                        isSelected ? "text-emerald-100" : freeSlots > 0 ? "text-green-600" : "text-red-400"
                                     )}>
                                         {freeSlots}/{totalSlots}
                                     </span>
@@ -124,9 +124,9 @@ export default function ScheduleCalendar() {
             </div>
 
             {/* Slots for selected day */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5">
+            <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-5">
                 {selectedDate && (
-                    <h3 className="font-semibold text-slate-900 mb-4">
+                    <h3 className="font-semibold text-slate-900 mb-3 sm:mb-4 text-sm sm:text-base">
                         {format(selectedDate, "EEEE, d MMMM yyyy")}
                     </h3>
                 )}

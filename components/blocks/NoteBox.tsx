@@ -2,32 +2,25 @@ import { NoteBoxData } from "@/types/blocks"
 import { Info } from "lucide-react"
 
 export default function NoteBox({ data }: { data: NoteBoxData }) {
+    // Support both field naming conventions: label/content (type def) and title/body (old renderer)
+    const title = (data as any).title || data.label
+    const body = (data as any).body || data.content
+
     return (
         <div
-            className="my-6 rounded-xl p-5"
-            style={{
-                background: "#EFF6FF",
-                border: "1px solid #BFDBFE",
-            }}
+            className="my-8 rounded-2xl p-5 flex gap-4"
+            style={{ background: "var(--surface-muted)", border: "1px solid var(--border)" }}
         >
-            <div className="flex items-start gap-3">
-                <Info className="w-5 h-5 mt-0.5 shrink-0" style={{ color: "#2563EB" }} />
-                <div>
-                    {data.label && (
-                        <p
-                            className="text-sm font-bold mb-1"
-                            style={{ fontFamily: "var(--font-heading)", color: "#1E40AF" }}
-                        >
-                            {data.label}
-                        </p>
-                    )}
-                    <p
-                        className="text-sm leading-relaxed"
-                        style={{ color: "#374151", fontFamily: "var(--font-body)" }}
-                    >
-                        {data.content}
+            <Info className="w-5 h-5 shrink-0 mt-0.5" style={{ color: "var(--brand)" }} />
+            <div>
+                {title && (
+                    <p className="font-bold mb-1 text-sm" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
+                        {title}
                     </p>
-                </div>
+                )}
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>
+                    {body}
+                </p>
             </div>
         </div>
     )

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Shield, Phone, MessageCircle, ArrowRight } from "lucide-react"
+import { Phone, MessageCircle } from "lucide-react"
 import CopyrightYear from "./CopyrightYear"
 
 const LINKS = {
@@ -32,27 +32,47 @@ export default function PublicFooter() {
     const waUrl = `https://wa.me/${waNumber}?text=${waMsg}`
 
     return (
-        <footer style={{ background: "#0F172A" }}>
-            {/* ── CTA strip ── */}
-            <div style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-                <div className="max-w-7xl mx-auto px-6 py-12">
+        <footer style={{ background: "#F7F8FA", borderTop: "1px solid var(--border)" }}>
+
+            {/* CTA strip */}
+            <div
+                style={{
+                    background: "linear-gradient(135deg, #0F172A 0%, #134E4A 50%, #0F172A 100%)",
+                    position: "relative",
+                    overflow: "hidden",
+                }}
+            >
+                {/* Subtle glow */}
+                <div
+                    style={{
+                        position: "absolute",
+                        top: "-60px",
+                        right: "-60px",
+                        width: "300px",
+                        height: "300px",
+                        borderRadius: "50%",
+                        background: "radial-gradient(circle, rgba(0,179,134,0.15) 0%, transparent 70%)",
+                        pointerEvents: "none",
+                    }}
+                />
+                <div className="max-w-7xl mx-auto px-6 py-12 relative">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                         <div>
                             <h2
-                                className="text-2xl font-extrabold text-white mb-1"
-                                style={{ fontFamily: "var(--font-heading)" }}
+                                className="text-2xl font-extrabold mb-1.5"
+                                style={{ fontFamily: "var(--font-heading)", color: "#FFFFFF" }}
                             >
                                 Still unsure which plan to pick?
                             </h2>
-                            <p className="text-sm" style={{ color: "rgba(255,255,255,0.45)" }}>
+                            <p className="text-sm" style={{ color: "rgba(255,255,255,0.55)" }}>
                                 Book a free call — our advisors will guide you in under 20 minutes.
                             </p>
                         </div>
                         <div className="flex items-center gap-3 shrink-0">
                             <Link
                                 href="/contact"
-                                className="inline-flex items-center gap-2 bg-white text-blue-600 font-bold text-sm px-6 py-3 rounded-full transition-all hover:bg-blue-50 active:scale-95"
-                                style={{ fontFamily: "var(--font-body)" }}
+                                className="inline-flex items-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-full transition-all hover:opacity-90 active:scale-95"
+                                style={{ background: "var(--brand)", color: "#FFFFFF", boxShadow: "0 2px 12px rgba(0,179,134,0.3)" }}
                             >
                                 <Phone className="w-4 h-4" />
                                 Book Free Call
@@ -61,8 +81,8 @@ export default function PublicFooter() {
                                 href={waUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full border border-white/20 text-white hover:bg-white/10 transition-all"
-                                style={{ fontFamily: "var(--font-body)" }}
+                                className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-full border transition-all hover:bg-white/10 active:scale-95"
+                                style={{ borderColor: "rgba(255,255,255,0.25)", color: "#FFFFFF" }}
                             >
                                 <MessageCircle className="w-4 h-4" />
                                 WhatsApp
@@ -72,38 +92,36 @@ export default function PublicFooter() {
                 </div>
             </div>
 
-            {/* ── Main footer grid ── */}
-            <div className="max-w-7xl mx-auto px-6 py-16">
+
+            {/* Main footer */}
+            <div className="max-w-7xl mx-auto px-6 py-14">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
 
                     {/* Brand column */}
                     <div className="md:col-span-1">
-                        <Link href="/" className="flex items-center gap-2.5 mb-5">
-                            <div
-                                className="w-8 h-8 rounded-xl flex items-center justify-center"
-                                style={{
-                                    background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
-                                    boxShadow: "0 2px 8px rgba(37,99,235,0.4)",
-                                }}
-                            >
-                                <Shield className="w-4 h-4 text-white" />
-                            </div>
+                        <Link href="/" className="flex items-center gap-2 mb-5">
                             <span
-                                className="font-extrabold text-sm text-white"
-                                style={{ fontFamily: "var(--font-heading)" }}
+                                className="font-extrabold text-xl tracking-tight"
+                                style={{ fontFamily: "var(--font-heading)", color: "#1A1A2E", letterSpacing: "-0.02em" }}
                             >
-                                InsurePlatform
+                                ditto
+                            </span>
+                            <span
+                                className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                                style={{ background: "var(--brand-light)", color: "var(--brand)", border: "1px solid var(--brand-100)" }}
+                            >
+                                insurance
                             </span>
                         </Link>
-                        <p className="text-sm leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
+                        <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--text-muted)" }}>
                             Honest insurance advice for India. Free consultations, no commissions-first thinking.
                         </p>
                         <div className="flex items-center gap-1 mb-1">
                             {[1, 2, 3, 4, 5].map((s) => (
                                 <span key={s} className="text-sm" style={{ color: "#F59E0B" }}>★</span>
                             ))}
-                            <span className="text-xs ml-1.5" style={{ color: "rgba(255,255,255,0.3)" }}>
-                                4.9 · 15,000+ reviews
+                            <span className="text-xs ml-1.5" style={{ color: "var(--text-muted)" }}>
+                                4.9 · 21,000+ reviews
                             </span>
                         </div>
                     </div>
@@ -112,18 +130,18 @@ export default function PublicFooter() {
                     {Object.entries(LINKS).map(([group, links]) => (
                         <div key={group}>
                             <h3
-                                className="font-bold text-xs uppercase tracking-widest mb-5"
-                                style={{ color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-body)" }}
+                                className="font-bold text-xs uppercase tracking-widest mb-4"
+                                style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}
                             >
                                 {group}
                             </h3>
-                            <ul className="space-y-3">
+                            <ul className="space-y-2.5">
                                 {links.map((link) => (
                                     <li key={link.href}>
                                         <Link
                                             href={link.href}
-                                            className="text-sm transition-colors duration-150 hover:text-white"
-                                            style={{ color: "rgba(255,255,255,0.45)", fontFamily: "var(--font-body)" }}
+                                            className="text-sm transition-colors duration-150 hover:text-[#1A1A2E]"
+                                            style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}
                                         >
                                             {link.label}
                                         </Link>
@@ -136,16 +154,16 @@ export default function PublicFooter() {
 
                 {/* Bottom bar */}
                 <div
-                    className="mt-14 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
-                    style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+                    className="mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
+                    style={{ borderTop: "1px solid var(--border)" }}
                 >
-                    <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>
+                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                         © <CopyrightYear /> InsurePlatform. All rights reserved.
                     </p>
-                    <div className="flex items-center gap-5 text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>
-                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-                        <Link href="/terms" className="hover:text-white transition-colors">Terms of Use</Link>
-                        <Link href="/disclaimer" className="hover:text-white transition-colors">Disclaimer</Link>
+                    <div className="flex items-center gap-5 text-xs" style={{ color: "var(--text-muted)" }}>
+                        <Link href="/privacy" className="hover:text-[#1A1A2E] transition-colors">Privacy Policy</Link>
+                        <Link href="/terms" className="hover:text-[#1A1A2E] transition-colors">Terms of Use</Link>
+                        <Link href="/disclaimer" className="hover:text-[#1A1A2E] transition-colors">Disclaimer</Link>
                     </div>
                 </div>
             </div>

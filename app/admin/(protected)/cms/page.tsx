@@ -12,7 +12,7 @@ export default function CmsPage() {
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
-                        <FileEdit className="w-6 h-6 text-blue-600" />
+                        <FileEdit className="w-6 h-6 text-emerald-600" />
                         Page CMS
                     </h1>
                     <p className="text-slate-500 text-sm mt-1">
@@ -20,7 +20,7 @@ export default function CmsPage() {
                     </p>
                 </div>
                 <Link href="/admin/cms/new">
-                    <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
+                    <Button className="bg-emerald-600 hover:bg-emerald-700 gap-2">
                         <Plus className="w-4 h-4" />
                         New Page
                     </Button>

@@ -43,6 +43,7 @@ import {
     Loader2,
 } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
+import { cn } from "@/lib/utils"
 
 interface InquiryTableProps {
     inquiries: IInquiry[]
@@ -124,7 +125,8 @@ export default function InquiryTable({
 
     return (
         <>
-            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            {/* ── Desktop table (hidden on mobile) ── */}
+            <div className="hidden md:block bg-white rounded-xl border border-slate-200 overflow-hidden">
                 <Table>
                     <TableHeader>
                         <TableRow className="bg-slate-50">
@@ -142,8 +144,8 @@ export default function InquiryTable({
                             <TableRow key={inq._id} className="hover:bg-slate-50 transition-colors">
                                 <TableCell>
                                     <div className="flex items-center gap-2">
-                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                                            <span className="text-xs font-semibold text-blue-700">
+                                        <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                                            <span className="text-xs font-semibold text-emerald-700">
                                                 {inq.name.charAt(0).toUpperCase()}
                                             </span>
                                         </div>
@@ -187,7 +189,7 @@ export default function InquiryTable({
                                             variant="ghost"
                                             size="sm"
                                             onClick={() => openSheet(inq)}
-                                            className="h-8 w-8 p-0 text-slate-400 hover:text-blue-600"
+                                            className="h-8 w-8 p-0 text-slate-400 hover:text-emerald-600"
                                         >
                                             <Eye className="w-4 h-4" />
                                         </Button>
@@ -208,37 +210,73 @@ export default function InquiryTable({
                     </TableBody>
                 </Table>
 
-                {/* Pagination */}
-                {pagination.pages > 1 && (
-                    <div className="flex items-center justify-between px-4 py-3 border-t border-slate-200">
-                        <p className="text-xs text-slate-500">
-                            Showing {inquiries.length} of {pagination.total} inquiries
-                        </p>
-                        <div className="flex items-center gap-1">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => onPageChange(pagination.page - 1)}
-                                disabled={pagination.page <= 1}
-                                className="h-8 w-8 p-0"
-                            >
-                                <ChevronLeft className="w-4 h-4" />
-                            </Button>
-                            <span className="text-xs px-3 text-slate-600">
-                                {pagination.page} / {pagination.pages}
-                            </span>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => onPageChange(pagination.page + 1)}
-                                disabled={pagination.page >= pagination.pages}
-                                className="h-8 w-8 p-0"
-                            >
-                                <ChevronRight className="w-4 h-4" />
-                            </Button>
+                {/* Pagination — desktop */}
+                <PaginationBar inquiries={inquiries} pagination={pagination} onPageChange={onPageChange} />
+            </div>
+
+            {/* ── Mobile card list ── */}
+            <div className="md:hidden space-y-2">
+                {inquiries.map((inq) => (
+                    <div
+                        key={inq._id}
+                        className="bg-white rounded-xl border border-slate-200 p-3 active:bg-slate-50 transition-colors"
+                        onClick={() => openSheet(inq)}
+                    >
+                        <div className="flex items-start gap-2.5">
+                            {/* Avatar */}
+                            <div className="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                                <span className="text-xs font-bold text-emerald-700">
+                                    {inq.name.charAt(0).toUpperCase()}
+                                </span>
+                            </div>
+
+                            {/* Info */}
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                    <p className="text-sm font-semibold text-slate-900 truncate">{inq.name}</p>
+                                    <InquiryStatusBadge status={inq.status} />
+                                </div>
+                                <p className="text-xs text-slate-500 mt-0.5">{inq.phone} · {inq.email}</p>
+                                <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                                    <span className={cn(
+                                        "text-[10px] font-medium px-1.5 py-0.5 rounded",
+                                        inq.insuranceType === "term" ? "bg-indigo-50 text-indigo-700" : "bg-teal-50 text-teal-700"
+                                    )}>
+                                        {inq.insuranceType === "term" ? "Term Life" : "Health"}
+                                    </span>
+                                    <span className="text-[10px] text-slate-400">{inq.state}</span>
+                                    <span className="text-[10px] text-slate-400">·</span>
+                                    <span className="text-[10px] text-slate-400">{formatDateTime(inq.createdAt)}</span>
+                                </div>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="flex flex-col gap-1 shrink-0">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={(e) => { e.stopPropagation(); openSheet(inq) }}
+                                    className="h-7 w-7 p-0 text-slate-400"
+                                >
+                                    <Eye className="w-3.5 h-3.5" />
+                                </Button>
+                                {user?.role !== "employee" && (
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={(e) => { e.stopPropagation(); setDeleteId(inq._id) }}
+                                        className="h-7 w-7 p-0 text-slate-400 hover:text-red-500"
+                                    >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                    </Button>
+                                )}
+                            </div>
                         </div>
                     </div>
-                )}
+                ))}
+
+                {/* Pagination — mobile */}
+                <PaginationBar inquiries={inquiries} pagination={pagination} onPageChange={onPageChange} />
             </div>
 
             {/* Detail Sheet */}
@@ -248,8 +286,8 @@ export default function InquiryTable({
                         <>
                             <SheetHeader className="mb-6">
                                 <SheetTitle className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                        <span className="font-bold text-blue-700">
+                                    <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                                        <span className="font-bold text-emerald-700">
                                             {selected.name.charAt(0).toUpperCase()}
                                         </span>
                                     </div>
@@ -320,7 +358,7 @@ export default function InquiryTable({
                                 </div>
 
                                 <Button
-                                    className="w-full bg-blue-600 hover:bg-blue-700"
+                                    className="w-full bg-emerald-600 hover:bg-emerald-700"
                                     onClick={handleSave}
                                     disabled={saving}
                                 >
@@ -351,6 +389,47 @@ export default function InquiryTable({
     )
 }
 
+/* ── Shared pagination bar ── */
+function PaginationBar({
+    inquiries, pagination, onPageChange,
+}: {
+    inquiries: IInquiry[]
+    pagination: { page: number; pages: number; total: number }
+    onPageChange: (page: number) => void
+}) {
+    if (pagination.pages <= 1) return null
+    return (
+        <div className="flex items-center justify-between px-3 sm:px-4 py-3 border-t border-slate-200 bg-white rounded-b-xl">
+            <p className="text-[11px] sm:text-xs text-slate-500">
+                {inquiries.length} of {pagination.total}
+            </p>
+            <div className="flex items-center gap-1">
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onPageChange(pagination.page - 1)}
+                    disabled={pagination.page <= 1}
+                    className="h-8 w-8 p-0"
+                >
+                    <ChevronLeft className="w-4 h-4" />
+                </Button>
+                <span className="text-xs px-2 sm:px-3 text-slate-600">
+                    {pagination.page}/{pagination.pages}
+                </span>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onPageChange(pagination.page + 1)}
+                    disabled={pagination.page >= pagination.pages}
+                    className="h-8 w-8 p-0"
+                >
+                    <ChevronRight className="w-4 h-4" />
+                </Button>
+            </div>
+        </div>
+    )
+}
+
 function DetailRow({
     icon, label, value,
 }: {
@@ -361,9 +440,9 @@ function DetailRow({
     return (
         <div className="flex items-start gap-3">
             <span className="text-slate-400 mt-0.5 shrink-0">{icon}</span>
-            <div>
+            <div className="min-w-0">
                 <p className="text-xs text-slate-500 font-medium">{label}</p>
-                <p className="text-sm text-slate-900">{value}</p>
+                <p className="text-sm text-slate-900 break-words">{value}</p>
             </div>
         </div>
     )

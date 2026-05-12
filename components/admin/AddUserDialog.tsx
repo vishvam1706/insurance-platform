@@ -63,7 +63,7 @@ export default function AddUserDialog({ onSuccess }: AddUserDialogProps) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 gap-2">
                     <UserPlus className="w-4 h-4" />
                     Add User
                 </Button>
@@ -162,7 +162,7 @@ export default function AddUserDialog({ onSuccess }: AddUserDialogProps) {
                         </Button>
                         <Button
                             type="submit"
-                            className="flex-1 bg-blue-600 hover:bg-blue-700"
+                            className="flex-1 bg-emerald-600 hover:bg-emerald-700"
                             disabled={isSubmitting}
                         >
                             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

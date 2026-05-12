@@ -554,128 +554,38 @@ async function seed() {
                 type: "faq",
                 data: {
                     items: [
-                        { question: "How do I compare two health insurance policies properly?", answer: "Start by checking the insurer's track record, hospital network, and CSR history. Then compare policy features like waiting periods, room rent rules, co-payments, and premiums." },
-                        { question: "Is it better to choose the cheapest health insurance policy?", answer: "No. Cheaper policies often compensate with longer waiting periods, room rent restrictions, or mandatory co-payments." },
-                        { question: "What matters more: insurer or policy features?", answer: "Both — but the insurer comes first. A strong policy from a weak insurer can still result in a frustrating claim experience." },
+                        { question: "How do I compare two health insurance policies properly?", answer: "Start by checking the insurer's track record, hospital network, and CSR history." },
+                        { question: "Is it better to choose the cheapest health insurance policy?", answer: "No. Cheaper policies often have longer waiting periods or room rent restrictions." },
                     ],
                 },
             },
         ],
     })
-
     await PageContent.create({
         pageKey: "home",
         title: "Homepage",
         section: "home",
         published: true,
         seo: {
-            metaTitle: "Life & Health Insurance Platform — Expert Advice, Free Consultation",
-            metaDescription: "Get expert advice on term life and health insurance. Book a free call with our IRDAI-certified advisors.",
+            metaTitle: "Insurance Platform - Expert Advice, Free Consultation",
+            metaDescription: "Get expert advice on term life and health insurance. Book a free call with IRDAI-certified advisors.",
             keywords: ["insurance platform india", "term insurance", "health insurance"],
         },
         blocks: [
-            {
-                id: "h1",
-                type: "home_hero",
-                data: {
-                    badge: "IRDAI-Certified Expert Advisors",
-                    title: "Life & Health Insurance Platform",
-                    subtitle: "A modern, full-stack platform for term life & health insurance — with advisor-led lead management and a powerful admin console.",
-                    primaryCta: { text: "Book Free Call", href: "/book-call" },
-                    secondaryCta: { text: "Explore Plans", href: "/term-life" },
-                    stats: [
-                        { value: "8,00,000+", label: "Customers Helped" },
-                        { value: "4.9/5", label: "Google Rating" },
-                        { value: "100%", label: "Free Consultation" },
-                    ],
-                    showInquiryForm: true,
-                },
-            },
-            {
-                id: "h2",
-                type: "stat_bar",
-                data: {
-                    stats: [
-                        { value: "8,00,000+", label: "Customers Helped" },
-                        { value: "4.9/5", label: "Google Rating" },
-                        { value: "15,000+", label: "Happy Reviews" },
-                        { value: "100%", label: "Free Consultation" },
-                    ],
-                },
-            },
-            {
-                id: "h3",
-                type: "product_cards",
-                data: {
-                    title: "What we cover",
-                    cards: [
-                        {
-                            title: "Term Life Insurance",
-                            desc: "Pure protection for your family. High cover at low premiums.",
-                            href: "/term-life",
-                            colorClass: "bg-blue-600",
-                        },
-                        {
-                            title: "Health Insurance",
-                            desc: "Comprehensive health coverage for you and your family.",
-                            href: "/health",
-                            colorClass: "bg-teal-600",
-                        },
-                    ],
-                },
-            },
-            {
-                id: "h4",
-                type: "benefits_list",
-                data: {
-                    title: "Why choose us?",
-                    items: [
-                        { heading: "100% Unbiased Advice", body: "We are not agents. We don't earn commissions. Our only job is to help you make the right decision." },
-                        { heading: "IRDAI-Certified Experts", body: "Our advisors are trained, certified, and held to the highest standards of insurance advisory in India." },
-                        { heading: "No Spam, Ever", body: "We will never bombard you with calls or messages. One call. One advisor. Zero pressure." },
-                        { heading: "Instant Digital Issuance", body: "Get your policy issued digitally in minutes — no paperwork, no agent visits." },
-                    ],
-                },
-            },
-            {
-                id: "h5",
-                type: "cta_block",
-                data: {
-                    title: "Talk to an expert today and find the right insurance for you — completely free.",
-                    bookCallText: "Book a Free Call",
-                    whatsappText: "Chat on WhatsApp",
-                },
-            },
-            {
-                id: "h6",
-                type: "reviews",
-                data: {
-                    rating: 4.9,
-                    totalCount: 20915,
-                    items: [
-                        { name: "Amit Verma", initials: "AV", body: "Got my term insurance sorted in under 30 minutes. The advisor was incredibly patient and explained everything in simple language." },
-                        { name: "Sneha Patel", initials: "SP", body: "Best experience buying health insurance. No pressure, no hidden costs. Highly recommend this platform." },
-                        { name: "Rahul Sharma", initials: "RS", body: "I was confused between 3 policies. The advisor helped me compare them objectively and I got exactly what I needed." },
-                    ],
-                },
-            },
-            {
-                id: "h7",
-                type: "faq",
-                data: {
-                    items: [
-                        { question: "Is the consultation really free?", answer: "Yes, completely free. We do not charge advisory fees. Our revenue comes from insurers as referral fees, but this does not influence our recommendations." },
-                        { question: "How is this different from buying directly from an insurer?", answer: "You get unbiased advice across multiple insurers. We help you compare, clarify, and choose — something no single insurer's website can offer." },
-                        { question: "How long does it take to get a policy?", answer: "Most digital term and health policies are issued within 24-48 hours if all documents are submitted correctly." },
-                        { question: "Can I buy insurance for my parents?", answer: "Yes. We can help you get health insurance for senior parents and term insurance for anyone with an insurable income." },
-                    ],
-                },
-            },
+            { id: "h1", type: "home_hero", data: { badge: "IRDAI-Certified Expert Advisors", title: "The Ultimate Insurance Buying Experience", subtitle: "Talk to IRDAI certified experts. No spam. Just honest guidance.", primaryCta: { text: "Book a free call now", href: "/contact" }, stats: [{ value: "8,00,000+", label: "Customers Helped" }, { value: "4.9/5", label: "Google Rating" }, { value: "21,000+", label: "Google Reviews" }], showInquiryForm: false } },
+            { id: "h2", type: "stat_bar", data: { stats: [{ value: "8,00,000+", label: "Customers helped" }, { value: "4.9", label: "Average rating" }, { value: "Rs.0", label: "Consultation cost" }, { value: "21,000+", label: "Google reviews" }] } },
+            { id: "h3", type: "ditto_experience", data: {} },
+            { id: "h4", type: "comparison_section", data: {} },
+            { id: "h5", type: "product_cards", data: { title: "Two products. Expert guidance on both.", cards: [{ title: "Term Life Insurance", desc: "Pure protection for your family at the lowest possible premium.", href: "/term-life", colorClass: "bg-blue-600" }, { title: "Health Insurance", desc: "Comprehensive coverage for you and your family.", href: "/health", colorClass: "bg-teal-600" }] } },
+            { id: "h6", type: "insurance_checklist", data: {} },
+            { id: "h7", type: "reviews", data: { rating: 4.9, totalCount: 21000, items: [{ name: "Arjun Mehta", initials: "AM", body: "One call changed everything. Got a Rs.1 Cr term plan within a week." }, { name: "Priya Nair", initials: "PN", body: "No pushy sales pitch. Honest advice. Completely satisfied." }, { name: "Rohit Sharma", initials: "RS", body: "Best decision for my family. Incredibly patient advisor." }] } },
+            { id: "h8", type: "home_faq", data: { items: [{ question: "What is Ditto?", answer: "Ditto helps you make better decisions when buying insurance." }, { question: "Is it free?", answer: "Yes, completely free." }, { question: "Do you earn commission?", answer: "Yes, but our advice is never influenced by it." }, { question: "How quickly can I get a policy?", answer: "Within 3-7 working days after our call." }] } },
+            { id: "h9", type: "choose_ditto_cta", data: {} },
         ],
     })
 
-    console.log("✅ Page content seeded")
-    console.log("\n🎉 Seed complete! Login credentials:")
+    console.log("Page content seeded")
+    console.log("Seed complete! Login credentials:")
     console.log("   Super Admin: superadmin@platform.com / SuperAdmin@123")
     console.log("   Admin:       admin@platform.com / Admin@123")
     console.log("   Employee:    ravi@platform.com / Employee@123")
@@ -685,6 +595,6 @@ async function seed() {
 }
 
 seed().catch((err) => {
-    console.error("❌ Seed failed:", err)
+    console.error("Seed failed:", err)
     process.exit(1)
 })

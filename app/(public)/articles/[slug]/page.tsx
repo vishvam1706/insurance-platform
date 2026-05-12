@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { connection } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import PageRenderer from "@/components/blocks/PageRenderer"
@@ -9,7 +10,7 @@ import ArticleLayout from "@/components/public/ArticleLayout"
 interface Props { params: Promise<{ slug: string }> }
 
 async function getArticle(slug: string) {
-    "use cache"
+    await connection()
     await connectDB()
     const doc = await PageContent.findOne({
         pageKey: `articles/${slug}`,

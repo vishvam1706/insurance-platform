@@ -4,11 +4,13 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 import { toast } from "sonner"
 import { JWTPayload } from "@/types/user"
+import { useAdminShell } from "./AdminShell"
 import {
     LogOut,
     User,
     ChevronDown,
     Bell,
+    Menu,
 } from "lucide-react"
 import {
     DropdownMenu,
@@ -28,7 +30,7 @@ interface HeaderProps {
 
 const ROLE_COLORS: Record<string, string> = {
     super_admin: "bg-purple-100 text-purple-700 border-purple-200",
-    admin: "bg-blue-100 text-blue-700 border-blue-200",
+    admin: "bg-emerald-100 text-emerald-700 border-emerald-200",
     employee: "bg-green-100 text-green-700 border-green-200",
 }
 
@@ -40,6 +42,7 @@ const ROLE_LABELS: Record<string, string> = {
 
 export default function AdminHeader({ user }: HeaderProps) {
     const router = useRouter()
+    const { toggleSidebar } = useAdminShell()
 
     async function handleLogout() {
         try {
@@ -59,22 +62,31 @@ export default function AdminHeader({ user }: HeaderProps) {
         .slice(0, 2)
 
     return (
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0">
-            {/* Left — page context (empty here, pages set their own heading) */}
-            <div />
+        <header className="h-14 sm:h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 shrink-0">
+            {/* Left — hamburger + context */}
+            <div className="flex items-center gap-3">
+                {/* Mobile hamburger */}
+                <button
+                    onClick={toggleSidebar}
+                    className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
+                    aria-label="Open menu"
+                >
+                    <Menu className="w-5 h-5" />
+                </button>
+            </div>
 
             {/* Right */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
                 {/* Notifications (placeholder) */}
                 <button className="relative w-9 h-9 flex items-center justify-center rounded-lg hover:bg-slate-100 transition-colors text-slate-500">
                     <Bell className="w-4 h-4" />
                     <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
                 </button>
 
-                {/* Role badge */}
+                {/* Role badge — hidden on small screens */}
                 <Badge
                     variant="outline"
-                    className={cn("text-xs font-medium hidden sm:flex", ROLE_COLORS[user.role])}
+                    className={cn("text-xs font-medium hidden md:flex", ROLE_COLORS[user.role])}
                 >
                     {ROLE_LABELS[user.role]}
                 </Badge>
@@ -82,9 +94,9 @@ export default function AdminHeader({ user }: HeaderProps) {
                 {/* User menu */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <button className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-slate-100 transition-colors group">
+                        <button className="flex items-center gap-2 px-1.5 sm:px-2 py-1.5 rounded-lg hover:bg-slate-100 transition-colors group">
                             <Avatar className="w-8 h-8">
-                                <AvatarFallback className="bg-blue-600 text-white text-xs font-semibold">
+                                <AvatarFallback className="bg-emerald-600 text-white text-xs font-semibold">
                                     {initials}
                                 </AvatarFallback>
                             </Avatar>

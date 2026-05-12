@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea"
 interface Props { data: ProductCardsBlockData; onChange: (d: ProductCardsBlockData) => void }
 
 const COLOR_OPTIONS = [
-    { value: "bg-blue-600", label: "Blue" },
+    { value: "bg-emerald-600", label: "Blue" },
     { value: "bg-teal-600", label: "Teal" },
     { value: "bg-indigo-600", label: "Indigo" },
     { value: "bg-green-600", label: "Green" },
@@ -29,7 +29,7 @@ export default function ProductCardsEditor({ data, onChange }: Props) {
     function addCard() {
         onChange({
             ...data,
-            cards: [...cards, { title: "", desc: "", href: "/", colorClass: "bg-blue-600" }],
+            cards: [...cards, { title: "", desc: "", href: "/", colorClass: "bg-emerald-600" }],
         })
     }
 

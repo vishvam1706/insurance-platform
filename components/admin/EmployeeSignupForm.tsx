@@ -66,7 +66,7 @@ export default function EmployeeSignupForm() {
                 </p>
                 <Link
                     href="/admin/login"
-                    className="inline-block mt-6 text-blue-600 hover:text-blue-700 text-sm font-medium"
+                    className="inline-block mt-6 text-emerald-600 hover:text-emerald-700 text-sm font-medium"
                 >
                     Back to login
                 </Link>
@@ -140,7 +140,7 @@ export default function EmployeeSignupForm() {
 
             <Button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 h-11"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 h-11"
                 disabled={isSubmitting}
             >
                 {isSubmitting

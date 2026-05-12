@@ -147,9 +147,64 @@ export default function UserTable({
         )
     }
 
+    function UserActions({ u }: { u: SafeUser }) {
+        const isSelf = u._id === authUser?._id
+        return (
+            <div className="flex items-center gap-1">
+                {/* Approve pending */}
+                {u.status === "pending" && (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleApprove(u._id)}
+                        className="h-8 px-2 text-green-600 hover:text-green-700 hover:bg-green-50 text-xs gap-1"
+                    >
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span className="hidden sm:inline">Approve</span>
+                    </Button>
+                )}
+
+                {/* Deactivate active */}
+                {u.status === "active" && !isSelf && (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeactivate(u._id)}
+                        className="h-8 w-8 p-0 text-slate-400 hover:text-amber-600"
+                    >
+                        <XCircle className="w-4 h-4" />
+                    </Button>
+                )}
+
+                {/* Edit */}
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => openSheet(u)}
+                    className="h-8 w-8 p-0 text-slate-400 hover:text-emerald-600"
+                >
+                    <Edit className="w-4 h-4" />
+                </Button>
+
+                {/* Delete — super admin only, not self */}
+                {authUser?.role === "super_admin" && !isSelf && (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setDeleteId(u._id)}
+                        className="h-8 w-8 p-0 text-slate-400 hover:text-red-600"
+                    >
+                        <Trash2 className="w-4 h-4" />
+                    </Button>
+                )}
+            </div>
+        )
+    }
+
     return (
         <>
-            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            {/* ── Desktop table (hidden on mobile) ── */}
+            <div className="hidden lg:block bg-white rounded-xl border border-slate-200 overflow-hidden">
                 <Table>
                     <TableHeader>
                         <TableRow className="bg-slate-50">
@@ -173,7 +228,7 @@ export default function UserTable({
                                     <TableCell>
                                         <div className="flex items-center gap-3">
                                             <Avatar className="w-9 h-9">
-                                                <AvatarFallback className="bg-blue-100 text-blue-700 text-xs font-semibold">
+                                                <AvatarFallback className="bg-emerald-100 text-emerald-700 text-xs font-semibold">
                                                     {initials}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -189,83 +244,14 @@ export default function UserTable({
                                         </div>
                                     </TableCell>
 
-                                    {/* Role */}
-                                    <TableCell>
-                                        <UserRoleBadge role={u.role} />
-                                    </TableCell>
+                                    <TableCell><UserRoleBadge role={u.role} /></TableCell>
+                                    <TableCell><UserStatusBadge status={u.status} /></TableCell>
+                                    <TableCell><span className="text-sm text-slate-600">{u.state || "—"}</span></TableCell>
+                                    <TableCell><span className="text-sm text-slate-600">{u.language || "—"}</span></TableCell>
+                                    <TableCell><span className="text-xs text-slate-400">{formatDateTime(u.createdAt)}</span></TableCell>
 
-                                    {/* Status */}
-                                    <TableCell>
-                                        <UserStatusBadge status={u.status} />
-                                    </TableCell>
-
-                                    {/* State */}
-                                    <TableCell>
-                                        <span className="text-sm text-slate-600">{u.state || "—"}</span>
-                                    </TableCell>
-
-                                    {/* Language */}
-                                    <TableCell>
-                                        <span className="text-sm text-slate-600">{u.language || "—"}</span>
-                                    </TableCell>
-
-                                    {/* Joined */}
-                                    <TableCell>
-                                        <span className="text-xs text-slate-400">
-                                            {formatDateTime(u.createdAt)}
-                                        </span>
-                                    </TableCell>
-
-                                    {/* Actions */}
                                     <TableCell className="text-right">
-                                        <div className="flex items-center justify-end gap-1">
-                                            {/* Approve pending */}
-                                            {u.status === "pending" && (
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => handleApprove(u._id)}
-                                                    className="h-8 px-2 text-green-600 hover:text-green-700 hover:bg-green-50 text-xs gap-1"
-                                                >
-                                                    <CheckCircle2 className="w-4 h-4" />
-                                                    Approve
-                                                </Button>
-                                            )}
-
-                                            {/* Deactivate active */}
-                                            {u.status === "active" && !isSelf && (
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => handleDeactivate(u._id)}
-                                                    className="h-8 w-8 p-0 text-slate-400 hover:text-amber-600"
-                                                >
-                                                    <XCircle className="w-4 h-4" />
-                                                </Button>
-                                            )}
-
-                                            {/* Edit */}
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                onClick={() => openSheet(u)}
-                                                className="h-8 w-8 p-0 text-slate-400 hover:text-blue-600"
-                                            >
-                                                <Edit className="w-4 h-4" />
-                                            </Button>
-
-                                            {/* Delete — super admin only, not self */}
-                                            {authUser?.role === "super_admin" && !isSelf && (
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => setDeleteId(u._id)}
-                                                    className="h-8 w-8 p-0 text-slate-400 hover:text-red-600"
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </Button>
-                                            )}
-                                        </div>
+                                        <UserActions u={u} />
                                     </TableCell>
                                 </TableRow>
                             )
@@ -273,46 +259,67 @@ export default function UserTable({
                     </TableBody>
                 </Table>
 
-                {/* Pagination */}
-                {pagination.pages > 1 && (
-                    <div className="flex items-center justify-between px-4 py-3 border-t border-slate-200">
-                        <p className="text-xs text-slate-500">
-                            Showing {users.length} of {pagination.total} users
-                        </p>
-                        <div className="flex items-center gap-1">
-                            <Button
-                                variant="outline" size="sm"
-                                onClick={() => onPageChange(pagination.page - 1)}
-                                disabled={pagination.page <= 1}
-                                className="h-8 w-8 p-0"
-                            >
-                                <ChevronLeft className="w-4 h-4" />
-                            </Button>
-                            <span className="text-xs px-3 text-slate-600">
-                                {pagination.page} / {pagination.pages}
-                            </span>
-                            <Button
-                                variant="outline" size="sm"
-                                onClick={() => onPageChange(pagination.page + 1)}
-                                disabled={pagination.page >= pagination.pages}
-                                className="h-8 w-8 p-0"
-                            >
-                                <ChevronRight className="w-4 h-4" />
-                            </Button>
+                <UserPaginationBar users={users} pagination={pagination} onPageChange={onPageChange} />
+            </div>
+
+            {/* ── Mobile card list ── */}
+            <div className="lg:hidden space-y-2">
+                {users.map((u) => {
+                    const initials = u.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+                    const isSelf = u._id === authUser?._id
+
+                    return (
+                        <div
+                            key={u._id}
+                            className="bg-white rounded-xl border border-slate-200 p-3 transition-colors"
+                        >
+                            <div className="flex items-start gap-2.5">
+                                {/* Avatar */}
+                                <Avatar className="w-9 h-9 shrink-0">
+                                    <AvatarFallback className="bg-emerald-100 text-emerald-700 text-xs font-semibold">
+                                        {initials}
+                                    </AvatarFallback>
+                                </Avatar>
+
+                                {/* Info */}
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                        <p className="text-sm font-semibold text-slate-900 truncate">
+                                            {u.name}
+                                            {isSelf && <span className="text-xs text-slate-400 font-normal ml-1">(you)</span>}
+                                        </p>
+                                        <UserRoleBadge role={u.role} />
+                                        <UserStatusBadge status={u.status} />
+                                    </div>
+                                    <p className="text-xs text-slate-400 mt-0.5 truncate">{u.email}</p>
+                                    <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-400 flex-wrap">
+                                        {u.state && <span className="flex items-center gap-0.5"><MapPin className="w-2.5 h-2.5" />{u.state}</span>}
+                                        {u.language && <span className="flex items-center gap-0.5"><Globe className="w-2.5 h-2.5" />{u.language}</span>}
+                                        <span>{formatDateTime(u.createdAt)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Actions row */}
+                            <div className="mt-2 pt-2 border-t border-slate-100 flex justify-end">
+                                <UserActions u={u} />
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )
+                })}
+
+                <UserPaginationBar users={users} pagination={pagination} onPageChange={onPageChange} />
             </div>
 
             {/* Edit Sheet */}
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-                <SheetContent className="sm:max-w-md overflow-y-auto">
+                <SheetContent className="w-full sm:max-w-md overflow-y-auto">
                     {selected && (
                         <>
                             <SheetHeader className="mb-6">
                                 <SheetTitle className="flex items-center gap-3">
                                     <Avatar className="w-10 h-10">
-                                        <AvatarFallback className="bg-blue-100 text-blue-700 font-bold">
+                                        <AvatarFallback className="bg-emerald-100 text-emerald-700 font-bold">
                                             {selected.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
                                         </AvatarFallback>
                                     </Avatar>
@@ -400,7 +407,7 @@ export default function UserTable({
                                 </div>
 
                                 <Button
-                                    className="w-full bg-blue-600 hover:bg-blue-700"
+                                    className="w-full bg-emerald-600 hover:bg-emerald-700"
                                     onClick={handleSave}
                                     disabled={saving}
                                 >
@@ -424,5 +431,44 @@ export default function UserTable({
                 onConfirm={handleDelete}
             />
         </>
+    )
+}
+
+/* ── Shared pagination bar ── */
+function UserPaginationBar({
+    users, pagination, onPageChange,
+}: {
+    users: SafeUser[]
+    pagination: { page: number; pages: number; total: number }
+    onPageChange: (page: number) => void
+}) {
+    if (pagination.pages <= 1) return null
+    return (
+        <div className="flex items-center justify-between px-3 sm:px-4 py-3 border-t border-slate-200 bg-white rounded-b-xl">
+            <p className="text-[11px] sm:text-xs text-slate-500">
+                {users.length} of {pagination.total}
+            </p>
+            <div className="flex items-center gap-1">
+                <Button
+                    variant="outline" size="sm"
+                    onClick={() => onPageChange(pagination.page - 1)}
+                    disabled={pagination.page <= 1}
+                    className="h-8 w-8 p-0"
+                >
+                    <ChevronLeft className="w-4 h-4" />
+                </Button>
+                <span className="text-xs px-2 sm:px-3 text-slate-600">
+                    {pagination.page}/{pagination.pages}
+                </span>
+                <Button
+                    variant="outline" size="sm"
+                    onClick={() => onPageChange(pagination.page + 1)}
+                    disabled={pagination.page >= pagination.pages}
+                    className="h-8 w-8 p-0"
+                >
+                    <ChevronRight className="w-4 h-4" />
+                </Button>
+            </div>
+        </div>
     )
 }

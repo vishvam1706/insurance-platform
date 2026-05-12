@@ -56,7 +56,7 @@ async function getDashboardData(role: string, state?: string) {
 }
 
 const STATUS_STYLES: Record<string, string> = {
-    new: "bg-blue-100 text-blue-700",
+    new: "bg-emerald-100 text-emerald-700",
     contacted: "bg-yellow-100 text-yellow-700",
     resolved: "bg-green-100 text-green-700",
     not_reachable: "bg-red-100 text-red-700",
@@ -71,8 +71,8 @@ async function DashboardContent({ role, state, name }: { role: string; state?: s
             label: "Total Inquiries",
             value: data.totalInquiries,
             icon: <MessageSquare className="w-5 h-5" />,
-            color: "text-blue-600",
-            bg: "bg-blue-50",
+            color: "text-emerald-600",
+            bg: "bg-emerald-50",
         },
         {
             label: "New / Uncontacted",
@@ -119,16 +119,16 @@ async function DashboardContent({ role, state, name }: { role: string; state?: s
     return (
         <>
             {/* Stats grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                 {stats.map((stat) => (
                     <Card key={stat.label} className="border border-slate-200 shadow-sm">
-                        <CardContent className="p-5">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="text-sm text-slate-500 font-medium">{stat.label}</p>
-                                    <p className="text-3xl font-bold text-slate-900 mt-1">{stat.value}</p>
+                        <CardContent className="p-3 sm:p-5">
+                            <div className="flex items-center justify-between gap-2">
+                                <div className="min-w-0">
+                                    <p className="text-xs sm:text-sm text-slate-500 font-medium truncate">{stat.label}</p>
+                                    <p className="text-xl sm:text-3xl font-bold text-slate-900 mt-0.5 sm:mt-1">{stat.value}</p>
                                 </div>
-                                <div className={`${stat.bg} ${stat.color} p-3 rounded-xl`}>
+                                <div className={`${stat.bg} ${stat.color} p-2 sm:p-3 rounded-lg sm:rounded-xl shrink-0`}>
                                     {stat.icon}
                                 </div>
                             </div>
@@ -145,7 +145,7 @@ async function DashboardContent({ role, state, name }: { role: string; state?: s
                     </CardTitle>
                     <Link
                         href="/admin/inquiries"
-                        className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                        className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
                     >
                         View all →
                     </Link>
@@ -161,24 +161,24 @@ async function DashboardContent({ role, state, name }: { role: string; state?: s
                             {data.recentInquiries.map((inq: any) => (
                                 <div
                                     key={String(inq._id)}
-                                    className="flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors"
+                                    className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 hover:bg-slate-50 transition-colors gap-2"
                                 >
-                                    <div className="flex items-center gap-3 min-w-0">
-                                        <div className="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center shrink-0">
-                                            <span className="text-sm font-semibold text-slate-600">
+                                    <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-200 flex items-center justify-center shrink-0">
+                                            <span className="text-xs sm:text-sm font-semibold text-slate-600">
                                                 {inq.name.charAt(0).toUpperCase()}
                                             </span>
                                         </div>
                                         <div className="min-w-0">
                                             <p className="text-sm font-medium text-slate-900 truncate">{inq.name}</p>
-                                            <p className="text-xs text-slate-400 truncate">
+                                            <p className="text-[11px] sm:text-xs text-slate-400 truncate">
                                                 {inq.phone} · {inq.state} · {inq.insuranceType === "term" ? "Term" : "Health"}
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-3 shrink-0 ml-4">
+                                    <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                                         <Badge
-                                            className={`text-xs capitalize ${STATUS_STYLES[inq.status]}`}
+                                            className={`text-[10px] sm:text-xs capitalize ${STATUS_STYLES[inq.status]}`}
                                             variant="secondary"
                                         >
                                             {inq.status.replace("_", " ")}
@@ -196,9 +196,9 @@ async function DashboardContent({ role, state, name }: { role: string; state?: s
 
             {/* Pending approvals banner */}
             {role !== "employee" && data.pendingUsers > 0 && (
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center justify-between">
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 bg-amber-100 rounded-lg flex items-center justify-center">
+                        <div className="w-9 h-9 bg-amber-100 rounded-lg flex items-center justify-center shrink-0">
                             <Users className="w-5 h-5 text-amber-600" />
                         </div>
                         <div>
@@ -210,7 +210,7 @@ async function DashboardContent({ role, state, name }: { role: string; state?: s
                     </div>
                     <Link
                         href="/admin/users"
-                        className="text-sm font-medium text-amber-700 hover:text-amber-800 bg-amber-100 hover:bg-amber-200 px-4 py-2 rounded-lg transition-colors shrink-0"
+                        className="text-sm font-medium text-amber-700 hover:text-amber-800 bg-amber-100 hover:bg-amber-200 px-4 py-2 rounded-lg transition-colors shrink-0 w-full sm:w-auto text-center"
                     >
                         Review →
                     </Link>
@@ -243,11 +243,11 @@ export default async function DashboardPage() {
     if (!user) return null
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
             {/* Page heading — renders immediately, no DB call */}
             <div>
-                <h1 className="text-2xl font-semibold text-slate-900">Dashboard</h1>
-                <p className="text-slate-500 text-sm mt-1">
+                <h1 className="text-xl sm:text-2xl font-semibold text-slate-900">Dashboard</h1>
+                <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1">
                     Welcome back, {user.name}
                     {user.state ? ` — ${user.state}` : ""}
                 </p>

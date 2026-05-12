@@ -56,15 +56,15 @@ export default function UsersPage() {
     const pendingCount = users.filter((u) => u.status === "pending").length
 
     return (
-        <div className="space-y-5">
+        <div className="space-y-3 sm:space-y-5">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
-                    <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
-                        <Users className="w-6 h-6 text-blue-600" />
+                    <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 flex items-center gap-2">
+                        <Users className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600" />
                         Users
                     </h1>
-                    <p className="text-slate-500 text-sm mt-1">
+                    <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1">
                         Manage admin and employee accounts — {pagination.total} total
                     </p>
                 </div>
@@ -73,22 +73,24 @@ export default function UsersPage() {
 
             {/* Pending alert */}
             {pendingCount > 0 && (
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
-                    <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center shrink-0">
-                        <Clock className="w-4 h-4 text-amber-600" />
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center shrink-0">
+                            <Clock className="w-4 h-4 text-amber-600" />
+                        </div>
+                        <p className="text-xs sm:text-sm text-amber-900">
+                            <span className="font-semibold">{pendingCount} employee{pendingCount > 1 ? "s" : ""}</span>
+                            {" "}awaiting approval
+                        </p>
                     </div>
-                    <p className="text-sm text-amber-900">
-                        <span className="font-semibold">{pendingCount} employee{pendingCount > 1 ? "s" : ""}</span>
-                        {" "}awaiting approval — scroll down or filter by "Pending" to review
-                    </p>
-                    <Badge className="bg-amber-200 text-amber-800 ml-auto shrink-0">
+                    <Badge className="bg-amber-200 text-amber-800 sm:ml-auto shrink-0">
                         {pendingCount} pending
                     </Badge>
                 </div>
             )}
 
             {/* Filters */}
-            <div className="bg-white rounded-xl border border-slate-200 p-4">
+            <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-4">
                 <div className="flex flex-col sm:flex-row gap-3">
                     {/* Search */}
                     <div className="relative flex-1">

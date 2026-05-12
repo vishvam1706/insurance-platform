@@ -26,6 +26,11 @@ export type BlockType =
     | "faq"
     | "home_hero"
     | "product_cards"
+    | "ditto_experience"
+    | "comparison_section"
+    | "insurance_checklist"
+    | "home_faq"
+    | "choose_ditto_cta"
 
 export interface Block {
     id: string
@@ -247,4 +252,31 @@ export interface ProductCardsBlockData {
         href: string
         colorClass: string
     }[]
+}
+
+// Ditto Experience
+export interface DittoExperienceBlockData {
+    steps?: { num: string; title: string; body: string }[]
+}
+
+// Comparison Section
+export interface ComparisonSectionBlockData {
+    title?: string
+    subtitle?: string
+}
+
+// Insurance Checklist
+export interface InsuranceChecklistBlockData {
+    heading?: string
+    body?: string
+}
+
+// Home FAQ
+export interface HomeFaqBlockData {
+    items: { question: string; answer: string }[]
+}
+
+// Choose Ditto CTA
+export interface ChooseDittoCataBlockData {
+    heading?: string
 }

@@ -19,7 +19,7 @@ export default function LoginPage() {
             <div className="relative w-full max-w-md">
                 {/* Logo / Brand */}
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4 shadow-lg shadow-blue-500/30">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-600 mb-4 shadow-lg shadow-blue-500/30">
                         <Shield className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-2xl font-semibold text-white">Insurance Platform</h1>

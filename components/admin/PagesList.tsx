@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select"
 import ConfirmDialog from "./ConfirmDialog"
 import {
-    FileEdit, Search, Plus, Trash2,
+    FileEdit, Search, Trash2,
     ExternalLink, Clock, Eye, EyeOff,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -37,7 +37,7 @@ interface PageMeta {
 }
 
 const SECTION_COLORS: Record<string, string> = {
-    "term-life": "bg-blue-100 text-blue-700",
+    "term-life": "bg-emerald-100 text-emerald-700",
     "health": "bg-green-100 text-green-700",
     "home": "bg-purple-100 text-purple-700",
     "articles": "bg-orange-100 text-orange-700",
@@ -104,43 +104,45 @@ export default function PagesList() {
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
             {/* Filters */}
-            <div className="bg-white rounded-xl border border-slate-200 p-4">
-                <div className="flex flex-col sm:flex-row gap-3">
+            <div className="bg-white rounded-xl border border-slate-200 p-3 sm:p-4">
+                <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <Input
                             placeholder="Search pages..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="pl-9 h-9"
+                            className="pl-9 h-9 text-sm"
                         />
                     </div>
-                    <Select value={section} onValueChange={(v) => setSection(v === "all" ? "" : v)}>
-                        <SelectTrigger className="h-9 w-full sm:w-44">
-                            <SelectValue placeholder="All sections" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All sections</SelectItem>
-                            <SelectItem value="term-life">Term Life</SelectItem>
-                            <SelectItem value="health">Health</SelectItem>
-                            <SelectItem value="home">Home</SelectItem>
-                            <SelectItem value="articles">Articles</SelectItem>
-                            <SelectItem value="tools">Tools</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Select value={published} onValueChange={(v) => setPublished(v === "all" ? "" : v)}>
-                        <SelectTrigger className="h-9 w-full sm:w-40">
-                            <SelectValue placeholder="All status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All status</SelectItem>
-                            <SelectItem value="true">Published</SelectItem>
-                            <SelectItem value="false">Draft</SelectItem>
-                        </SelectContent>
-                    </Select>
+                    <div className="flex gap-2">
+                        <Select value={section} onValueChange={(v) => setSection(v === "all" ? "" : v)}>
+                            <SelectTrigger className="h-9 flex-1 sm:w-36 sm:flex-none text-sm">
+                                <SelectValue placeholder="All sections" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All sections</SelectItem>
+                                <SelectItem value="term-life">Term Life</SelectItem>
+                                <SelectItem value="health">Health</SelectItem>
+                                <SelectItem value="home">Home</SelectItem>
+                                <SelectItem value="articles">Articles</SelectItem>
+                                <SelectItem value="tools">Tools</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Select value={published} onValueChange={(v) => setPublished(v === "all" ? "" : v)}>
+                            <SelectTrigger className="h-9 flex-1 sm:w-32 sm:flex-none text-sm">
+                                <SelectValue placeholder="All status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All status</SelectItem>
+                                <SelectItem value="true">Published</SelectItem>
+                                <SelectItem value="false">Draft</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
             </div>
 
@@ -148,7 +150,7 @@ export default function PagesList() {
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                 {loading ? (
                     <div className="flex items-center justify-center h-48">
-                        <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
                     </div>
                 ) : pages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-48 text-slate-400">
@@ -160,41 +162,44 @@ export default function PagesList() {
                         {pages.map((page) => (
                             <div
                                 key={page._id}
-                                className="flex items-center gap-4 px-5 py-4 hover:bg-slate-50 transition-colors group"
+                                className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-3 sm:px-5 py-3 sm:py-4 hover:bg-slate-50 transition-colors group"
                             >
-                                {/* Published dot */}
-                                <div className={cn(
-                                    "w-2 h-2 rounded-full shrink-0",
-                                    page.published ? "bg-green-500" : "bg-slate-300"
-                                )} />
+                                {/* Top row on mobile: dot + title + badges */}
+                                <div className="flex items-start gap-2 sm:gap-3 flex-1 min-w-0">
+                                    {/* Published dot */}
+                                    <div className={cn(
+                                        "w-2 h-2 rounded-full shrink-0 mt-1.5",
+                                        page.published ? "bg-green-500" : "bg-slate-300"
+                                    )} />
 
-                                {/* Page info */}
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 flex-wrap">
-                                        <p className="text-sm font-medium text-slate-900 truncate">{page.title}</p>
-                                        <Badge className={cn("text-xs border-0 capitalize", SECTION_COLORS[page.section])}>
-                                            {page.section}
-                                        </Badge>
-                                        {!page.published && (
-                                            <Badge variant="outline" className="text-xs text-slate-400 border-slate-200">
-                                                Draft
+                                    {/* Page info */}
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <p className="text-sm font-medium text-slate-900 truncate">{page.title}</p>
+                                            <Badge className={cn("text-[10px] sm:text-xs border-0 capitalize px-1.5 py-0", SECTION_COLORS[page.section])}>
+                                                {page.section}
                                             </Badge>
-                                        )}
-                                    </div>
-                                    <p className="text-xs text-slate-400 font-mono mt-0.5">{getPublicUrl(page.pageKey)}</p>
-                                    <div className="flex items-center gap-1 mt-0.5 text-xs text-slate-400">
-                                        <Clock className="w-3 h-3" />
-                                        {formatDateTime(page.updatedAt)}
-                                        {page.updatedBy && <span>· {page.updatedBy}</span>}
+                                            {!page.published && (
+                                                <Badge variant="outline" className="text-[10px] sm:text-xs text-slate-400 border-slate-200 px-1.5 py-0">
+                                                    Draft
+                                                </Badge>
+                                            )}
+                                        </div>
+                                        <p className="text-[11px] sm:text-xs text-slate-400 font-mono mt-0.5 truncate">{getPublicUrl(page.pageKey)}</p>
+                                        <div className="flex items-center gap-1 mt-0.5 text-[11px] sm:text-xs text-slate-400">
+                                            <Clock className="w-3 h-3 shrink-0" />
+                                            <span className="truncate">{formatDateTime(page.updatedAt)}</span>
+                                            {page.updatedBy && <span className="truncate">· {page.updatedBy}</span>}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Actions */}
-                                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                                {/* Actions — always visible on mobile (no hover) */}
+                                <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0 ml-4 sm:ml-0">
                                     {/* View public */}
                                     {page.published && (
                                         <Link href={getPublicUrl(page.pageKey)} target="_blank">
-                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-blue-600">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-emerald-600">
                                                 <ExternalLink className="w-4 h-4" />
                                             </Button>
                                         </Link>
@@ -215,7 +220,7 @@ export default function PagesList() {
 
                                     {/* Edit */}
                                     <Link href={`/admin/cms/${page.pageKey.replace(/\//g, "__")}`}>
-                                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-blue-600">
+                                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-emerald-600">
                                             <FileEdit className="w-4 h-4" />
                                         </Button>
                                     </Link>

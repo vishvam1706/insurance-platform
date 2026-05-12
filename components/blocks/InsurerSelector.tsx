@@ -25,24 +25,12 @@ export default function InsurerSelector({ data }: { data: InsurerSelectorData })
     }
 
     return (
-        <div
-            className="my-10 rounded-2xl p-6"
-            style={{
-                background: "#F8F9FA",
-                border: "1px solid #E5E7EB",
-            }}
-        >
-            <h2
-                className="font-bold mb-2"
-                style={{ fontFamily: "var(--font-heading)", color: "#111827" }}
-            >
+        <div className="my-10 rounded-2xl p-6" style={{ background: "var(--surface-muted)", border: "1px solid var(--border)" }}>
+            <h2 className="font-bold mb-2" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                 {data.label}
             </h2>
             {data.helpText && (
-                <p
-                    className="text-sm mb-6"
-                    style={{ color: "#6B7280", fontFamily: "var(--font-body)" }}
-                >
+                <p className="text-sm mb-6" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>
                     {data.helpText}
                 </p>
             )}
@@ -54,29 +42,18 @@ export default function InsurerSelector({ data }: { data: InsurerSelectorData })
                         <button
                             key={insurer.slug}
                             onClick={() => toggle(insurer.slug)}
-                            className={cn(
-                                "flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-200 text-xs font-semibold",
-                            )}
+                            className={cn("flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-200 text-xs font-semibold")}
                             style={{
-                                border: isSelected ? "2px solid #2563EB" : "1px solid #E5E7EB",
-                                background: isSelected ? "#EFF6FF" : "#FFFFFF",
-                                color: isSelected ? "#1D4ED8" : "#374151",
+                                border: isSelected ? "2px solid var(--brand)" : "1px solid var(--border)",
+                                background: isSelected ? "var(--brand-light)" : "#FFFFFF",
+                                color: isSelected ? "var(--brand)" : "var(--text-secondary)",
                                 fontFamily: "var(--font-body)",
                             }}
                         >
                             {insurer.logo ? (
-                                <Image
-                                    src={insurer.logo}
-                                    alt={insurer.name}
-                                    width={48}
-                                    height={32}
-                                    className="object-contain h-8"
-                                />
+                                <Image src={insurer.logo} alt={insurer.name} width={48} height={32} className="object-contain h-8" />
                             ) : (
-                                <div
-                                    className="w-12 h-8 rounded flex items-center justify-center text-xs font-bold"
-                                    style={{ background: "#F3F4F6", color: "#9CA3AF" }}
-                                >
+                                <div className="w-12 h-8 rounded flex items-center justify-center text-xs font-bold" style={{ background: "var(--brand-light)", color: "var(--brand)" }}>
                                     {insurer.name.substring(0, 2).toUpperCase()}
                                 </div>
                             )}
@@ -91,11 +68,7 @@ export default function InsurerSelector({ data }: { data: InsurerSelectorData })
                     onClick={handleCompare}
                     disabled={selected.length < 2}
                     className="font-semibold px-6 py-2 rounded-full transition-all active:scale-95 disabled:active:scale-100 disabled:opacity-50"
-                    style={{
-                        background: "#2563EB",
-                        color: "#FFFFFF",
-                        fontFamily: "var(--font-body)",
-                    }}
+                    style={{ background: "var(--brand)", color: "#FFFFFF", fontFamily: "var(--font-body)" }}
                 >
                     Compare {selected.length > 0 ? `(${selected.length} selected)` : ""}
                 </Button>
@@ -103,15 +76,15 @@ export default function InsurerSelector({ data }: { data: InsurerSelectorData })
                     <button
                         onClick={() => setSelected([])}
                         className="text-sm font-medium transition-colors"
-                        style={{ color: "#9CA3AF" }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = "#4B5563")}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = "#9CA3AF")}
+                        style={{ color: "var(--text-muted)" }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
                     >
                         Clear
                     </button>
                 )}
                 {selected.length < 2 && (
-                    <p className="text-xs" style={{ color: "#9CA3AF", fontFamily: "var(--font-body)" }}>
+                    <p className="text-xs" style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>
                         Select at least 2 insurers to compare
                     </p>
                 )}

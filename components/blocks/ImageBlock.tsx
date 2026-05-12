@@ -3,25 +3,21 @@ import Image from "next/image"
 
 export default function ImageBlock({ data }: { data: ImageBlockData }) {
     if (!data.image) return null
+    const isLocal = data.image.startsWith("/uploads/") || data.image.startsWith("/")
     return (
         <figure className="my-8">
-            <div
-                className="rounded-2xl overflow-hidden"
-                style={{ border: "1px solid #E5E7EB" }}
-            >
+            <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)" }}>
                 <Image
                     src={data.image}
-                    alt={data.altText || ""}
+                    alt={data.altText || data.caption || ""}
                     width={900}
                     height={500}
                     className="w-full object-cover"
+                    unoptimized={isLocal}
                 />
             </div>
             {data.caption && (
-                <figcaption
-                    className="text-center text-xs mt-2"
-                    style={{ color: "#9CA3AF", fontFamily: "var(--font-body)" }}
-                >
+                <figcaption className="text-center text-xs mt-2" style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>
                     {data.caption}
                 </figcaption>
             )}

@@ -40,7 +40,7 @@ export default function InquiryFilters({
                 <Filter className="w-4 h-4 text-slate-400" />
                 <span className="text-sm font-medium text-slate-700">Filters</span>
                 {activeCount > 0 && (
-                    <span className="bg-blue-600 text-white text-xs px-1.5 py-0.5 rounded-full">
+                    <span className="bg-emerald-600 text-white text-xs px-1.5 py-0.5 rounded-full">
                         {activeCount}
                     </span>
                 )}

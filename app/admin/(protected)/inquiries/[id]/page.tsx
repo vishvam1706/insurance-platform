@@ -10,7 +10,6 @@ import { Phone, Mail, MapPin, Calendar, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
 export const metadata: Metadata = { title: "Inquiry Detail" }
-export const dynamic = "force-dynamic"
 
 export default async function InquiryDetailPage({
     params,
@@ -48,8 +47,8 @@ export default async function InquiryDetailPage({
             </div>
 
             <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center">
-                    <span className="text-xl font-bold text-blue-700">
+                <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <span className="text-xl font-bold text-emerald-700">
                         {inq.name.charAt(0).toUpperCase()}
                     </span>
                 </div>

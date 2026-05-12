@@ -56,7 +56,7 @@ export default function InsurerMetricsEditor({ data, onChange }: Props) {
                 {metrics.map((metric, mi) => (
                     <div key={mi} className="border border-slate-200 rounded-lg p-3 space-y-3">
                         <div className="flex justify-between items-center">
-                            <span className="text-xs font-bold text-blue-600">Metric #{metric.number}</span>
+                            <span className="text-xs font-bold text-emerald-600">Metric #{metric.number}</span>
                             <Button type="button" variant="ghost" size="sm" onClick={() => removeMetric(mi)} className="h-6 w-6 p-0 text-slate-400 hover:text-red-500">
                                 <Trash2 className="w-3 h-3" />
                             </Button>

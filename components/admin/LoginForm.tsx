@@ -91,7 +91,7 @@ export default function LoginForm() {
             {/* Submit */}
             <Button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white h-11 rounded-lg font-medium"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white h-11 rounded-lg font-medium"
                 disabled={isSubmitting}
             >
                 {isSubmitting ? (
@@ -109,7 +109,7 @@ export default function LoginForm() {
                 New employee?{" "}
                 <Link
                     href="/admin/users/signup"
-                    className="text-blue-600 hover:text-blue-700 font-medium"
+                    className="text-emerald-600 hover:text-emerald-700 font-medium"
                 >
                     Request access
                 </Link>

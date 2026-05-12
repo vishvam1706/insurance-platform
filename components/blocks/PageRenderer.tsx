@@ -26,9 +26,18 @@ import FaqBlock from "./FaqBlock"
 import StatBar from "./StatBar"
 import HomeHeroBlock from "./HomeHeroBlock"
 import ProductCardsBlock from "./ProductCardsBlock"
+import DittoExperienceBlock from "../home/DittoExperience"
+import ComparisonSectionBlock from "../home/ComparisonSection"
+import InsuranceChecklistBlock from "../home/InsuranceChecklist"
+import HomeFaqBlock from "../home/HomeFaq"
+import ChooseDittoCtaBlock from "../home/ChooseDittoCta"
 
 export default function PageRenderer({ blocks }: { blocks: Block[] }) {
     if (!blocks || blocks.length === 0) return null
+
+    const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210"
+    const waMsg = encodeURIComponent("Hi! I'd like to learn more about insurance options.")
+    const waUrl = `https://wa.me/${waNumber}?text=${waMsg}`
 
     return (
         <>
@@ -62,9 +71,14 @@ export default function PageRenderer({ blocks }: { blocks: Block[] }) {
                     case "stat_bar": return <StatBar key={block.id} data={d} />
                     case "home_hero": return <HomeHeroBlock key={block.id} data={d} />
                     case "product_cards": return <ProductCardsBlock key={block.id} data={d} />
+                    case "ditto_experience": return <DittoExperienceBlock key={block.id} waUrl={waUrl} />
+                    case "comparison_section": return <ComparisonSectionBlock key={block.id} />
+                    case "insurance_checklist": return <InsuranceChecklistBlock key={block.id} waUrl={waUrl} />
+                    case "home_faq": return <HomeFaqBlock key={block.id} items={d?.items} />
+                    case "choose_ditto_cta": return <ChooseDittoCtaBlock key={block.id} waUrl={waUrl} />
                     default: return null
                 }
             })}
         </>
     )
-}
+}

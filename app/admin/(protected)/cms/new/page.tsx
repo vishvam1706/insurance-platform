@@ -135,7 +135,7 @@ export default function NewPagePage() {
                         Cancel
                     </Button>
                     <Button
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 gap-2"
+                        className="flex-1 bg-emerald-600 hover:bg-emerald-700 gap-2"
                         onClick={handleCreate}
                         disabled={saving}
                     >

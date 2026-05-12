@@ -21,39 +21,48 @@ export default function TableOfContents({ items }: { items: TocItem[] }) {
             },
             { rootMargin: "-100px 0px -60% 0px" }
         )
-
         items.forEach(({ id }) => {
             const el = document.getElementById(id)
             if (el) observer.observe(el)
         })
-
         return () => observer.disconnect()
     }, [items])
 
     if (items.length === 0) return null
 
     return (
-        <nav className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+        <nav
+            className="rounded-2xl p-5"
+            style={{ background: "#FFFFFF", border: "1px solid var(--border)" }}
+        >
+            <p
+                className="text-xs font-bold uppercase tracking-widest mb-4"
+                style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}
+            >
                 Table of Contents
             </p>
-            <ul className="space-y-2">
+            <ul className="space-y-1">
                 {items.map((item) => (
                     <li key={item.id}>
                         <Link
                             href={`#${item.id}`}
                             className={cn(
-                                "text-sm transition-colors block py-0.5",
+                                "text-sm transition-colors block py-1.5 px-2 rounded-lg",
                                 active === item.id
-                                    ? "text-blue-600 font-medium"
-                                    : "text-slate-600 hover:text-blue-600"
+                                    ? "font-semibold"
+                                    : "hover:bg-[var(--surface-muted)]"
                             )}
+                            style={{
+                                color: active === item.id ? "var(--brand)" : "var(--text-secondary)",
+                                background: active === item.id ? "var(--brand-light)" : "transparent",
+                                fontFamily: "var(--font-body)",
+                            }}
                         >
                             {item.label}
                         </Link>
                     </li>
                 ))}
             </ul>
-        </nav >
+        </nav>
     )
 }

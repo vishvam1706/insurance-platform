@@ -8,10 +8,7 @@ export default function FrequentlyCompared({ data }: { data: FrequentlyComparedD
     return (
         <div className="my-10">
             {data.title && (
-                <h2
-                    className="text-2xl font-bold mb-5"
-                    style={{ fontFamily: "var(--font-heading)", color: "#111827" }}
-                >
+                <h2 className="text-2xl font-bold mb-5" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                     {data.title}
                 </h2>
             )}
@@ -21,29 +18,20 @@ export default function FrequentlyCompared({ data }: { data: FrequentlyComparedD
                         key={i}
                         href={link.url}
                         className="group flex items-center justify-between p-4 rounded-xl transition-all duration-200"
-                        style={{
-                            background: "#FFFFFF",
-                            border: "1px solid #E5E7EB",
-                        }}
+                        style={{ background: "#FFFFFF", border: "1px solid var(--border)" }}
                         onMouseEnter={(e) => {
-                            e.currentTarget.style.borderColor = "#BFDBFE"
-                            e.currentTarget.style.background = "#EFF6FF"
+                            e.currentTarget.style.borderColor = "var(--brand-100)"
+                            e.currentTarget.style.background = "var(--brand-light)"
                         }}
                         onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = "#E5E7EB"
+                            e.currentTarget.style.borderColor = "var(--border)"
                             e.currentTarget.style.background = "#FFFFFF"
                         }}
                     >
-                        <span
-                            className="text-sm font-semibold transition-colors duration-200"
-                            style={{ fontFamily: "var(--font-body)", color: "#374151" }}
-                        >
+                        <span className="text-sm font-semibold transition-colors duration-200" style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)" }}>
                             {link.label}
                         </span>
-                        <ArrowRight
-                            className="w-4 h-4 shrink-0 transition-colors duration-200"
-                            style={{ color: "#9CA3AF" }}
-                        />
+                        <ArrowRight className="w-4 h-4 shrink-0" style={{ color: "var(--text-muted)" }} />
                     </Link>
                 ))}
             </div>

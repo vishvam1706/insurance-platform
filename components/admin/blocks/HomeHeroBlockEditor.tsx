@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Plus, Trash2 } from "lucide-react"
+import ImageUploader from "../ImageUploader"
 
 interface Props { data: HomeHeroBlockData; onChange: (d: HomeHeroBlockData) => void }
 
@@ -133,6 +134,13 @@ export default function HomeHeroBlockEditor({ data, onChange }: Props) {
                     <Plus className="w-3 h-3" /> Add Stat
                 </Button>
             </div>
+
+            {/* Hero Image — upload or paste URL */}
+            <ImageUploader
+                label="Hero Image (optional — shown on right side)"
+                value={(data as any).imageUrl || ""}
+                onChange={(url) => set("imageUrl" as any, url as any)}
+            />
 
             {/* Show Inquiry Form */}
             <div className="flex items-center justify-between py-2 border-t border-slate-100 pt-3">

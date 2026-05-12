@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import Link from "next/link"
+import { connection } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import { ArrowRight, BookOpen } from "lucide-react"
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 }
 
 async function getArticles() {
-    "use cache"
+    await connection()
     await connectDB()
     const docs = await PageContent.find({ section: "articles", published: true })
         .select("pageKey title seo updatedAt")
@@ -30,11 +31,11 @@ export default async function ArticlesPage() {
                 <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
                 <div
                     className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none"
-                    style={{ background: "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)" }}
+                    style={{ background: "radial-gradient(circle, rgba(0,179,134,0.06) 0%, transparent 70%)" }}
                 />
                 <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-20">
                     <div className="max-w-2xl">
-                        <span className="badge-blue mb-6 inline-flex">
+                        <span className="badge-green mb-6 inline-flex">
                             <BookOpen className="w-3 h-3" />
                             Articles & Guides
                         </span>
@@ -78,7 +79,7 @@ export default async function ArticlesPage() {
                                         {formatDate(article.updatedAt)}
                                     </p>
                                     <h2
-                                        className="font-bold text-lg mb-3 leading-snug group-hover:text-blue-600 transition-colors flex-grow"
+                                        className="font-bold text-lg mb-3 leading-snug group-hover:text-emerald-600 transition-colors flex-grow"
                                         style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}
                                     >
                                         {article.title}
@@ -93,7 +94,7 @@ export default async function ArticlesPage() {
                                     )}
                                     <span
                                         className="inline-flex items-center gap-1.5 text-sm font-bold mt-auto group-hover:gap-3 transition-all"
-                                        style={{ color: "var(--blue-600)" }}
+                                        style={{ color: "var(--brand)" }}
                                     >
                                         Read article <ArrowRight className="w-4 h-4" />
                                     </span>

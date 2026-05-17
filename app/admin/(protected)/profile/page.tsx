@@ -59,92 +59,84 @@ export default function ProfilePage() {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-48" >
+            <div className="flex items-center justify-center h-48">
                 <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
             </div>
         )
     }
 
     return (
-        <div className="space-y-6 max-w-2xl" >
+        <div className="space-y-6 pt-3 sm:pt-5 lg:pt-6 max-w-2xl">
             <div>
-                <h1 className="text-2xl font-semibold text-slate-900" > Profile & Settings </h1>
-                < p className="text-slate-500 text-sm mt-1" > Manage your account details </p>
+                <h1 className="text-2xl font-semibold text-slate-900">Profile & Settings</h1>
+                <p className="text-slate-500 text-sm mt-1">Manage your account details</p>
             </div>
 
             {/* Account info */}
-            <Card className="border border-slate-200" >
+            <Card className="border border-slate-200">
                 <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2" >
+                    <CardTitle className="text-base flex items-center gap-2">
                         <User className="w-4 h-4" />
                         Account Information
                     </CardTitle>
                 </CardHeader>
-                < CardContent className="space-y-4" >
-                    <div className="grid grid-cols-2 gap-4" >
+                <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <Label className="text-xs text-slate-500 uppercase tracking-wide" > Name </Label>
-                            < p className="text-sm font-medium text-slate-900 mt-1" > {user?.name} </p>
+                            <Label className="text-xs text-slate-500 uppercase tracking-wide">Name</Label>
+                            <p className="text-sm font-medium text-slate-900 mt-1">{user?.name}</p>
                         </div>
-                        < div >
-                            <Label className="text-xs text-slate-500 uppercase tracking-wide" > Email </Label>
-                            < p className="text-sm font-medium text-slate-900 mt-1" > {user?.email} </p>
+                        <div>
+                            <Label className="text-xs text-slate-500 uppercase tracking-wide">Email</Label>
+                            <p className="text-sm font-medium text-slate-900 mt-1">{user?.email}</p>
                         </div>
-                        < div >
-                            <Label className="text-xs text-slate-500 uppercase tracking-wide" > Role </Label>
-                            < div className="mt-1" >
-                                <Badge variant="outline" className="capitalize text-xs" >
+                        <div>
+                            <Label className="text-xs text-slate-500 uppercase tracking-wide">Role</Label>
+                            <div className="mt-1">
+                                <Badge variant="outline" className="capitalize text-xs">
                                     {user?.role?.replace("_", " ")}
                                 </Badge>
                             </div>
                         </div>
-                        {
-                            user?.state && (
-                                <div>
-                                    <Label className="text-xs text-slate-500 uppercase tracking-wide" > State </Label>
-                                    < p className="text-sm font-medium text-slate-900 mt-1" > {user.state} </p>
-                                </div>
-                            )
-                        }
+                        {user?.state && (
+                            <div>
+                                <Label className="text-xs text-slate-500 uppercase tracking-wide">State</Label>
+                                <p className="text-sm font-medium text-slate-900 mt-1">{user.state}</p>
+                            </div>
+                        )}
                     </div>
                 </CardContent>
             </Card>
 
             {/* Change password */}
-            <Card className="border border-slate-200" >
+            <Card className="border border-slate-200">
                 <CardHeader>
-                    <CardTitle className="text-base" > Change Password </CardTitle>
+                    <CardTitle className="text-base">Change Password</CardTitle>
                 </CardHeader>
-                < CardContent >
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" >
-                        <div className="space-y-1.5" >
-                            <Label>Current Password </Label>
-                            < Input type="password" {...register("currentPassword")} />
-                            {
-                                errors.currentPassword && (
-                                    <p className="text-red-500 text-xs" > {errors.currentPassword.message} </p>
-                                )
-                            }
+                <CardContent>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                        <div className="space-y-1.5">
+                            <Label>Current Password</Label>
+                            <Input type="password" {...register("currentPassword")} />
+                            {errors.currentPassword && (
+                                <p className="text-red-500 text-xs">{errors.currentPassword.message}</p>
+                            )}
                         </div>
-                        < div className="space-y-1.5" >
-                            <Label>New Password </Label>
-                            < Input type="password" {...register("newPassword")} />
-                            {
-                                errors.newPassword && (
-                                    <p className="text-red-500 text-xs" > {errors.newPassword.message} </p>
-                                )
-                            }
+                        <div className="space-y-1.5">
+                            <Label>New Password</Label>
+                            <Input type="password" {...register("newPassword")} />
+                            {errors.newPassword && (
+                                <p className="text-red-500 text-xs">{errors.newPassword.message}</p>
+                            )}
                         </div>
-                        < div className="space-y-1.5" >
-                            <Label>Confirm New Password </Label>
-                            < Input type="password" {...register("confirmPassword")} />
-                            {
-                                errors.confirmPassword && (
-                                    <p className="text-red-500 text-xs" > {errors.confirmPassword.message} </p>
-                                )
-                            }
+                        <div className="space-y-1.5">
+                            <Label>Confirm New Password</Label>
+                            <Input type="password" {...register("confirmPassword")} />
+                            {errors.confirmPassword && (
+                                <p className="text-red-500 text-xs">{errors.confirmPassword.message}</p>
+                            )}
                         </div>
-                        < Button type="submit" disabled={saving} >
+                        <Button type="submit" disabled={saving}>
                             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Update Password
                         </Button>

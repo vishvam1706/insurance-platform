@@ -17,7 +17,7 @@ import {
 import ConfirmDialog from "./ConfirmDialog"
 import {
     FileEdit, Search, Trash2,
-    ExternalLink, Clock, Eye, EyeOff,
+    ExternalLink, Clock, Eye, EyeOff, Copy,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -114,12 +114,12 @@ export default function PagesList() {
                             placeholder="Search pages..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="pl-9 h-9 text-sm"
+                            className="pl-9 text-sm"
                         />
                     </div>
                     <div className="flex gap-2">
                         <Select value={section} onValueChange={(v) => setSection(v === "all" ? "" : v)}>
-                            <SelectTrigger className="h-9 flex-1 sm:w-36 sm:flex-none text-sm">
+                            <SelectTrigger className="flex-1 sm:w-36 sm:flex-none text-sm">
                                 <SelectValue placeholder="All sections" />
                             </SelectTrigger>
                             <SelectContent>
@@ -133,7 +133,7 @@ export default function PagesList() {
                             </SelectContent>
                         </Select>
                         <Select value={published} onValueChange={(v) => setPublished(v === "all" ? "" : v)}>
-                            <SelectTrigger className="h-9 flex-1 sm:w-32 sm:flex-none text-sm">
+                            <SelectTrigger className="flex-1 sm:w-32 sm:flex-none text-sm">
                                 <SelectValue placeholder="All status" />
                             </SelectTrigger>
                             <SelectContent>
@@ -155,7 +155,12 @@ export default function PagesList() {
                 ) : pages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-48 text-slate-400">
                         <FileEdit className="w-8 h-8 mb-2 opacity-40" />
-                        <p className="text-sm">No pages found</p>
+                        <p className="text-sm mb-3">No pages found</p>
+                        <Link href="/admin/cms/new">
+                            <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-xs gap-1.5">
+                                Create your first page
+                            </Button>
+                        </Link>
                     </div>
                 ) : (
                     <div className="divide-y divide-slate-100">
@@ -194,13 +199,26 @@ export default function PagesList() {
                                     </div>
                                 </div>
 
-                                {/* Actions — always visible on mobile (no hover) */}
-                                <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0 ml-4 sm:ml-0">
+                                {/* Actions */}
+                                <div className="flex items-center gap-0.5 shrink-0 ml-3">
+                                    {/* Copy URL */}
+                                    <Button
+                                        variant="ghost" size="sm"
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(window.location.origin + getPublicUrl(page.pageKey))
+                                            toast.success("URL copied")
+                                        }}
+                                        className="h-8 w-8 p-0 text-slate-300 hover:text-slate-600"
+                                        title="Copy public URL"
+                                    >
+                                        <Copy className="w-3.5 h-3.5" />
+                                    </Button>
+
                                     {/* View public */}
                                     {page.published && (
                                         <Link href={getPublicUrl(page.pageKey)} target="_blank">
-                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-emerald-600">
-                                                <ExternalLink className="w-4 h-4" />
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-300 hover:text-emerald-600" title="View live page">
+                                                <ExternalLink className="w-3.5 h-3.5" />
                                             </Button>
                                         </Link>
                                     )}
@@ -209,19 +227,16 @@ export default function PagesList() {
                                     <Button
                                         variant="ghost" size="sm"
                                         onClick={() => togglePublish(page)}
-                                        className="h-8 w-8 p-0 text-slate-400 hover:text-green-600"
+                                        className={cn("h-8 w-8 p-0", page.published ? "text-emerald-500 hover:text-slate-400" : "text-slate-300 hover:text-emerald-600")}
                                         title={page.published ? "Unpublish" : "Publish"}
                                     >
-                                        {page.published
-                                            ? <EyeOff className="w-4 h-4" />
-                                            : <Eye className="w-4 h-4" />
-                                        }
+                                        {page.published ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                                     </Button>
 
                                     {/* Edit */}
                                     <Link href={`/admin/cms/${page.pageKey.replace(/\//g, "__")}`}>
-                                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-emerald-600">
-                                            <FileEdit className="w-4 h-4" />
+                                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-300 hover:text-emerald-600" title="Edit page">
+                                            <FileEdit className="w-3.5 h-3.5" />
                                         </Button>
                                     </Link>
 
@@ -230,9 +245,10 @@ export default function PagesList() {
                                         <Button
                                             variant="ghost" size="sm"
                                             onClick={() => setDeleteKey(page.pageKey)}
-                                            className="h-8 w-8 p-0 text-slate-400 hover:text-red-500"
+                                            className="h-8 w-8 p-0 text-slate-300 hover:text-red-500"
+                                            title="Delete page"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="w-3.5 h-3.5" />
                                         </Button>
                                     )}
                                 </div>

@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea"
 import {
     ArrowLeft, Save, Loader2, Eye,
     Globe, Settings, ChevronDown, ChevronUp,
-    Circle,
+    Circle, Pencil, Check, X,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -24,7 +24,6 @@ interface Props { slug: string }
 export default function CmsEditorClient({ slug }: Props) {
     const router = useRouter()
     const pageKey = slug.replace(/__/g, "/")
-    const publicUrl = pageKey === "home" ? "/" : `/${pageKey}`
 
     const [page, setPage] = useState<IPageContent | null>(null)
     const [blocks, setBlocks] = useState<Block[]>([])
@@ -38,6 +37,10 @@ export default function CmsEditorClient({ slug }: Props) {
     const [saving, setSaving] = useState(false)
     const [isDirty, setIsDirty] = useState(false)
     const [lastSaved, setLastSaved] = useState<Date | null>(null)
+    // URL slug editing
+    const [editingUrl, setEditingUrl] = useState(false)
+    const [urlDraft, setUrlDraft] = useState("")
+    const [currentPageKey, setCurrentPageKey] = useState(pageKey)
 
     // Track dirty state
     const initialRef = useRef<string>("")
@@ -53,6 +56,8 @@ export default function CmsEditorClient({ slug }: Props) {
                 setMetaTitle(p.seo?.metaTitle || "")
                 setMetaDesc(p.seo?.metaDescription || "")
                 setKeywords((p.seo?.keywords || []).join(", "))
+                setCurrentPageKey(p.pageKey || pageKey)
+                setUrlDraft(p.pageKey || pageKey)
                 // Store initial state snapshot
                 initialRef.current = JSON.stringify({
                     title: p.title,
@@ -65,7 +70,7 @@ export default function CmsEditorClient({ slug }: Props) {
             })
             .catch(() => toast.error("Failed to load page"))
             .finally(() => setLoading(false))
-    }, [slug])
+    }, [slug, pageKey])
 
     // Mark dirty when content changes
     useEffect(() => {
@@ -110,6 +115,28 @@ export default function CmsEditorClient({ slug }: Props) {
         }
     }, [slug, title, blocks, published, metaTitle, metaDesc, keywords])
 
+    const handleUrlSave = useCallback(async () => {
+        const newKey = urlDraft.trim().replace(/^\/+|\/+$/g, "")
+        if (!newKey || newKey === currentPageKey) { setEditingUrl(false); return }
+        if (!/^[a-z0-9-/]+$/.test(newKey)) {
+            toast.error("URL can only contain lowercase letters, numbers, hyphens and slashes")
+            return
+        }
+        try {
+            await axios.put(`/api/cms/pages/${slug}`, { pageKey: newKey })
+            setCurrentPageKey(newKey)
+            setUrlDraft(newKey)
+            setEditingUrl(false)
+            toast.success("URL updated — redirect your old URL manually if needed")
+        } catch (err) {
+            toast.error(
+                axios.isAxiosError(err)
+                    ? err.response?.data?.error ?? "Failed to update URL"
+                    : "Failed to update URL"
+            )
+        }
+    }, [slug, urlDraft, currentPageKey])
+
     // Ctrl+S / Cmd+S shortcut
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
@@ -145,11 +172,12 @@ export default function CmsEditorClient({ slug }: Props) {
     const formatSaved = (d: Date) => d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })
 
     return (
-        <div className="flex flex-col gap-0 min-h-[calc(100vh-3.5rem)] sm:min-h-[calc(100vh-4rem)]">
-            {/* ── Top toolbar ── */}
-            <div className="sticky top-0 z-40 bg-white border-b border-slate-200 px-3 sm:px-6 py-2.5 sm:py-3">
-                {/* Row 1: back + title + save */}
-                <div className="flex items-center gap-2 sm:gap-3">
+        <div className="-mx-3 sm:-mx-5 lg:-mx-6 bg-slate-100">
+            {/* ── Top toolbar (negative margins cancel main's padding so sticky top-0 is flush) ── */}
+            <div className="sticky top-0 z-40 bg-white border-b border-slate-200 px-3 sm:px-6">
+                {/* Single toolbar row: back | title+url | [publish | preview | shortcut] | save */}
+                <div className="flex items-center gap-2 sm:gap-3 h-14 sm:h-16">
+
                     {/* Back */}
                     <button
                         onClick={() => {
@@ -161,7 +189,7 @@ export default function CmsEditorClient({ slug }: Props) {
                         <ArrowLeft className="w-5 h-5" />
                     </button>
 
-                    {/* Title inline edit */}
+                    {/* Title + URL — takes all remaining space */}
                     <div className="flex-1 min-w-0">
                         <input
                             value={title}
@@ -169,12 +197,34 @@ export default function CmsEditorClient({ slug }: Props) {
                             className="text-sm sm:text-base font-semibold text-slate-900 bg-transparent border-0 outline-none w-full focus:ring-0 p-0 placeholder:text-slate-300"
                             placeholder="Page title..."
                         />
-                        <div className="flex items-center gap-1.5 sm:gap-2 mt-0.5 overflow-hidden">
-                            <span className="text-[11px] sm:text-xs text-slate-400 font-mono truncate">{publicUrl}</span>
-                            {lastSaved && !isDirty && (
+                        <div className="flex items-center gap-1.5 mt-0.5 overflow-hidden">
+                            {editingUrl ? (
+                                <div className="flex items-center gap-1 flex-1 min-w-0">
+                                    <span className="text-[11px] text-slate-400 font-mono shrink-0">/</span>
+                                    <input
+                                        autoFocus
+                                        value={urlDraft}
+                                        onChange={(e) => setUrlDraft(e.target.value)}
+                                        onKeyDown={(e) => { if (e.key === "Enter") handleUrlSave(); if (e.key === "Escape") { setUrlDraft(currentPageKey); setEditingUrl(false) } }}
+                                        className="text-[11px] sm:text-xs text-slate-700 font-mono bg-slate-100 border border-slate-300 rounded px-1.5 py-0.5 outline-none focus:border-emerald-400 min-w-0 flex-1"
+                                    />
+                                    <button onClick={handleUrlSave} className="text-emerald-600 hover:text-emerald-700 p-0.5"><Check className="w-3 h-3" /></button>
+                                    <button onClick={() => { setUrlDraft(currentPageKey); setEditingUrl(false) }} className="text-slate-400 hover:text-slate-600 p-0.5"><X className="w-3 h-3" /></button>
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => { setUrlDraft(currentPageKey); setEditingUrl(true) }}
+                                    className="flex items-center gap-1 group/url min-w-0"
+                                    title="Edit URL"
+                                >
+                                    <span className="text-[11px] sm:text-xs text-slate-400 font-mono truncate">/{currentPageKey}/</span>
+                                    <Pencil className="w-2.5 h-2.5 text-slate-300 group-hover/url:text-slate-500 transition-colors shrink-0" />
+                                </button>
+                            )}
+                            {lastSaved && !isDirty && !editingUrl && (
                                 <span className="text-[11px] sm:text-xs text-slate-400 whitespace-nowrap hidden sm:inline">· Saved {formatSaved(lastSaved)}</span>
                             )}
-                            {isDirty && (
+                            {isDirty && !editingUrl && (
                                 <span className="flex items-center gap-1 text-[11px] sm:text-xs text-amber-500 whitespace-nowrap">
                                     <Circle className="w-1.5 h-1.5 fill-current" />
                                     Unsaved
@@ -183,56 +233,60 @@ export default function CmsEditorClient({ slug }: Props) {
                         </div>
                     </div>
 
-                    {/* Save */}
+                    {/* ── Right-side controls (always visible, no absolute) ── */}
+
+                    {/* Published toggle */}
+                    <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                        <Globe className={cn("w-3.5 h-3.5 hidden sm:block", published ? "text-emerald-500" : "text-slate-400")} />
+                        <Switch
+                            checked={published}
+                            onCheckedChange={(v) => handleSave(v)}
+                        />
+                        <span className={cn("text-xs sm:text-sm font-medium whitespace-nowrap", published ? "text-emerald-600" : "text-slate-400")}>
+                            {published ? "Published" : "Draft"}
+                        </span>
+                    </div>
+
+                    {/* Preview link */}
+                    {published && (
+                        <a
+                            href={currentPageKey === "home" ? "/" : `/${currentPageKey}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="shrink-0"
+                        >
+                            <Button variant="outline" size="sm" className="gap-1.5 h-8 text-xs">
+                                <Eye className="w-3.5 h-3.5" />
+                                <span className="hidden sm:inline">Preview</span>
+                            </Button>
+                        </a>
+                    )}
+
+                    {/* ⌘S hint — large screens only */}
+                    <p className="text-xs text-slate-400 whitespace-nowrap hidden lg:flex items-center gap-1 shrink-0">
+                        <kbd className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-mono">⌘S</kbd>
+                        to save
+                    </p>
+
+                    {/* Save button */}
                     <Button
                         onClick={() => handleSave()}
                         disabled={saving || !isDirty}
                         size="sm"
                         className={cn(
                             "gap-1.5 h-8 sm:h-9 font-semibold text-xs sm:text-sm shrink-0",
-                            isDirty ? "bg-emerald-600 hover:bg-emerald-700" : "bg-slate-300 cursor-default"
+                            isDirty ? "bg-emerald-600 hover:bg-emerald-700 text-white" : "bg-slate-200 text-slate-400 cursor-default"
                         )}
                     >
                         {saving
-                            ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> <span className="hidden sm:inline">Saving...</span></>
-                            : <><Save className="w-3.5 h-3.5" /> <span className="hidden sm:inline">{isDirty ? "Save" : "Saved"}</span></>
+                            ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /><span className="hidden sm:inline">Saving…</span></>
+                            : <><Save className="w-3.5 h-3.5" /><span className="hidden sm:inline">{isDirty ? "Save" : "Saved"}</span></>
                         }
                     </Button>
                 </div>
-
-                {/* Row 2: publish toggle + preview (shown below on mobile) */}
-                <div className="flex items-center gap-3 mt-2 pt-2 border-t border-slate-100 sm:mt-0 sm:pt-0 sm:border-0 sm:absolute sm:right-6 sm:top-3">
-                    {/* Published toggle */}
-                    <div className="flex items-center gap-2 shrink-0">
-                        <Globe className={cn("w-3.5 h-3.5", published ? "text-emerald-500" : "text-slate-400")} />
-                        <Switch
-                            checked={published}
-                            onCheckedChange={(v) => handleSave(v)}
-                        />
-                        <span className={cn("text-xs sm:text-sm font-medium", published ? "text-emerald-600" : "text-slate-400")}>
-                            {published ? "Published" : "Draft"}
-                        </span>
-                    </div>
-
-                    {/* Preview */}
-                    {published && (
-                        <a href={publicUrl} target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" size="sm" className="gap-1.5 h-8 text-xs">
-                                <Eye className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Preview</span>
-                            </Button>
-                        </a>
-                    )}
-
-                    {/* Keyboard shortcut hint — desktop only */}
-                    <p className="text-xs text-slate-400 hidden lg:block">
-                        <kbd className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-mono">⌘S</kbd>
-                        {" "}to save
-                    </p>
-                </div>
             </div>
-
             {/* ── Main content ── */}
-            <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6 max-w-5xl w-full mx-auto">
+            <div className="px-3 sm:px-5 lg:px-6 py-4 sm:py-6 max-w-5xl w-full mx-auto">
 
                 {/* SEO accordion */}
                 <div className="bg-white rounded-xl border border-slate-200 mb-4 sm:mb-5">
@@ -302,7 +356,7 @@ export default function CmsEditorClient({ slug }: Props) {
                 </div>
 
                 {/* Bottom spacer so sticky toolbar doesn't cover last block */}
-                <div className="h-24" />
+                <div className="h-12" />
             </div>
         </div>
     )

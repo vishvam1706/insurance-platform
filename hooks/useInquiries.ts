@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import axios from "axios"
 import { IInquiry } from "@/types/inquiry"
 import { useDebounce } from "./useDebounce"
@@ -28,6 +28,8 @@ export function useInquiries() {
     const [filters, setFilters] = useState<Filters>({
         status: "", type: "", state: "", search: "", dateFrom: "", dateTo: "",
     })
+    const [liveCount, setLiveCount] = useState(0) // count of new live arrivals not yet seen
+    const esRef = useRef<EventSource | null>(null)
 
     const debouncedSearch = useDebounce(filters.search, 400)
 
@@ -58,6 +60,39 @@ export function useInquiries() {
 
     useEffect(() => { fetch(1) }, [fetch])
 
+    // ── SSE live subscription ──────────────────────────────────────────────────
+    useEffect(() => {
+        // Only connect when we're on page 1 and no filters active (full live view)
+        const es = new EventSource("/api/inquiries/stream")
+        esRef.current = es
+
+        es.onmessage = (e) => {
+            try {
+                const data = JSON.parse(e.data)
+                if (data.type === "new_inquiry") {
+                    // Prepend new inquiry at top (page 1 view)
+                    setInquiries((prev) => {
+                        const exists = prev.some((i) => i._id === data.inquiry._id)
+                        if (exists) return prev
+                        return [data.inquiry, ...prev.slice(0, 19)]
+                    })
+                    setPagination((prev) => ({ ...prev, total: prev.total + 1 }))
+                    setLiveCount((c) => c + 1)
+                }
+            } catch { /* ignore parse errors */ }
+        }
+
+        es.onerror = () => {
+            es.close()
+            esRef.current = null
+        }
+
+        return () => {
+            es.close()
+            esRef.current = null
+        }
+    }, []) // connect once on mount
+
     function updateFilter(key: keyof Filters, value: string) {
         setFilters((prev) => ({ ...prev, [key]: value }))
     }
@@ -66,5 +101,7 @@ export function useInquiries() {
         setFilters({ status: "", type: "", state: "", search: "", dateFrom: "", dateTo: "" })
     }
 
-    return { inquiries, pagination, loading, filters, updateFilter, resetFilters, refetch: fetch }
+    function clearLiveCount() { setLiveCount(0) }
+
+    return { inquiries, pagination, loading, filters, updateFilter, resetFilters, refetch: fetch, liveCount, clearLiveCount }
 }

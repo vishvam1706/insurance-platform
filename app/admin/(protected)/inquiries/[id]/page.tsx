@@ -35,7 +35,7 @@ export default async function InquiryDetailPage({
     if (user.role === "employee" && inq.state !== user.state) notFound()
 
     return (
-        <div className="space-y-6 max-w-2xl">
+        <div className="space-y-6 max-w-2xl pt-3 sm:pt-5 lg:pt-6">
             <div className="flex items-center gap-3">
                 <Link
                     href="/admin/inquiries"

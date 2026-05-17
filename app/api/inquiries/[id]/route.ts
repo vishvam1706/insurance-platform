@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import Inquiry from "@/lib/models/Inquiry"
@@ -55,21 +57,56 @@ export async function PATCH(
 
         await connectDB()
 
-        const inquiry = await Inquiry.findByIdAndUpdate(
-            id,
-            { $set: parsed.data },
-            { new: true }
-        ).lean()
+        // Use NATIVE MongoDB collection to bypass Mongoose's cached model
+        const { ObjectId } = await import("mongodb")
+        const collection = Inquiry.collection
+        const oid = new ObjectId(id)
 
-        if (!inquiry) {
+        // Fetch current to compare status
+        const current = await collection.findOne({ _id: oid })
+        if (!current) {
             return NextResponse.json({ error: "Inquiry not found" }, { status: 404 })
         }
 
+        const oldStatus = current.status
+        const newStatus = parsed.data.status
+        const statusChanged = newStatus && newStatus !== oldStatus
+
+        console.log("🔍 PATCH DEBUG:", { id, oldStatus, newStatus, statusChanged, user: user.name })
+
+        // Build raw MongoDB update
+        const $set: Record<string, any> = { updatedAt: new Date() }
+        if (newStatus) $set.status = newStatus
+        if (parsed.data.notes !== undefined) $set.notes = parsed.data.notes
+        if (parsed.data.assignedTo) $set.assignedTo = parsed.data.assignedTo
+
+        const update: Record<string, any> = { $set }
+
+        if (statusChanged) {
+            update.$push = {
+                statusHistory: {
+                    status: newStatus,
+                    changedBy: user.name || user.email || "Unknown",
+                    changedAt: new Date(),
+                    note: parsed.data.notes || "",
+                }
+            }
+            console.log("✅ Will push history entry")
+        }
+
+        await collection.updateOne({ _id: oid }, update)
+
+        // Fetch updated document directly from MongoDB
+        const inquiry = await collection.findOne({ _id: oid })
+        console.log("📤 RESPONSE statusHistory:", JSON.stringify(inquiry?.statusHistory))
+
         return NextResponse.json({ success: true, inquiry })
-    } catch {
+    } catch (err) {
+        console.error("PATCH /api/inquiries/[id]:", err)
         return NextResponse.json({ error: "Something went wrong" }, { status: 500 })
     }
 }
+
 
 export async function DELETE(
     _req: NextRequest,

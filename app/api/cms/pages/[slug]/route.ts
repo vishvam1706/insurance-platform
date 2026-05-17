@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
@@ -50,6 +52,17 @@ export async function PUT(
         }
 
         await connectDB()
+
+        // If pageKey is being changed, check for conflicts
+        if (parsed.data.pageKey && parsed.data.pageKey !== pageKey) {
+            const conflict = await PageContent.findOne({ pageKey: parsed.data.pageKey })
+            if (conflict) {
+                return NextResponse.json(
+                    { error: "A page with this URL already exists" },
+                    { status: 409 }
+                )
+            }
+        }
 
         const page = await PageContent.findOneAndUpdate(
             { pageKey },

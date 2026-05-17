@@ -56,7 +56,7 @@ export default function UsersPage() {
     const pendingCount = users.filter((u) => u.status === "pending").length
 
     return (
-        <div className="space-y-3 sm:space-y-5">
+        <div className="space-y-3 sm:space-y-5 pt-3 sm:pt-5 lg:pt-6">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
@@ -99,7 +99,7 @@ export default function UsersPage() {
                             placeholder="Search name or email..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="pl-9 h-9"
+                            className="pl-9"
                         />
                     </div>
 
@@ -108,7 +108,7 @@ export default function UsersPage() {
                         value={roleFilter}
                         onValueChange={(v) => setRoleFilter(v === "all" ? "" : v)}
                     >
-                        <SelectTrigger className="h-9 w-full sm:w-44">
+                        <SelectTrigger className="w-full sm:w-44">
                             <SelectValue placeholder="All roles" />
                         </SelectTrigger>
                         <SelectContent>
@@ -124,7 +124,7 @@ export default function UsersPage() {
                         value={statusFilter}
                         onValueChange={(v) => setStatusFilter(v === "all" ? "" : v)}
                     >
-                        <SelectTrigger className="h-9 w-full sm:w-44">
+                        <SelectTrigger className="w-full sm:w-44">
                             <SelectValue placeholder="All statuses" />
                         </SelectTrigger>
                         <SelectContent>

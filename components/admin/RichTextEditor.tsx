@@ -28,7 +28,7 @@ export default function RichTextEditor({
 
     const editor = useEditor({
         extensions: [
-            StarterKit,
+            StarterKit.configure({ link: false }),
             Link.configure({ openOnClick: false, HTMLAttributes: { class: "text-emerald-600 underline cursor-pointer" } }),
             Placeholder.configure({ placeholder }),
         ],

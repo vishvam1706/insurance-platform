@@ -1,9 +1,12 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import Inquiry from "@/lib/models/Inquiry"
 import { getAuthUser } from "@/lib/auth"
 import { InquirySchema } from "@/lib/validations/inquiry.schema"
 import { sendInquiryConfirmation } from "@/lib/email"
+import { inquiryEmitter } from "@/lib/inquiry-events"
 
 export async function GET(req: NextRequest) {
     try {
@@ -89,6 +92,9 @@ export async function POST(req: NextRequest) {
 
         await connectDB()
         const inquiry = await Inquiry.create(parsed.data)
+
+        // Push real-time update to admin panel via SSE
+        inquiryEmitter.emit("new_inquiry", inquiry.toObject())
 
         // Send confirmation email (non-blocking)
         sendInquiryConfirmation({

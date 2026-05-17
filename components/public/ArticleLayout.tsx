@@ -16,11 +16,14 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
         if (!articleRef.current) return
         const headings = Array.from(articleRef.current.querySelectorAll("h2, h3")) as HTMLHeadingElement[]
         const items: TocItem[] = headings
-            .filter((el) => el.textContent?.trim())
+            .filter((el) => el.textContent?.trim() && !el.closest("[data-no-toc]"))
             .map((el, i) => {
                 const id = el.id || `toc-${i}`
                 if (!el.id) el.id = id
-                return { id, text: el.textContent?.trim() || "", level: parseInt(el.tagName.replace("H", "")) }
+                // Check if a parent has a custom ToC label override
+                const labelContainer = el.closest("[data-toc-label]")
+                const customLabel = labelContainer?.getAttribute("data-toc-label")
+                return { id, text: customLabel || el.textContent?.trim() || "", level: parseInt(el.tagName.replace("H", "")) }
             })
         setToc(items)
         if (items.length > 0) setActiveId(items[0].id)

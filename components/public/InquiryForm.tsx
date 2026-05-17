@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { toast } from "sonner"
 import { format, startOfToday, isBefore } from "date-fns"
 import { InquirySchema, InquiryInput } from "@/lib/validations/inquiry.schema"
-import { INDIAN_STATES, LANGUAGES, cn } from "@/lib/utils"
+import { INDIAN_STATES, LANGUAGES, STATE_LANGUAGE_MAP, cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -19,7 +19,7 @@ import {
 import {
     Loader2, CheckCircle2, CalendarDays,
     ChevronLeft, ChevronRight, ChevronDown,
-    Clock, X,
+    Clock, X, ShieldCheck, AlertCircle, Smartphone, Mail,
 } from "lucide-react"
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -252,11 +252,14 @@ function FreeTimePicker({ value, onChange }: {
 }
 
 // ─── Main Form ────────────────────────────────────────────────────────────────
+type OtpPhase = "idle" | "sending" | "sent" | "verifying" | "verified"
+
 export default function InquiryForm({ defaultType, compact = false }: { defaultType?: "term" | "health"; compact?: boolean }) {
     const [done, setDone] = useState(false)
     const [insuranceType, setType] = useState(defaultType || "")
     const [state, setState] = useState("")
     const [language, setLanguage] = useState("")
+    const [langManual, setLangManual] = useState(false)
     const [slotIso, setSlotIso] = useState("")
     const [slotLabel, setSlotLabel] = useState("")
     const [pickerOpen, setPickerOpen] = useState(false)
@@ -264,17 +267,133 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
     const [stateErr, setStateErr] = useState("")
     const [langErr, setLangErr] = useState("")
 
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<InquiryInput>({
+    // ── Phone OTP state
+    const [otpPhase, setOtpPhase] = useState<OtpPhase>("idle")
+    const [otpCode, setOtpCode] = useState("")
+    const [otpError, setOtpError] = useState("")
+    const [verifiedPhone, setVerifiedPhone] = useState("")
+    const [countdown, setCountdown] = useState(0)
+    const otpRef = useRef<HTMLInputElement>(null)
+
+    // ── Email OTP state
+    const [emailOtpPhase, setEmailOtpPhase] = useState<OtpPhase>("idle")
+    const [emailOtpCode, setEmailOtpCode] = useState("")
+    const [emailOtpError, setEmailOtpError] = useState("")
+    const [verifiedEmail, setVerifiedEmail] = useState("")
+    const [emailCountdown, setEmailCountdown] = useState(0)
+    const emailOtpRef = useRef<HTMLInputElement>(null)
+
+    const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<InquiryInput>({
         resolver: zodResolver(InquirySchema),
-        defaultValues: { insuranceType: defaultType },
+        defaultValues: { insuranceType: defaultType, state: "", language: "" },
     })
+    const watchedPhone = watch("phone", "")
+    const watchedEmail = watch("email", "")
+    const phoneValid = /^[6-9]\d{9}$/.test(watchedPhone || "")
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(watchedEmail || "")
+    const phoneChanged = verifiedPhone && verifiedPhone !== watchedPhone
+    const emailChanged = verifiedEmail && verifiedEmail !== watchedEmail
+
+    // Phone countdown
+    useEffect(() => {
+        if (countdown <= 0) return
+        const t = setTimeout(() => setCountdown(c => c - 1), 1000)
+        return () => clearTimeout(t)
+    }, [countdown])
+
+    // Email countdown
+    useEffect(() => {
+        if (emailCountdown <= 0) return
+        const t = setTimeout(() => setEmailCountdown(c => c - 1), 1000)
+        return () => clearTimeout(t)
+    }, [emailCountdown])
+
+    // Auto-preselect language when state changes (unless user manually changed it)
+    useEffect(() => {
+        if (state && !langManual) {
+            const lang = STATE_LANGUAGE_MAP[state]
+            if (lang && LANGUAGES.includes(lang)) {
+                setLanguage(lang)
+                setValue("language", lang)
+                setLangErr("")
+            }
+        }
+    }, [state, langManual, setValue])
+
+    async function sendOtp() {
+        setOtpPhase("sending"); setOtpError("")
+        try {
+            await axios.post("/api/inquiries/verify?type=phone", { phone: watchedPhone })
+            setOtpPhase("sent"); setOtpCode(""); setCountdown(30)
+            setTimeout(() => otpRef.current?.focus(), 100)
+        } catch (err) {
+            setOtpPhase("idle")
+            setOtpError(axios.isAxiosError(err) ? err.response?.data?.error ?? "Failed to send OTP" : "Failed to send OTP")
+        }
+    }
+
+    async function verifyOtp() {
+        if (otpCode.length !== 6) { setOtpError("Enter the 6-digit code"); return }
+        setOtpPhase("verifying"); setOtpError("")
+        try {
+            await axios.put("/api/inquiries/verify?type=phone", { phone: watchedPhone, code: otpCode })
+            setOtpPhase("verified"); setVerifiedPhone(watchedPhone)
+            toast.success("Phone verified!")
+        } catch (err) {
+            setOtpPhase("sent")
+            setOtpError(axios.isAxiosError(err) ? err.response?.data?.error ?? "Invalid OTP" : "Invalid OTP")
+        }
+    }
+
+    async function sendEmailOtp() {
+        setEmailOtpPhase("sending"); setEmailOtpError("")
+        try {
+            await axios.post("/api/inquiries/verify?type=email", { email: watchedEmail })
+            setEmailOtpPhase("sent"); setEmailOtpCode(""); setEmailCountdown(30)
+            setTimeout(() => emailOtpRef.current?.focus(), 100)
+        } catch (err) {
+            setEmailOtpPhase("idle")
+            setEmailOtpError(axios.isAxiosError(err) ? err.response?.data?.error ?? "Failed to send OTP" : "Failed to send OTP")
+        }
+    }
+
+    async function verifyEmailOtp() {
+        if (emailOtpCode.length !== 6) { setEmailOtpError("Enter the 6-digit code"); return }
+        setEmailOtpPhase("verifying"); setEmailOtpError("")
+        try {
+            await axios.put("/api/inquiries/verify?type=email", { email: watchedEmail, code: emailOtpCode })
+            setEmailOtpPhase("verified"); setVerifiedEmail(watchedEmail)
+            toast.success("Email verified!")
+        } catch (err) {
+            setEmailOtpPhase("sent")
+            setEmailOtpError(axios.isAxiosError(err) ? err.response?.data?.error ?? "Invalid OTP" : "Invalid OTP")
+        }
+    }
 
     async function onSubmit(data: InquiryInput) {
+        // Guard: custom state fields not tracked by react-hook-form
         if (!insuranceType) { setTypeErr("Please select insurance type"); return }
         if (!state)         { setStateErr("Please select your state"); return }
         if (!language)      { setLangErr("Please select your language"); return }
+        // Guard: OTP verification
+        if (otpPhase !== "verified" || phoneChanged) {
+            setOtpError("Please verify your mobile number first"); return
+        }
+        if (emailOtpPhase !== "verified" || emailChanged) {
+            setEmailOtpError("Please verify your email address first"); return
+        }
         try {
-            await axios.post("/api/inquiries", { ...data, insuranceType, state, language, preferredSlot: slotIso || undefined })
+            // Merge useState-controlled fields with react-hook-form data
+            await axios.post("/api/inquiries", {
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                message: data.message,
+                insuranceType,
+                state,
+                language,
+                preferredSlot: slotIso || undefined,
+            })
             setDone(true)
         } catch (err) {
             toast.error(axios.isAxiosError(err) ? err.response?.data?.error ?? "Something went wrong" : "Something went wrong")
@@ -315,23 +434,107 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
             </div>
 
             {/* Phone */}
-            <div className="space-y-1">
+            <div className="space-y-1.5">
                 <Label style={labelStyle}>Mobile Number</Label>
-                <Input type="tel" placeholder="9876543210" {...register("phone")} style={fieldStyle} />
+                <div className="flex gap-2">
+                    <div className="relative flex-1">
+                        <Input type="tel" placeholder="9876543210" {...register("phone")} style={fieldStyle}
+                            className={cn(otpPhase === "verified" && !phoneChanged ? "pr-8" : "")} />
+                        {otpPhase === "verified" && !phoneChanged && (
+                            <ShieldCheck className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "var(--brand)" }} />
+                        )}
+                    </div>
+                    {(otpPhase === "idle" || otpPhase === "sending" || phoneChanged) && phoneValid && (
+                        <button type="button" onClick={sendOtp} disabled={otpPhase === "sending"}
+                            className="shrink-0 px-3 h-10 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all"
+                            style={{ background: "var(--brand)", color: "#fff" }}>
+                            {otpPhase === "sending" ? <Loader2 className="w-3 h-3 animate-spin" /> : <Smartphone className="w-3 h-3" />}
+                            {phoneChanged ? "Re-verify" : "Send OTP"}
+                        </button>
+                    )}
+                </div>
                 {errors.phone && <p className="text-xs" style={{ color: "#DC2626" }}>{errors.phone.message}</p>}
+
+                {/* OTP entry */}
+                {(otpPhase === "sent" || otpPhase === "verifying") && (
+                    <div className="rounded-xl p-3 space-y-2" style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)" }}>
+                        <p className="text-xs font-medium" style={{ color: "var(--brand)" }}>Enter the 6-digit OTP sent via SMS to +91 {watchedPhone}</p>
+                        <div className="flex gap-2">
+                            <input ref={otpRef} maxLength={6} value={otpCode} onChange={e => { setOtpCode(e.target.value.replace(/\D/g, "")); setOtpError("") }}
+                                placeholder="123456" className="flex-1 rounded-lg px-3 py-2 text-sm font-mono tracking-widest text-center"
+                                style={{ border: "1px solid var(--border)", outline: "none" }} />
+                            <button type="button" onClick={verifyOtp} disabled={otpPhase === "verifying" || otpCode.length !== 6}
+                                className="px-4 rounded-lg text-xs font-semibold transition-all"
+                                style={{ background: "var(--brand)", color: "#fff", opacity: otpCode.length !== 6 ? 0.5 : 1 }}>
+                                {otpPhase === "verifying" ? <Loader2 className="w-3 h-3 animate-spin" /> : "Verify"}
+                            </button>
+                        </div>
+                        {countdown > 0
+                            ? <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>Resend in {countdown}s</p>
+                            : <button type="button" onClick={sendOtp} className="text-[10px] underline" style={{ color: "var(--brand)" }}>Resend OTP</button>
+                        }
+                    </div>
+                )}
+                {otpError && <p className="text-xs flex items-center gap-1" style={{ color: "#DC2626" }}><AlertCircle className="w-3 h-3" />{otpError}</p>}
+                {otpPhase === "verified" && !phoneChanged && (
+                    <p className="text-xs flex items-center gap-1" style={{ color: "var(--brand)" }}><ShieldCheck className="w-3 h-3" />Mobile number verified</p>
+                )}
             </div>
 
             {/* Email */}
-            <div className="space-y-1">
+            <div className="space-y-1.5">
                 <Label style={labelStyle}>Email</Label>
-                <Input type="email" placeholder="ravi@example.com" {...register("email")} style={fieldStyle} />
+                <div className="flex gap-2">
+                    <div className="relative flex-1">
+                        <Input type="email" placeholder="ravi@example.com" {...register("email")} style={fieldStyle}
+                            className={cn(emailOtpPhase === "verified" && !emailChanged ? "pr-8" : "")} />
+                        {emailOtpPhase === "verified" && !emailChanged && (
+                            <ShieldCheck className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "var(--brand)" }} />
+                        )}
+                    </div>
+                    {(emailOtpPhase === "idle" || emailOtpPhase === "sending" || emailChanged) && emailValid && (
+                        <button type="button" onClick={sendEmailOtp} disabled={emailOtpPhase === "sending"}
+                            className="shrink-0 px-3 h-10 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all"
+                            style={{ background: "var(--brand)", color: "#fff" }}>
+                            {emailOtpPhase === "sending" ? <Loader2 className="w-3 h-3 animate-spin" /> : <Mail className="w-3 h-3" />}
+                            {emailChanged ? "Re-verify" : "Send OTP"}
+                        </button>
+                    )}
+                </div>
                 {errors.email && <p className="text-xs" style={{ color: "#DC2626" }}>{errors.email.message}</p>}
+
+                {/* Email OTP entry */}
+                {(emailOtpPhase === "sent" || emailOtpPhase === "verifying") && (
+                    <div className="rounded-xl p-3 space-y-2" style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)" }}>
+                        <p className="text-xs font-medium" style={{ color: "var(--brand)" }}>OTP sent to {watchedEmail}</p>
+                        <div className="flex gap-2">
+                            <input ref={emailOtpRef} maxLength={6} value={emailOtpCode}
+                                onChange={e => { setEmailOtpCode(e.target.value.replace(/\D/g, "")); setEmailOtpError("") }}
+                                placeholder="123456" className="flex-1 rounded-lg px-3 py-2 text-sm font-mono tracking-widest text-center"
+                                style={{ border: "1px solid var(--border)", outline: "none" }} />
+                            <button type="button" onClick={verifyEmailOtp}
+                                disabled={emailOtpPhase === "verifying" || emailOtpCode.length !== 6}
+                                className="px-4 rounded-lg text-xs font-semibold transition-all"
+                                style={{ background: "var(--brand)", color: "#fff", opacity: emailOtpCode.length !== 6 ? 0.5 : 1 }}>
+                                {emailOtpPhase === "verifying" ? <Loader2 className="w-3 h-3 animate-spin" /> : "Verify"}
+                            </button>
+                        </div>
+                        {emailCountdown > 0
+                            ? <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>Resend in {emailCountdown}s</p>
+                            : <button type="button" onClick={sendEmailOtp} className="text-[10px] underline" style={{ color: "var(--brand)" }}>Resend OTP</button>
+                        }
+                    </div>
+                )}
+                {emailOtpError && <p className="text-xs flex items-center gap-1" style={{ color: "#DC2626" }}><AlertCircle className="w-3 h-3" />{emailOtpError}</p>}
+                {emailOtpPhase === "verified" && !emailChanged && (
+                    <p className="text-xs flex items-center gap-1" style={{ color: "var(--brand)" }}><ShieldCheck className="w-3 h-3" />Email verified</p>
+                )}
             </div>
 
             {/* Insurance type */}
             <div className="space-y-1">
                 <Label style={labelStyle}>Insurance Type</Label>
-                <Select value={insuranceType} onValueChange={(v) => { setType(v); setTypeErr("") }}>
+                <Select value={insuranceType} onValueChange={(v) => { setType(v); setValue("insuranceType", v as "term" | "health"); setTypeErr("") }}>
                     <SelectTrigger style={{ ...fieldStyle, borderColor: typeErr ? "#DC2626" : "var(--border)" }}>
                         <SelectValue placeholder="Select type" />
                     </SelectTrigger>
@@ -347,7 +550,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
             <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                     <Label style={labelStyle}>State</Label>
-                    <Select value={state} onValueChange={(v) => { setState(v); setStateErr("") }}>
+                    <Select value={state} onValueChange={(v) => { setState(v); setValue("state", v); setStateErr(""); setLangManual(false) }}>
                         <SelectTrigger style={{ ...fieldStyle, borderColor: stateErr ? "#DC2626" : "var(--border)" }}>
                             <SelectValue placeholder="State" />
                         </SelectTrigger>
@@ -358,8 +561,13 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                     {stateErr && <p className="text-xs" style={{ color: "#DC2626" }}>{stateErr}</p>}
                 </div>
                 <div className="space-y-1">
-                    <Label style={labelStyle}>Language</Label>
-                    <Select value={language} onValueChange={(v) => { setLanguage(v); setLangErr("") }}>
+                    <Label style={labelStyle} className="flex items-center gap-1">
+                        Language
+                        {language && state && STATE_LANGUAGE_MAP[state] === language && !langManual && (
+                            <span className="font-normal text-[10px] px-1.5 py-0.5 rounded" style={{ background: "var(--brand-light)", color: "var(--brand)" }}>auto</span>
+                        )}
+                    </Label>
+                    <Select value={language} onValueChange={(v) => { setLanguage(v); setValue("language", v); setLangErr(""); setLangManual(true) }}>
                         <SelectTrigger style={{ ...fieldStyle, borderColor: langErr ? "#DC2626" : "var(--border)" }}>
                             <SelectValue placeholder="Language" />
                         </SelectTrigger>
@@ -368,6 +576,9 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                         </SelectContent>
                     </Select>
                     {langErr && <p className="text-xs" style={{ color: "#DC2626" }}>{langErr}</p>}
+                    {language && state && !langManual && (
+                        <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>Pre-selected for {state}. You can change it.</p>
+                    )}
                 </div>
             </div>
 
@@ -434,12 +645,19 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                 type="submit"
                 className="w-full h-11 font-semibold rounded-full transition-all active:scale-95"
                 disabled={isSubmitting}
-                style={{ background: "var(--brand)", color: "#FFFFFF", fontFamily: "var(--font-body)", boxShadow: "0 2px 8px rgba(0,179,134,0.3)" }}
+                style={{ background: "var(--brand)", color: "#FFFFFF", fontFamily: "var(--font-body)", boxShadow: "0 2px 8px rgba(0,179,134,0.3)",
+                    opacity: (otpPhase !== "verified" || !!phoneChanged || emailOtpPhase !== "verified" || !!emailChanged) ? 0.6 : 1,
+                    cursor: (otpPhase !== "verified" || !!phoneChanged || emailOtpPhase !== "verified" || !!emailChanged) ? "not-allowed" : "pointer" }}
             >
                 {isSubmitting ? (
                     <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</>
-                ) : "Book Free Consultation"}
+                ) : (otpPhase !== "verified" || emailOtpPhase !== "verified") ? "Verify to Continue" : "Book Free Consultation"}
             </Button>
+            {(otpPhase !== "verified" || emailOtpPhase !== "verified") && (
+                <p className="text-center text-xs" style={{ color: "var(--text-muted)" }}>
+                    Verify your {otpPhase !== "verified" ? "mobile number" : ""}{otpPhase !== "verified" && emailOtpPhase !== "verified" ? " & " : ""}{emailOtpPhase !== "verified" ? "email" : ""} to continue
+                </p>
+            )}
 
             <p className="text-center text-xs" style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>
                 No spam · No salespeople · 100% free

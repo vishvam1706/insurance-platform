@@ -11,8 +11,8 @@ interface AdminShellContextType {
 
 const AdminShellContext = createContext<AdminShellContextType>({
     sidebarOpen: false,
-    setSidebarOpen: () => {},
-    toggleSidebar: () => {},
+    setSidebarOpen: () => { },
+    toggleSidebar: () => { },
 })
 
 export function useAdminShell() {
@@ -22,29 +22,21 @@ export function useAdminShell() {
 export default function AdminShell({ children }: { children: React.ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const pathname = usePathname()
-
     const toggleSidebar = useCallback(() => setSidebarOpen((o) => !o), [])
 
-    // Auto-close sidebar on route change (mobile)
+    useEffect(() => {
+        // Add Tailwind overflow-hidden directly to <html>
+        document.documentElement.classList.add("overflow-hidden")
+        return () => document.documentElement.classList.remove("overflow-hidden")
+    }, [])
+
     useEffect(() => {
         setSidebarOpen(false)
     }, [pathname])
 
-    // Lock body scroll when sidebar is open on mobile
-    useEffect(() => {
-        if (sidebarOpen) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = ""
-        }
-        return () => { document.body.style.overflow = "" }
-    }, [sidebarOpen])
-
     return (
         <AdminShellContext.Provider value={{ sidebarOpen, setSidebarOpen, toggleSidebar }}>
-            <div className="admin-shell">
-                {children}
-            </div>
+            {children}
         </AdminShellContext.Provider>
     )
 }

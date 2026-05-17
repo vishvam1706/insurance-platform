@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextResponse } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import Inquiry from "@/lib/models/Inquiry"

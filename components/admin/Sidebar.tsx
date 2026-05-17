@@ -9,9 +9,9 @@ import {
     Shield,
     LayoutDashboard,
     MessageSquare,
-    CalendarClock,
     Users,
     FileEdit,
+    FolderTree,
     ChevronRight,
     X,
     ExternalLink,
@@ -38,12 +38,7 @@ const NAV_ITEMS: NavItem[] = [
         icon: <MessageSquare className="w-[18px] h-[18px]" />,
         roles: ["super_admin", "admin", "employee"],
     },
-    {
-        label: "Schedule",
-        href: "/admin/schedule",
-        icon: <CalendarClock className="w-[18px] h-[18px]" />,
-        roles: ["super_admin", "admin", "employee"],
-    },
+
     {
         label: "Users",
         href: "/admin/users",
@@ -54,6 +49,12 @@ const NAV_ITEMS: NavItem[] = [
         label: "Page CMS",
         href: "/admin/cms",
         icon: <FileEdit className="w-[18px] h-[18px]" />,
+        roles: ["super_admin", "admin"],
+    },
+    {
+        label: "Navigation",
+        href: "/admin/nav",
+        icon: <FolderTree className="w-[18px] h-[18px]" />,
         roles: ["super_admin", "admin"],
     },
 ]

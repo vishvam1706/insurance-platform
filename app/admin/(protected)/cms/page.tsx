@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Page CMS" }
 
 export default function CmsPage() {
     return (
-        <div className="space-y-5">
+        <div className="space-y-5 pt-3 sm:pt-5 lg:pt-6">
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">

@@ -13,14 +13,14 @@ async function AdminLayoutInner({ children }: { children: React.ReactNode }) {
 
     return (
         <AdminShell>
-            <div className="flex h-screen bg-slate-50 overflow-hidden">
+            <div className="flex h-screen bg-slate-100 overflow-hidden">
                 {/* Sidebar */}
                 <AdminSidebar role={user.role} />
 
                 {/* Main content */}
                 <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
                     <AdminHeader user={user} />
-                    <main className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6">
+                    <main className="flex-1 overflow-y-auto overflow-x-hidden px-3 pb-3 sm:px-5 sm:pb-5 lg:px-6 lg:pb-6">
                         {children}
                     </main>
                 </div>

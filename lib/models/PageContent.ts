@@ -5,6 +5,8 @@ const BlockSchema = new Schema(
         id: { type: String, required: true },
         type: { type: String, required: true },
         data: { type: Schema.Types.Mixed, default: {} },
+        tocExclude: { type: Boolean, default: false },
+        tocLabel: { type: String, default: null },
     },
     { _id: false }
 )

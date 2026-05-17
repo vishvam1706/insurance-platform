@@ -36,6 +36,8 @@ export interface Block {
     id: string
     type: BlockType
     data: Record<string, unknown>
+    tocExclude?: boolean   // Hide this block's headings from the Table of Contents
+    tocLabel?: string      // Custom label override for ToC (replaces auto-detected heading)
 }
 
 // Hero

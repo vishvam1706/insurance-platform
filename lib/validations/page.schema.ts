@@ -30,6 +30,11 @@ export const UpdatePageSchema = z.object({
     blocks: z.array(BlockSchema).optional(),
     seo: SeoSchema.optional(),
     published: z.boolean().optional(),
+    pageKey: z
+        .string()
+        .min(1)
+        .regex(/^[a-z0-9-/]+$/, "Only lowercase letters, numbers, hyphens and slashes")
+        .optional(),
 })
 
 export type CreatePageInput = z.infer<typeof CreatePageSchema>

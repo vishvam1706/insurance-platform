@@ -16,7 +16,8 @@ import { generateId } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import { GripVertical, Trash2, ChevronDown, ChevronUp, Plus, Copy } from "lucide-react"
+import { GripVertical, Trash2, ChevronDown, ChevronUp, Plus, Copy, Eye, ArrowUp, ArrowDown, List } from "lucide-react"
+import BlockPreview from "./BlockPreview"
 
 // Block editors
 import HeroBlockEditor from "./blocks/HeroBlockEditor"
@@ -127,14 +128,24 @@ function BlockEditorSwitch({ block, onChange }: { block: Block; onChange: (data:
 
 // Sortable block card
 function SortableBlock({
-    block, onUpdate, onRemove, onDuplicate,
+    block, index, total, onUpdate, onRemove, onDuplicate, onMoveUp, onMoveDown, onMoveTo, onTocChange,
 }: {
     block: Block
+    index: number
+    total: number
     onUpdate: (data: Record<string, unknown>) => void
     onRemove: () => void
     onDuplicate: () => void
+    onMoveUp: () => void
+    onMoveDown: () => void
+    onMoveTo: (pos: number) => void
+    onTocChange: (tocExclude?: boolean, tocLabel?: string) => void
 }) {
     const [collapsed, setCollapsed] = useState(false)
+    const [previewing, setPreviewing] = useState(false)
+    const [showPositionPicker, setShowPositionPicker] = useState(false)
+    const [tocSettingsOpen, setTocSettingsOpen] = useState(false)
+    const posRef = useRef<HTMLDivElement>(null)
     const meta = BLOCK_META[block.type]
 
     const {
@@ -146,6 +157,18 @@ function SortableBlock({
         transform: CSS.Transform.toString(transform),
         transition,
     }
+
+    // Close position picker on outside click
+    useEffect(() => {
+        if (!showPositionPicker) return
+        function handler(e: MouseEvent) {
+            if (posRef.current && !posRef.current.contains(e.target as Node)) {
+                setShowPositionPicker(false)
+            }
+        }
+        document.addEventListener("mousedown", handler)
+        return () => document.removeEventListener("mousedown", handler)
+    }, [showPositionPicker])
 
     return (
         <div
@@ -159,7 +182,7 @@ function SortableBlock({
             {/* Block header */}
             <div className={cn(
                 "flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2.5 sm:py-3 border-b transition-colors",
-                collapsed ? "border-transparent" : "border-slate-100",
+                collapsed && !previewing ? "border-transparent" : "border-slate-100",
                 "bg-slate-50"
             )}>
                 {/* Drag handle */}
@@ -178,11 +201,97 @@ function SortableBlock({
                     {meta?.label ?? block.type}
                 </Badge>
 
+                {/* Position badge + jump-to dropdown */}
+                <div className="relative" ref={posRef}>
+                    <button
+                        type="button"
+                        onClick={() => setShowPositionPicker((p) => !p)}
+                        className="flex items-center gap-0.5 text-[10px] font-mono text-slate-400 hover:text-slate-600 px-1.5 py-0.5 rounded hover:bg-slate-200 transition-colors"
+                        title="Jump to position"
+                    >
+                        <span className="font-bold text-slate-600">{index + 1}</span>
+                        <span>/</span>
+                        <span>{total}</span>
+                    </button>
+                    {showPositionPicker && (
+                        <div className="absolute top-full left-0 mt-1 z-50 bg-white border border-slate-200 rounded-lg shadow-xl p-1.5 max-h-48 overflow-y-auto min-w-[120px]">
+                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-2 py-1 mb-0.5">Move to</p>
+                            {Array.from({ length: total }, (_, i) => (
+                                <button
+                                    key={i}
+                                    type="button"
+                                    onClick={() => { onMoveTo(i); setShowPositionPicker(false) }}
+                                    className={cn(
+                                        "w-full text-left px-2.5 py-1.5 text-xs rounded-md transition-colors",
+                                        i === index
+                                            ? "bg-emerald-50 text-emerald-700 font-bold cursor-default"
+                                            : "hover:bg-slate-100 text-slate-600"
+                                    )}
+                                    disabled={i === index}
+                                >
+                                    Position {i + 1} {i === index && "(current)"}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Move up / down */}
+                <div className="flex items-center gap-0 shrink-0">
+                    <button
+                        type="button"
+                        onClick={onMoveUp}
+                        disabled={index === 0}
+                        className={cn("p-1 rounded-md transition-colors", index === 0 ? "text-slate-200 cursor-not-allowed" : "text-slate-400 hover:text-slate-600 hover:bg-slate-200")}
+                        title="Move up"
+                    >
+                        <ArrowUp className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onMoveDown}
+                        disabled={index === total - 1}
+                        className={cn("p-1 rounded-md transition-colors", index === total - 1 ? "text-slate-200 cursor-not-allowed" : "text-slate-400 hover:text-slate-600 hover:bg-slate-200")}
+                        title="Move down"
+                    >
+                        <ArrowDown className="w-3.5 h-3.5" />
+                    </button>
+                </div>
+
+                {/* Spacer */}
+                <div className="flex-1" />
+
+                {/* Preview toggle */}
+                <button
+                    type="button"
+                    onClick={() => setPreviewing((p) => !p)}
+                    className={cn(
+                        "p-1.5 sm:p-1 rounded-md transition-colors",
+                        previewing ? "text-blue-600 bg-blue-100" : "text-slate-400 hover:text-blue-500 hover:bg-blue-50"
+                    )}
+                    title={previewing ? "Hide preview" : "Preview block"}
+                >
+                    <Eye className="w-3.5 h-3.5" />
+                </button>
+
+                {/* ToC settings toggle */}
+                <button
+                    type="button"
+                    onClick={() => setTocSettingsOpen((o) => !o)}
+                    className={cn(
+                        "p-1.5 sm:p-1 rounded-md transition-colors",
+                        tocSettingsOpen ? "text-amber-600 bg-amber-100" : block.tocExclude ? "text-slate-300" : "text-slate-400 hover:text-amber-500 hover:bg-amber-50"
+                    )}
+                    title={tocSettingsOpen ? "Close ToC settings" : "Table of Contents settings"}
+                >
+                    <List className="w-3.5 h-3.5" />
+                </button>
+
                 {/* Collapse/expand toggle */}
                 <button
                     type="button"
                     onClick={() => setCollapsed((c) => !c)}
-                    className="ml-auto text-slate-400 hover:text-slate-600 p-1.5 sm:p-1 rounded-md hover:bg-slate-200 transition-colors"
+                    className="text-slate-400 hover:text-slate-600 p-1.5 sm:p-1 rounded-md hover:bg-slate-200 transition-colors"
                     title={collapsed ? "Expand" : "Collapse"}
                 >
                     {collapsed
@@ -212,11 +321,41 @@ function SortableBlock({
                 </button>
             </div>
 
+            {/* ToC settings panel */}
+            {tocSettingsOpen && (
+                <div className="px-3 sm:px-4 py-2.5 bg-amber-50/60 border-b border-amber-100 flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                    <div className="flex items-center gap-2">
+                        <List className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                        <span className="text-xs font-semibold text-amber-800">Table of Contents</span>
+                    </div>
+                    <label className="flex items-center gap-1.5 text-xs cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={!block.tocExclude}
+                            onChange={(e) => onTocChange(!e.target.checked, block.tocLabel)}
+                            className="rounded border-amber-300 text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5"
+                        />
+                        <span className={block.tocExclude ? "text-slate-400 line-through" : "text-amber-700"}>Show in ToC</span>
+                    </label>
+                    <input
+                        value={block.tocLabel || ""}
+                        onChange={(e) => onTocChange(block.tocExclude, e.target.value || undefined)}
+                        placeholder="Custom label (leave empty for auto)"
+                        className="text-xs h-7 px-2 border border-amber-200 rounded-md bg-white flex-1 min-w-0 w-full sm:w-auto focus:border-emerald-400 outline-none"
+                    />
+                </div>
+            )}
+
             {/* Editor */}
             {!collapsed && (
                 <div className="p-2.5 sm:p-4 bg-white">
                     <BlockEditorSwitch block={block} onChange={onUpdate} />
                 </div>
+            )}
+
+            {/* Preview panel */}
+            {previewing && (
+                <BlockPreview block={block} onClose={() => setPreviewing(false)} />
             )}
         </div>
     )
@@ -271,15 +410,56 @@ function AddBlockPicker({ onAdd }: { onAdd: (type: BlockType) => void }) {
 
             {open && (
                 <>
-                    {/* Mobile: full-screen overlay */}
-                    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm sm:hidden" onClick={() => setOpen(false)} />
-                    <div className={cn(
-                        "z-50 bg-white border border-slate-200 shadow-2xl overflow-y-auto",
-                        // Mobile: fixed bottom sheet
-                        "fixed inset-x-0 bottom-0 top-16 rounded-t-2xl p-4 space-y-4 sm:top-auto",
-                        // Desktop: absolute popup above the button
-                        "sm:absolute sm:bottom-full sm:left-0 sm:right-0 sm:mb-2 sm:rounded-2xl sm:max-h-[70vh] sm:inset-x-auto sm:p-4"
-                    )}>
+                    {/* Shared backdrop */}
+                    <div
+                        className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px]"
+                        onClick={() => setOpen(false)}
+                    />
+
+                    {/* Mobile: bottom sheet — anchored to bottom, max-height prevents overflow */}
+                    <div className="sm:hidden fixed inset-x-0 bottom-0 z-50 flex flex-col bg-white rounded-t-2xl shadow-2xl"
+                        style={{ maxHeight: "75vh" }}
+                    >
+                        <div className="pt-3 pb-0 flex justify-center flex-shrink-0">
+                            <div className="w-10 h-1 bg-slate-200 rounded-full" />
+                        </div>
+                        <div className="flex items-center justify-between px-4 py-3 flex-shrink-0 border-b border-slate-100">
+                            <p className="text-sm font-semibold text-slate-700">Choose a block type</p>
+                            <button onClick={() => setOpen(false)} className="text-slate-400 hover:text-slate-600 text-xs px-2 py-1 rounded-lg hover:bg-slate-100">
+                                ✕ Close
+                            </button>
+                        </div>
+                        <div className="overflow-y-auto overscroll-contain flex-1 p-4 space-y-4">
+                            {BLOCK_GROUPS.map((group) => (
+                                <div key={group.label}>
+                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+                                        {group.label}
+                                    </p>
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {group.types.map((type) => {
+                                            const meta = BLOCK_META[type]
+                                            return (
+                                                <button
+                                                    key={type}
+                                                    type="button"
+                                                    onClick={() => { onAdd(type); setOpen(false) }}
+                                                    className={cn(
+                                                        "text-xs px-2.5 py-2 rounded-lg font-medium border-0 transition-all active:scale-95",
+                                                        meta?.color ?? "bg-slate-100 text-slate-600"
+                                                    )}
+                                                >
+                                                    {meta?.label ?? type}
+                                                </button>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Desktop: absolute popup above the button */}
+                    <div className="hidden sm:block absolute bottom-full left-0 right-0 mb-2 z-50 bg-white border border-slate-200 shadow-2xl rounded-2xl p-4 space-y-4 max-h-[65vh] overflow-y-auto overscroll-contain">
                         <div className="flex items-center justify-between mb-2">
                             <p className="text-sm font-semibold text-slate-700">Choose a block type</p>
                             <button onClick={() => setOpen(false)} className="text-slate-400 hover:text-slate-600 text-xs px-2 py-1 rounded hover:bg-slate-100">
@@ -300,7 +480,7 @@ function AddBlockPicker({ onAdd }: { onAdd: (type: BlockType) => void }) {
                                                 type="button"
                                                 onClick={() => { onAdd(type); setOpen(false) }}
                                                 className={cn(
-                                                    "text-xs px-2.5 py-2 sm:py-1.5 rounded-lg font-medium border-0 transition-all hover:scale-105 hover:shadow-sm active:scale-95",
+                                                    "text-xs px-2.5 py-1.5 rounded-lg font-medium border-0 transition-all hover:scale-105 hover:shadow-sm active:scale-95",
                                                     meta?.color ?? "bg-slate-100 text-slate-600"
                                                 )}
                                             >
@@ -368,6 +548,15 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
         onChange(next)
     }
 
+    function moveBlock(fromIndex: number, toIndex: number) {
+        if (toIndex < 0 || toIndex >= blocks.length || fromIndex === toIndex) return
+        onChange(arrayMove(blocks, fromIndex, toIndex))
+    }
+
+    function updateBlockToc(id: string, tocExclude?: boolean, tocLabel?: string) {
+        onChange(blocks.map((b) => b.id === id ? { ...b, tocExclude, tocLabel } : b))
+    }
+
     return (
         <div className="space-y-3">
             {blocks.length === 0 && (
@@ -382,13 +571,19 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
 
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                 <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
-                    {blocks.map((block) => (
+                    {blocks.map((block, idx) => (
                         <SortableBlock
                             key={block.id}
                             block={block}
+                            index={idx}
+                            total={blocks.length}
                             onUpdate={(data) => updateBlock(block.id, data)}
                             onRemove={() => removeBlock(block.id)}
                             onDuplicate={() => duplicateBlock(block.id)}
+                            onMoveUp={() => moveBlock(idx, idx - 1)}
+                            onMoveDown={() => moveBlock(idx, idx + 1)}
+                            onMoveTo={(pos) => moveBlock(idx, pos)}
+                            onTocChange={(tocExclude, tocLabel) => updateBlockToc(block.id, tocExclude, tocLabel)}
                         />
                     ))}
                 </SortableContext>

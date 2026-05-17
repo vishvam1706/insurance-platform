@@ -59,13 +59,13 @@ export default function InquiryFilters({
                         placeholder="Search name, phone, email..."
                         value={filters.search}
                         onChange={(e) => onFilter("search", e.target.value)}
-                        className="pl-9 h-9"
+                        className="pl-9"
                     />
                 </div>
 
                 {/* Status */}
                 <Select value={filters.status} onValueChange={(v) => onFilter("status", v === "all" ? "" : v)}>
-                    <SelectTrigger className="h-9">
+                    <SelectTrigger>
                         <SelectValue placeholder="All statuses" />
                     </SelectTrigger>
                     <SelectContent>
@@ -79,7 +79,7 @@ export default function InquiryFilters({
 
                 {/* Type */}
                 <Select value={filters.type} onValueChange={(v) => onFilter("type", v === "all" ? "" : v)}>
-                    <SelectTrigger className="h-9">
+                    <SelectTrigger>
                         <SelectValue placeholder="All types" />
                     </SelectTrigger>
                     <SelectContent>
@@ -92,7 +92,7 @@ export default function InquiryFilters({
                 {/* State — hidden for employees */}
                 {user?.role !== "employee" && (
                     <Select value={filters.state} onValueChange={(v) => onFilter("state", v === "all" ? "" : v)}>
-                        <SelectTrigger className="h-9">
+                        <SelectTrigger>
                             <SelectValue placeholder="All states" />
                         </SelectTrigger>
                         <SelectContent>
@@ -109,7 +109,7 @@ export default function InquiryFilters({
                     type="date"
                     value={filters.dateFrom}
                     onChange={(e) => onFilter("dateFrom", e.target.value)}
-                    className="h-9 text-sm"
+                    className="text-sm"
                 />
 
                 {/* Date To */}
@@ -117,7 +117,7 @@ export default function InquiryFilters({
                     type="date"
                     value={filters.dateTo}
                     onChange={(e) => onFilter("dateTo", e.target.value)}
-                    className="h-9 text-sm"
+                    className="text-sm"
                 />
             </div>
         </div>

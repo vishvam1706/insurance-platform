@@ -1,3 +1,4 @@
+import React from "react"
 import { Block } from "@/types/blocks"
 import HeroBlock from "./HeroBlock"
 import RichTextBlock from "./RichTextBlock"
@@ -32,6 +33,8 @@ import InsuranceChecklistBlock from "../home/InsuranceChecklist"
 import HomeFaqBlock from "../home/HomeFaq"
 import ChooseDittoCtaBlock from "../home/ChooseDittoCta"
 
+const HOMEPAGE_BLOCKS = new Set(["home_hero", "product_cards", "ditto_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_ditto_cta"])
+
 export default function PageRenderer({ blocks }: { blocks: Block[] }) {
     if (!blocks || blocks.length === 0) return null
 
@@ -43,41 +46,56 @@ export default function PageRenderer({ blocks }: { blocks: Block[] }) {
         <>
             {blocks.map((block) => {
                 const d = block.data as any
+                let rendered: React.ReactNode = null
                 switch (block.type) {
-                    case "hero": return <HeroBlock key={block.id} data={d} />
-                    case "rich_text": return <RichTextBlock key={block.id} data={d} />
-                    case "image_block": return <ImageBlock key={block.id} data={d} />
-                    case "how_it_works_steps": return <StepsBlock key={block.id} data={d} />
-                    case "benefits_list": return <BenefitsList key={block.id} data={d} />
-                    case "types_list": return <TypesList key={block.id} data={d} />
-                    case "info_section": return <InfoSection key={block.id} data={d} />
-                    case "note_box": return <NoteBox key={block.id} data={d} />
-                    case "dittos_take": return <DittosTake key={block.id} data={d} />
-                    case "numbered_cards": return <NumberedCards key={block.id} data={d} />
-                    case "final_thoughts": return <FinalThoughts key={block.id} data={d} />
-                    case "features_table": return <FeaturesTable key={block.id} data={d} />
-                    case "comparison_table": return <ComparisonTable key={block.id} data={d} />
-                    case "pros_cons_table": return <ProsConsTable key={block.id} data={d} />
-                    case "plans_table": return <PlansTable key={block.id} data={d} />
-                    case "insurer_metrics": return <InsurerMetrics key={block.id} data={d} />
-                    case "policy_features_list": return <PolicyFeaturesList key={block.id} data={d} />
-                    case "real_example_comparison": return <RealExampleComparison key={block.id} data={d} />
-                    case "insurer_selector": return <InsurerSelector key={block.id} data={d} />
-                    case "calculator_embed": return <CalculatorEmbed key={block.id} data={d} />
-                    case "frequently_compared": return <FrequentlyCompared key={block.id} data={d} />
-                    case "reviews": return <ReviewsBlock key={block.id} data={d} />
-                    case "cta_block": return <CtaBlock key={block.id} data={d} />
-                    case "faq": return <FaqBlock key={block.id} data={d} />
-                    case "stat_bar": return <StatBar key={block.id} data={d} />
-                    case "home_hero": return <HomeHeroBlock key={block.id} data={d} />
-                    case "product_cards": return <ProductCardsBlock key={block.id} data={d} />
-                    case "ditto_experience": return <DittoExperienceBlock key={block.id} waUrl={waUrl} />
-                    case "comparison_section": return <ComparisonSectionBlock key={block.id} />
-                    case "insurance_checklist": return <InsuranceChecklistBlock key={block.id} waUrl={waUrl} />
-                    case "home_faq": return <HomeFaqBlock key={block.id} items={d?.items} />
-                    case "choose_ditto_cta": return <ChooseDittoCtaBlock key={block.id} waUrl={waUrl} />
-                    default: return null
+                    case "hero": rendered = <HeroBlock data={d} />; break
+                    case "rich_text": rendered = <RichTextBlock data={d} />; break
+                    case "image_block": rendered = <ImageBlock data={d} />; break
+                    case "how_it_works_steps": rendered = <StepsBlock data={d} />; break
+                    case "benefits_list": rendered = <BenefitsList data={d} />; break
+                    case "types_list": rendered = <TypesList data={d} />; break
+                    case "info_section": rendered = <InfoSection data={d} />; break
+                    case "note_box": rendered = <NoteBox data={d} />; break
+                    case "dittos_take": rendered = <DittosTake data={d} />; break
+                    case "numbered_cards": rendered = <NumberedCards data={d} />; break
+                    case "final_thoughts": rendered = <FinalThoughts data={d} />; break
+                    case "features_table": rendered = <FeaturesTable data={d} />; break
+                    case "comparison_table": rendered = <ComparisonTable data={d} />; break
+                    case "pros_cons_table": rendered = <ProsConsTable data={d} />; break
+                    case "plans_table": rendered = <PlansTable data={d} />; break
+                    case "insurer_metrics": rendered = <InsurerMetrics data={d} />; break
+                    case "policy_features_list": rendered = <PolicyFeaturesList data={d} />; break
+                    case "real_example_comparison": rendered = <RealExampleComparison data={d} />; break
+                    case "insurer_selector": rendered = <InsurerSelector data={d} />; break
+                    case "calculator_embed": rendered = <CalculatorEmbed data={d} />; break
+                    case "frequently_compared": rendered = <FrequentlyCompared data={d} />; break
+                    case "reviews": rendered = <ReviewsBlock data={d} />; break
+                    case "cta_block": rendered = <CtaBlock data={d} />; break
+                    case "faq": rendered = <FaqBlock data={d} />; break
+                    case "stat_bar": rendered = <StatBar data={d} />; break
+                    case "home_hero": rendered = <HomeHeroBlock data={d} />; break
+                    case "product_cards": rendered = <ProductCardsBlock data={d} />; break
+                    case "ditto_experience": rendered = <DittoExperienceBlock waUrl={waUrl} />; break
+                    case "comparison_section": rendered = <ComparisonSectionBlock />; break
+                    case "insurance_checklist": rendered = <InsuranceChecklistBlock waUrl={waUrl} />; break
+                    case "home_faq": rendered = <HomeFaqBlock items={d?.items} />; break
+                    case "choose_ditto_cta": rendered = <ChooseDittoCtaBlock waUrl={waUrl} />; break
+                    default: rendered = null
                 }
+
+                // Determine if this block should be excluded from ToC
+                const excludeFromToc = block.tocExclude || HOMEPAGE_BLOCKS.has(block.type)
+
+                if (excludeFromToc) {
+                    return <div key={block.id} data-no-toc>{rendered}</div>
+                }
+
+                // Apply custom ToC label if set
+                if (block.tocLabel) {
+                    return <div key={block.id} data-toc-label={block.tocLabel}>{rendered}</div>
+                }
+
+                return <React.Fragment key={block.id}>{rendered}</React.Fragment>
             })}
         </>
     )

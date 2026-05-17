@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Schedule" }
 
 export default function SchedulePage() {
     return (
-        <div className="space-y-5">
+        <div className="space-y-5 pt-3 sm:pt-5 lg:pt-6">
             <div>
                 <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
                     <CalendarClock className="w-6 h-6 text-emerald-600" />

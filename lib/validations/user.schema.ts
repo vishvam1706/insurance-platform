@@ -14,6 +14,18 @@ export const CreateUserSchema = z.object({
     language: z.string().optional(),
 })
 
+// Form-level schema: state & language are managed via useState, not register()
+export const EmployeeSignupFormSchema = z.object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+}).refine((d) => d.password === d.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+})
+
+// API-level schema: includes all fields sent to the server
 export const EmployeeSignupSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
@@ -36,5 +48,6 @@ export const UpdateUserSchema = z.object({
 
 export type LoginInput = z.infer<typeof LoginSchema>
 export type CreateUserInput = z.infer<typeof CreateUserSchema>
+export type EmployeeSignupFormInput = z.infer<typeof EmployeeSignupFormSchema>
 export type EmployeeSignupInput = z.infer<typeof EmployeeSignupSchema>
 export type UpdateUserInput = z.infer<typeof UpdateUserSchema>

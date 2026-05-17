@@ -63,3 +63,23 @@ export async function sendEmployeeApprovalEmail({
     `,
     })
 }
+
+// ── Email OTP ─────────────────────────────────────────────────────────────────
+export async function sendOtpEmail(to: string, otp: string): Promise<void> {
+    await transporter.sendMail({
+        from: process.env.SMTP_FROM,
+        to,
+        subject: `${otp} is your verification code — Insurance Platform`,
+        html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px; border: 1px solid #e2e8f0; border-radius: 12px;">
+        <h2 style="margin: 0 0 8px; font-size: 20px; color: #0f172a;">Verify your email</h2>
+        <p style="color: #475569; margin: 0 0 24px;">Use the code below to verify your email address. It expires in <strong>5 minutes</strong>.</p>
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 24px;">
+          <p style="margin: 0 0 4px; font-size: 13px; color: #059669; font-weight: 600; letter-spacing: 0.05em;">YOUR OTP CODE</p>
+          <p style="margin: 0; font-size: 36px; font-weight: 700; letter-spacing: 0.25em; color: #065f46; font-family: monospace;">${otp}</p>
+        </div>
+        <p style="color: #94a3b8; font-size: 12px; margin: 0;">If you didn't request this, you can safely ignore this email.</p>
+      </div>
+    `,
+    })
+}

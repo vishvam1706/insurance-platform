@@ -1,6 +1,13 @@
 import mongoose, { Schema, Document, Model } from "mongoose"
 import { InsuranceType, InquiryStatus } from "@/types/inquiry"
 
+export interface StatusHistoryEntry {
+    status: InquiryStatus
+    changedBy: string          // user name or email
+    changedAt: Date
+    note?: string              // optional note at time of change
+}
+
 export interface InquiryDocument extends Document {
     name: string
     phone: string
@@ -13,6 +20,7 @@ export interface InquiryDocument extends Document {
     status: InquiryStatus
     notes?: string
     assignedTo?: mongoose.Types.ObjectId
+    statusHistory: StatusHistoryEntry[]
     createdAt: Date
     updatedAt: Date
 }
@@ -38,6 +46,14 @@ const InquirySchema = new Schema<InquiryDocument>(
         },
         notes: { type: String, trim: true },
         assignedTo: { type: Schema.Types.ObjectId, ref: "User" },
+        statusHistory: [
+            {
+                status: { type: String, enum: ["new", "contacted", "resolved", "not_reachable"] },
+                changedBy: { type: String },
+                changedAt: { type: Date, default: Date.now },
+                note: { type: String },
+            }
+        ],
     },
     { timestamps: true }
 )

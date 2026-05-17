@@ -12,7 +12,7 @@ const ADMIN_PATHS = [
 
 const SUPER_ADMIN_PATHS = ["/admin/users"]
 
-const EMPLOYEE_PATHS = ["/admin/dashboard", "/admin/schedule"]
+const EMPLOYEE_PATHS = ["/admin/dashboard", "/admin/inquiries", "/admin/schedule", "/admin/profile"]
 
 export default function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl

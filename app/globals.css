@@ -101,7 +101,35 @@
   --primary-foreground: #FFFFFF;
   --secondary: #F1F5F9;
   --secondary-foreground: #1A1A2E;
+
+  /* ── Locked type scale ──────────────────────────────────────────────────
+     One canonical set of sizes — use these everywhere instead of raw px or
+     ad-hoc Tailwind classes so the site stays consistent.
+
+     Scale (mobile → desktop):
+       --fs-xs      10px  — captions, badges, timestamps
+       --fs-sm      12px  — labels, helper text, table meta
+       --fs-body    15px  — all body / paragraph copy
+       --fs-ui      14px  — UI chrome: nav labels, sidebar items, buttons
+       --fs-h4      16px  — card sub-headings, section labels
+       --fs-h3      18px  — block / section headings
+       --fs-h2      22px  — page-level h2
+       --fs-h1      28px  — page h1 (admin dashboard, article pages)
+       --fs-hero    36px  — hero block h1 (public article hero)
+       --fs-display 48px  — homepage hero display headline
+  ─────────────────────────────────────────────────────────────────────── */
+  --fs-xs:      0.625rem;   /* 10px */
+  --fs-sm:      0.75rem;    /* 12px */
+  --fs-ui:      0.875rem;   /* 14px */
+  --fs-body:    0.9375rem;  /* 15px */
+  --fs-h4:      1rem;       /* 16px */
+  --fs-h3:      1.125rem;   /* 18px */
+  --fs-h2:      1.375rem;   /* 22px */
+  --fs-h1:      1.75rem;    /* 28px */
+  --fs-hero:    2.25rem;    /* 36px */
+  --fs-display: 3rem;       /* 48px */
 }
+
 
 /* Force Radix popper overlays to render above everything */
 [data-radix-popper-content-wrapper] {
@@ -123,24 +151,41 @@ body {
   background: #FFFFFF;
   color: var(--text-primary);
   font-family: var(--font-body), system-ui, sans-serif;
+  font-size: var(--fs-body);   /* 15px — single source of truth */
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-/* ─── Typography ────────────────────────────────────────────────────────────── */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+/* ─── Typography — locked heading scale ─────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), system-ui, sans-serif;
   color: var(--text-primary);
   line-height: 1.2;
+  font-weight: 700;
 }
 
+h1 { font-size: var(--fs-h1); }   /* 28px  — admin page titles, article page h1 */
+h2 { font-size: var(--fs-h2); }   /* 22px  — section headings */
+h3 { font-size: var(--fs-h3); }   /* 18px  — block / card headings */
+h4 { font-size: var(--fs-h4); }   /* 16px  — sub-headings */
+h5 { font-size: var(--fs-h4); }   /* 16px */
+h6 { font-size: var(--fs-sm);  }   /* 12px  — labels */
+
+
 /* ─── Utility classes ───────────────────────────────────────────────────────── */
+
+/* Semantic admin / page heading helpers — use these on page h1/h2 elements
+   so the size is guaranteed by the type scale, not Tailwind class chaos. */
+.page-title    { font-size: var(--fs-h1); font-weight: 700; line-height: 1.2; color: var(--text-primary); }
+.section-title { font-size: var(--fs-h2); font-weight: 700; line-height: 1.25; color: var(--text-primary); }
+.block-title   { font-size: var(--fs-h3); font-weight: 700; line-height: 1.3; color: var(--text-primary); }
+.card-title    { font-size: var(--fs-h4); font-weight: 600; line-height: 1.35; color: var(--text-primary); }
+.body-text     { font-size: var(--fs-body); line-height: 1.6; color: var(--text-secondary); }
+.ui-text       { font-size: var(--fs-ui); line-height: 1.5; }
+.label-text    { font-size: var(--fs-sm); line-height: 1.4; color: var(--text-muted); }
+.caption-text  { font-size: var(--fs-xs); line-height: 1.4; color: var(--text-muted); }
 
 /* Primary button — Ditto green */
 .btn-primary {
@@ -323,12 +368,13 @@ h6 {
 /* ─── Prose (article body text) ─────────────────────────────────────────────── */
 .prose {
   color: var(--text-secondary);
+  font-size: var(--fs-body);
   line-height: 1.75;
 }
 
 .prose h2 {
   font-family: var(--font-heading);
-  font-size: 1.375rem;
+  font-size: var(--fs-h2);    /* 22px */
   font-weight: 700;
   color: var(--text-primary);
   margin-top: 2rem;
@@ -337,7 +383,7 @@ h6 {
 
 .prose h3 {
   font-family: var(--font-heading);
-  font-size: 1.125rem;
+  font-size: var(--fs-h3);    /* 18px */
   font-weight: 700;
   color: var(--text-primary);
   margin-top: 1.5rem;
@@ -381,6 +427,7 @@ h6 {
   font-style: italic;
   margin: 1.5rem 0;
 }
+
 
 /* ─── Scrollbar ─────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {

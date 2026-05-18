@@ -113,8 +113,14 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
             {/* Title */}
             <div className="px-8 sm:px-10">
                 <h1
-                    className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6"
-                    style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}
+                    style={{
+                        fontSize: "var(--fs-hero)",
+                        fontFamily: "var(--font-heading)",
+                        color: "var(--text-primary)",
+                        fontWeight: 800,
+                        lineHeight: 1.15,
+                        marginBottom: "1.25rem",
+                    }}
                 >
                     {data.title}
                 </h1>

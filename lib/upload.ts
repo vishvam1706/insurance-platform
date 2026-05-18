@@ -1,20 +1,27 @@
-import { writeFile, mkdir } from "fs/promises"
-import path from "path"
+import { v2 as cloudinary } from "cloudinary"
+
+// Configure Cloudinary from env vars
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
 export async function saveUploadedFile(file: File): Promise<string> {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads")
-    await mkdir(uploadDir, { recursive: true })
+    // Upload to Cloudinary as a data URI
+    const base64 = buffer.toString("base64")
+    const mime = file.type || "image/png"
+    const dataUri = `data:${mime};base64,${base64}`
 
-    const timestamp = Date.now()
-    const ext = file.name.split(".").pop()
-    const filename = `${timestamp}-${Math.random().toString(36).slice(2)}.${ext}`
-    const filepath = path.join(uploadDir, filename)
+    const result = await cloudinary.uploader.upload(dataUri, {
+        folder: "insurance-platform",
+        resource_type: "image",
+    })
 
-    await writeFile(filepath, buffer)
-    return `/uploads/${filename}`
+    return result.secure_url
 }
 
 export const ALLOWED_IMAGE_TYPES = [

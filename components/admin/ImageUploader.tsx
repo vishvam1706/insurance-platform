@@ -45,8 +45,7 @@ export default function ImageUploader({
         disabled: uploading,
     })
 
-    // Determine if the src is a local upload path
-    const isLocalUpload = value.startsWith("/uploads/")
+
 
     return (
         <div className="space-y-2">
@@ -116,7 +115,6 @@ export default function ImageUploader({
                                 alt="Preview"
                                 fill
                                 className="object-contain"
-                                unoptimized={isLocalUpload}
                                 onError={() => setImgError(true)}
                             />
                         )}
@@ -128,11 +126,7 @@ export default function ImageUploader({
                     >
                         <X className="w-3 h-3" />
                     </button>
-                    {!imgError && isLocalUpload && (
-                        <div className="absolute bottom-1.5 left-1.5 text-[10px] font-semibold px-1.5 py-0.5 rounded-md" style={{ background: "var(--brand)", color: "#fff" }}>
-                            local
-                        </div>
-                    )}
+
                 </div>
             )}
         </div>

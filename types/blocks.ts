@@ -45,10 +45,12 @@ export interface HeroBlockData {
     title: string
     subtitle?: string
     publishedDate?: string
-    author?: { name: string; role: string; avatar?: string }
-    reviewer?: { name: string; role: string; avatar?: string }
+    author?: { name: string; role: string; photo?: string }
+    reviewer?: { name: string; role: string; photo?: string }
     certificationId?: string
     backgroundImage?: string
+    bottomImage?: string
+    bottomCaption?: string
 }
 
 // Rich Text

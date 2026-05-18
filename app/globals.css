@@ -70,10 +70,10 @@
   --border: #E8EAED;
   --border-light: #F1F3F5;
 
-  /* Text */
-  --text-primary: #1A1A2E;
-  --text-secondary: #52637A;
-  --text-muted: #98A6B5;
+  /* Text — all dark, no light grays in content areas */
+  --text-primary:   #0F172A;   /* near-black  — headings, titles, strong emphasis */
+  --text-secondary: #1E293B;   /* dark slate  — body copy, descriptions */
+  --text-muted:     #334155;   /* dark charcoal — captions, meta, secondary info */
 
   /* Utility */
   --star: #F59E0B;
@@ -84,13 +84,13 @@
 
   /* ── shadcn / Radix UI overlay tokens ── */
   --background: #FFFFFF;
-  --foreground: #1A1A2E;
+  --foreground: #0F172A;
   --popover: #FFFFFF;
-  --popover-foreground: #1A1A2E;
+  --popover-foreground: #0F172A;
   --muted: #F7F8FA;
-  --muted-foreground: #52637A;
+  --muted-foreground: #334155;
   --accent: #F1F5F9;
-  --accent-foreground: #1A1A2E;
+  --accent-foreground: #0F172A;
   --input: #E8EAED;
   --ring: #00B386;
   --destructive: #EF4444;
@@ -153,6 +153,7 @@ body {
   font-family: var(--font-body), system-ui, sans-serif;
   font-size: var(--fs-body);   /* 15px — single source of truth */
   line-height: 1.6;
+  text-align: left;            /* prevent any inherited center alignment */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -367,9 +368,10 @@ h6 { font-size: var(--fs-sm);  }   /* 12px  — labels */
 
 /* ─── Prose (article body text) ─────────────────────────────────────────────── */
 .prose {
-  color: var(--text-secondary);
+  color: var(--text-secondary);   /* dark gray — readable, not pure black */
   font-size: var(--fs-body);
   line-height: 1.75;
+  text-align: left;
 }
 
 .prose h2 {

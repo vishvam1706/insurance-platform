@@ -4,6 +4,7 @@ import { HeroBlockData } from "@/types/blocks"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import ImageUploader from "../ImageUploader"
+import RichTextEditor from "../RichTextEditor"
 
 interface Props { data: HeroBlockData; onChange: (d: HeroBlockData) => void }
 
@@ -84,13 +85,15 @@ export default function HeroBlockEditor({ data, onChange }: Props) {
                     value={data.bottomImage || ""}
                     onChange={(url) => set("bottomImage", url)}
                 />
-                <Field label="Bottom Image Caption">
-                    <Input
+                <div className="space-y-1">
+                    <Label className="text-xs text-slate-500">Bottom Image Caption</Label>
+                    <RichTextEditor
                         value={data.bottomCaption || ""}
-                        onChange={(e) => set("bottomCaption", e.target.value)}
-                        placeholder="e.g. Term Insurance vs Life Insurance — A Complete Guide"
+                        onChange={(html) => set("bottomCaption", html)}
+                        placeholder="Add a caption for the bottom image..."
+                        minHeight="80px"
                     />
-                </Field>
+                </div>
             </div>
         </div>
     )

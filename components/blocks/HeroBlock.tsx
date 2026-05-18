@@ -270,14 +270,13 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                         </div>
                         {data.bottomCaption && (
                             <figcaption
-                                className="text-center text-xs mt-2.5 leading-relaxed"
+                                className="text-center text-xs mt-2.5 leading-relaxed prose prose-sm max-w-none"
                                 style={{
                                     color: "var(--text-muted)",
                                     fontFamily: "var(--font-body)",
                                 }}
-                            >
-                                {data.bottomCaption}
-                            </figcaption>
+                                dangerouslySetInnerHTML={{ __html: data.bottomCaption }}
+                            />
                         )}
                     </figure>
                 </div>

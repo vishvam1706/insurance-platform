@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 import Link from "next/link"
-import { FileEdit, Plus } from "lucide-react"
+import { FileEdit, Plus, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import PagesList from "@/components/admin/PagesList"
 
@@ -19,12 +19,20 @@ export default function CmsPage() {
                         Create and edit all public pages — no code required
                     </p>
                 </div>
-                <Link href="/admin/cms/new">
-                    <Button className="bg-emerald-600 hover:bg-emerald-700 gap-2">
-                        <Plus className="w-4 h-4" />
-                        New Page
-                    </Button>
-                </Link>
+                <div className="flex items-center gap-2">
+                    <Link href="/admin/cms/home">
+                        <Button variant="outline" className="gap-2 border-slate-300 hover:border-emerald-600 hover:text-emerald-700">
+                            <Home className="w-4 h-4" />
+                            Edit Homepage
+                        </Button>
+                    </Link>
+                    <Link href="/admin/cms/new">
+                        <Button className="bg-emerald-600 hover:bg-emerald-700 gap-2">
+                            <Plus className="w-4 h-4" />
+                            New Page
+                        </Button>
+                    </Link>
+                </div>
             </div>
 
             <PagesList />

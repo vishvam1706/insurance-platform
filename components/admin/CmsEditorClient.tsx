@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea"
 import {
     ArrowLeft, Save, Loader2, Eye,
     Globe, Settings, ChevronDown, ChevronUp,
-    Circle, Pencil, Check, X,
+    Circle, Pencil, Check, X, Home,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -158,13 +158,73 @@ export default function CmsEditorClient({ slug }: Props) {
     }
 
     if (!page) {
+        const isHome = pageKey === "home"
+
+        async function createHomePage() {
+            try {
+                await axios.post("/api/cms/pages", {
+                    pageKey: "home",
+                    title: "Homepage",
+                    section: "home",
+                    published: false,
+                    blocks: [],
+                    seo: {
+                        metaTitle: "Insurance Platform - Expert Advice, Free Consultation",
+                        metaDescription: "Get expert advice on term life and health insurance. Book a free call with IRDAI-certified advisors.",
+                        keywords: ["insurance platform india", "term insurance", "health insurance"],
+                    },
+                })
+                toast.success("Homepage created! Loading editor…")
+                window.location.reload()
+            } catch (err) {
+                toast.error(
+                    axios.isAxiosError(err)
+                        ? err.response?.data?.error ?? "Failed to create homepage"
+                        : "Failed to create homepage"
+                )
+            }
+        }
+
         return (
-            <div className="text-center py-20 text-slate-400">
-                <p className="text-lg font-semibold mb-2">Page not found</p>
-                <p className="text-sm mb-4">The page &ldquo;{pageKey}&rdquo; doesn&apos;t exist in the CMS.</p>
-                <button onClick={() => router.push("/admin/cms")} className="text-sm font-medium px-4 py-2 rounded-lg" style={{ background: "var(--brand)", color: "#fff" }}>
-                    Back to CMS
-                </button>
+            <div className="text-center py-20">
+                {isHome ? (
+                    <>
+                        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-50 mb-4">
+                            <Home className="w-7 h-7 text-emerald-600" />
+                        </div>
+                        <p className="text-lg font-semibold text-slate-800 mb-1">Homepage not in CMS yet</p>
+                        <p className="text-sm text-slate-400 mb-6 max-w-sm mx-auto">
+                            The homepage hasn&apos;t been added to the CMS database yet. Click below to create it and start editing.
+                        </p>
+                        <Button
+                            onClick={createHomePage}
+                            className="bg-emerald-600 hover:bg-emerald-700 gap-2"
+                        >
+                            <Home className="w-4 h-4" />
+                            Create Homepage
+                        </Button>
+                        <div className="mt-4">
+                            <button
+                                onClick={() => router.push("/admin/cms")}
+                                className="text-sm text-slate-400 hover:text-slate-600"
+                            >
+                                ← Back to CMS
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <p className="text-lg font-semibold text-slate-500 mb-2">Page not found</p>
+                        <p className="text-sm text-slate-400 mb-4">The page &ldquo;{pageKey}&rdquo; doesn&apos;t exist in the CMS.</p>
+                        <button
+                            onClick={() => router.push("/admin/cms")}
+                            className="text-sm font-medium px-4 py-2 rounded-lg"
+                            style={{ background: "var(--brand)", color: "#fff" }}
+                        >
+                            Back to CMS
+                        </button>
+                    </>
+                )}
             </div>
         )
     }

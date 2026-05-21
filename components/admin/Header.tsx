@@ -9,9 +9,9 @@ import {
     LogOut,
     User,
     ChevronDown,
-    Bell,
     Menu,
 } from "lucide-react"
+import NotificationsDropdown from "./NotificationsDropdown"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -77,11 +77,8 @@ export default function AdminHeader({ user }: HeaderProps) {
 
             {/* Right */}
             <div className="flex items-center gap-2 sm:gap-3">
-                {/* Notifications (placeholder) */}
-                <button className="relative w-9 h-9 flex items-center justify-center rounded-lg hover:bg-slate-100 transition-colors text-slate-500">
-                    <Bell className="w-4 h-4" />
-                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
-                </button>
+                {/* Notifications */}
+                <NotificationsDropdown user={user} />
 
                 {/* Role badge — hidden on small screens */}
                 <Badge

@@ -7,6 +7,8 @@ import { getAuthUser } from "@/lib/auth"
 import { InquirySchema } from "@/lib/validations/inquiry.schema"
 import { sendInquiryConfirmation } from "@/lib/email"
 import { inquiryEmitter } from "@/lib/inquiry-events"
+import { hasActiveOtp } from "@/lib/otp-store"
+
 
 export async function GET(req: NextRequest) {
     try {
@@ -91,6 +93,25 @@ export async function POST(req: NextRequest) {
         }
 
         await connectDB()
+
+        const { phone, email } = parsed.data
+        const isPhoneVerified = await hasActiveOtp(`verified:phone:${phone}`)
+        const isEmailVerified = await hasActiveOtp(`verified:email:${email}`)
+
+        if (!isPhoneVerified) {
+            return NextResponse.json(
+                { error: "Mobile number verification required or expired. Please verify your phone." },
+                { status: 400 }
+            )
+        }
+
+        if (!isEmailVerified) {
+            return NextResponse.json(
+                { error: "Email verification required or expired. Please verify your email." },
+                { status: 400 }
+            )
+        }
+
         const inquiry = await Inquiry.create(parsed.data)
 
         // Push real-time update to admin panel via SSE

@@ -36,7 +36,6 @@ const UserSchema = new Schema<UserDocument>(
     { timestamps: true }
 )
 
-UserSchema.index({ email: 1 })
 UserSchema.index({ role: 1, status: 1 })
 UserSchema.index({ state: 1 })
 

@@ -62,6 +62,9 @@ InquirySchema.index({ state: 1, status: 1 })
 InquirySchema.index({ insuranceType: 1 })
 InquirySchema.index({ createdAt: -1 })
 InquirySchema.index({ assignedTo: 1 })
+InquirySchema.index({ name: 1 })
+InquirySchema.index({ email: 1 })
+InquirySchema.index({ phone: 1 })
 
 const Inquiry: Model<InquiryDocument> =
     mongoose.models.Inquiry ||

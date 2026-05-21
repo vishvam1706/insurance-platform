@@ -8,7 +8,7 @@ export interface InsurancePlanDocument extends Document {
     type: "health" | "term"
     features: Record<string, unknown>
     premium?: Record<string, number>
-    dittoRating?: number
+    pmpartnersRating?: number
     csr?: string
     createdAt: Date
     updatedAt: Date
@@ -23,7 +23,7 @@ const InsurancePlanSchema = new Schema<InsurancePlanDocument>(
         type: { type: String, enum: ["health", "term"], required: true },
         features: { type: Schema.Types.Mixed, default: {} },
         premium: { type: Schema.Types.Mixed },
-        dittoRating: { type: Number, min: 0, max: 5 },
+        pmpartnersRating: { type: Number, min: 0, max: 5 },
         csr: { type: String },
     },
     { timestamps: true }

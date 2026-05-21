@@ -1,9 +1,10 @@
 import { Metadata } from "next"
 import Link from "next/link"
-import { connection } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import { ArrowRight, Heart } from "lucide-react"
+
+export const revalidate = 1800 // Cache static page on Edge CDN, revalidate at most every 30 minutes
 
 export const metadata: Metadata = {
     title: "Health Insurance — Complete Guide",
@@ -11,7 +12,6 @@ export const metadata: Metadata = {
 }
 
 async function getHealthPages() {
-    await connection()
     await connectDB()
     const docs = await PageContent.find({ section: "health", published: true })
         .select("pageKey title seo")
@@ -26,76 +26,84 @@ export default async function HealthHubPage() {
     return (
         <>
             {/* ── Hero ── */}
-            <section className="relative overflow-hidden bg-white">
-                <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
+            <section className="relative overflow-hidden border-b border-[var(--brand-100)]" style={{ background: "var(--surface)" }}>
+                {/* Gold mesh effect */}
+                <div className="absolute inset-0 gold-mesh opacity-90 pointer-events-none" />
+                
+                {/* Subtle radial gold glow */}
                 <div
-                    className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none"
-                    style={{ background: "radial-gradient(circle, rgba(0,179,134,0.06) 0%, transparent 70%)" }}
+                    className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none opacity-20 blur-[80px]"
+                    style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }}
                 />
-                <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-20">
-                    <div className="max-w-2xl">
+                
+                <div className="relative max-w-7xl mx-auto px-6 pt-24 pb-28">
+                    <div className="max-w-3xl">
                         <span className="badge-green mb-6 inline-flex">
-                            <Heart className="w-3 h-3" />
+                            <Heart className="w-3.5 h-3.5" />
                             Health Insurance
                         </span>
                         <h1
-                            className="text-5xl font-extrabold leading-tight mb-5"
-                            style={{ fontFamily: "var(--font-heading)" }}
+                            className="text-5xl lg:text-7xl font-bold leading-tight mb-6"
+                            style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}
                         >
-                            Health insurance that
-                            <br />
-                            <span className="gradient-text">actually makes sense.</span>
+                            Health insurance that<br />
+                            <span className="italic font-normal" style={{ color: "var(--brand-dark)" }}>actually makes sense.</span>
                         </h1>
-                        <p className="text-lg leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                            Compare plans, understand coverage, and find the right health insurance
-                            for you and your family.
+                        <p className="text-xl leading-relaxed max-w-xl" style={{ color: "var(--text-secondary)" }}>
+                            Compare policy plans, understand coverage benefits, and find the perfect health insurance for you and your family.
                         </p>
                     </div>
                 </div>
             </section>
 
             {/* ── Articles grid ── */}
-            <section className="py-16" style={{ background: "var(--surface-muted)" }}>
+            <section className="py-24" style={{ background: "var(--surface-muted)" }}>
                 <div className="max-w-7xl mx-auto px-6">
                     {pages.length === 0 ? (
-                        <div className="text-center py-24">
-                            <Heart className="w-12 h-12 mx-auto mb-4 opacity-10" />
-                            <p style={{ color: "var(--text-muted)" }}>No articles published yet.</p>
+                        <div className="text-center py-28 border border-dashed border-[var(--brand-200)] rounded-[32px] bg-white">
+                            <Heart className="w-14 h-14 mx-auto mb-4 opacity-20" style={{ color: "var(--brand)" }} />
+                            <p className="font-bold" style={{ color: "var(--text-muted)" }}>No guide articles published yet.</p>
                         </div>
                     ) : (
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                             {pages.map((page: any, i: number) => (
                                 <Link
                                     key={page.pageKey}
                                     href={`/${page.pageKey}`}
-                                    className="group flex flex-col h-full rounded-3xl p-7 bg-white border border-gray-200 shadow-sm hover:border-blue-200 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 animate-fade-up"
-                                    style={{ animationDelay: `${i * 50}ms` }}
+                                    className="group flex flex-col h-full rounded-[28px] p-8 bg-white border border-[var(--brand-100)] transition-all duration-300 hover:border-[var(--brand)] hover:-translate-y-1 animate-fade-up"
+                                    style={{ 
+                                        boxShadow: "0 10px 30px rgba(10, 17, 40, 0.01)",
+                                        animationDelay: `${i * 80}ms` 
+                                    }}
                                 >
                                     <div
-                                        className="w-10 h-10 rounded-xl flex items-center justify-center mb-5 transition-colors group-hover:bg-emerald-100"
-                                        style={{ background: "var(--brand-light)" }}
+                                        className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 border border-[var(--brand-100)] group-hover:bg-[var(--brand-light)] transition-colors duration-300"
+                                        style={{ background: "var(--surface-muted)" }}
                                     >
-                                        <Heart className="w-5 h-5" style={{ color: "var(--brand)" }} />
+                                        <Heart className="w-5 h-5" style={{ color: "var(--brand-dark)" }} />
                                     </div>
+                                    
                                     <h2
-                                        className="font-bold text-lg mb-3 leading-snug group-hover:text-emerald-600 transition-colors"
+                                        className="font-extrabold text-xl mb-3 leading-snug transition-colors group-hover:text-[var(--brand-dark)]"
                                         style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}
                                     >
                                         {page.title}
                                     </h2>
+                                    
                                     {page.seo?.metaDescription && (
                                         <p
-                                            className="text-sm line-clamp-2 mb-5 flex-grow leading-relaxed"
+                                            className="text-sm line-clamp-3 mb-6 flex-grow leading-relaxed"
                                             style={{ color: "var(--text-secondary)" }}
                                         >
                                             {page.seo.metaDescription}
                                         </p>
                                     )}
+                                    
                                     <span
-                                        className="inline-flex items-center gap-1.5 text-sm font-bold mt-auto group-hover:gap-3 transition-all"
-                                        style={{ color: "var(--brand)" }}
+                                        className="inline-flex items-center gap-1.5 text-sm font-black mt-auto group-hover:gap-3 transition-all"
+                                        style={{ color: "var(--brand-dark)" }}
                                     >
-                                        Read more <ArrowRight className="w-4 h-4" />
+                                        Read complete guide <ArrowRight className="w-4 h-4" />
                                     </span>
                                 </Link>
                             ))}

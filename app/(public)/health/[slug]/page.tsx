@@ -1,16 +1,16 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { connection } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import PageRenderer from "@/components/blocks/PageRenderer"
 import Breadcrumb from "@/components/public/Breadcrumb"
 import ArticleLayout from "@/components/public/ArticleLayout"
 
+export const revalidate = 1800 // Cache static page on Edge CDN, revalidate at most every 30 minutes
+
 interface Props { params: Promise<{ slug: string }> }
 
 async function getPage(slug: string) {
-    await connection()
     await connectDB()
     const doc = await PageContent.findOne({
         pageKey: `health/${slug}`,
@@ -40,8 +40,13 @@ export default async function HealthSlugPage({ params }: Props) {
     return (
         <>
             {/* Breadcrumb bar */}
-            <div className="bg-white" style={{ borderBottom: "1px solid var(--border)" }}>
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-3">
+            <div
+                style={{
+                    background: "linear-gradient(to right, rgba(0,179,134,0.04), rgba(255,255,255,1) 60%)",
+                    borderBottom: "1px solid var(--brand-100)",
+                }}
+            >
+                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-3.5">
                     <Breadcrumb items={[
                         { label: "Health Insurance", href: "/health" },
                         { label: p.title },

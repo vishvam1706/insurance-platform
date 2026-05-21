@@ -83,7 +83,7 @@ async function seed() {
                 zeroCostExit: true,
             },
             csr: "99.62%",
-            dittoRating: 4.65,
+            pmpartnersRating: 4.65,
         },
         {
             slug: "hdfc-life-click2protect-supreme-plus",
@@ -98,7 +98,7 @@ async function seed() {
                 spousecover: true,
             },
             csr: "99.55%",
-            dittoRating: 4.55,
+            pmpartnersRating: 4.55,
         },
         {
             slug: "hdfc-ergo-optima-restore",
@@ -121,7 +121,7 @@ async function seed() {
                 healthCheckup: "Once every year",
             },
             csr: "97%",
-            dittoRating: 4.5,
+            pmpartnersRating: 4.5,
         },
         {
             slug: "niva-bupa-reassure",
@@ -144,7 +144,7 @@ async function seed() {
                 healthCheckup: "Once every year",
             },
             csr: "92%",
-            dittoRating: 4.2,
+            pmpartnersRating: 4.2,
         },
     ])
 
@@ -173,7 +173,7 @@ async function seed() {
                     title: "What is Term Insurance?",
                     publishedDate: "20 Feb, 2026",
                     author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "IRDAI-Certified Expert at Ditto" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -242,8 +242,8 @@ async function seed() {
                 type: "cta_block",
                 data: {
                     title: "Talk to an expert today and find the right insurance for you.",
-                    bookCallText: "Book a Free Call",
-                    whatsappText: "Chat on WhatsApp",
+                    bookCallText: "Compare Plans",
+                    whatsappText: "Direct Support",
                 },
             },
             {
@@ -278,7 +278,7 @@ async function seed() {
                     rating: 4.9,
                     totalCount: 20915,
                     items: [
-                        { name: "INDHUMATHI M", initials: "I", body: "Ditto is doing really great. Absolutely spam free — that's the best part. Advisor Nuha was very patient and answered all my questions with clarity." },
+                        { name: "INDHUMATHI M", initials: "I", body: "PM Partners is doing really great. Absolutely spam free — that's the best part. Advisor Nuha was very patient and answered all my questions with clarity." },
                         { name: "Ragul Kumar", initials: "RK", body: "Loved the service! Maheta Nidhi Hitesh was incredibly helpful and knowledgeable. No pressure at all, just clear and honest advice." },
                         { name: "Samil Shah", initials: "SS", body: "Ishita Sudrania was extremely helpful in guiding me through choosing the right term plan. Highly recommend!" },
                     ],
@@ -304,7 +304,7 @@ async function seed() {
                 data: {
                     title: "Term Insurance vs Life Insurance",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "IRDAI-Certified Expert at Ditto" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -337,29 +337,29 @@ async function seed() {
                 type: "cta_block",
                 data: {
                     title: "Talk to an expert today and find the right insurance for you.",
-                    bookCallText: "Book a Free Call",
-                    whatsappText: "Chat on WhatsApp",
+                    bookCallText: "Compare Plans",
+                    whatsappText: "Direct Support",
                 },
             },
             {
                 id: "b5",
                 type: "plans_table",
                 data: {
-                    title: "Ditto's Recommended Term Plans (2026)",
+                    title: "PM Partners's Recommended Term Plans (2026)",
                     rows: [
-                        { plan: "Axis Max Life Smart Term Plan Plus", riders: "Accidental Death, Critical Illness (64 illnesses), Zero-Cost Exit, Women's Perks", csr: "99.62%", rating: "4.65/5", dittoRating: 4.65 },
-                        { plan: "HDFC Life Click2Protect Supreme Plus", riders: "Accidental Death, Waiver of Premium, Critical Illness (60 illnesses), Spouse Cover", csr: "99.55%", rating: "4.55/5", dittoRating: 4.55 },
-                        { plan: "ICICI Prudential iProtect Smart Plus", riders: "Accidental Death, Life Stage Benefit, Critical Illness (60 illnesses), Zero Cost Option", csr: "98.03%", rating: "4.30/5", dittoRating: 4.30 },
-                        { plan: "Bajaj Life eTouch II", riders: "Accidental Death, Life Stage Benefit, Critical Illness (60 illnesses), Zero Cost Option", csr: "99.21%", rating: "4.20/5", dittoRating: 4.20 },
+                        { plan: "Axis Max Life Smart Term Plan Plus", riders: "Accidental Death, Critical Illness (64 illnesses), Zero-Cost Exit, Women's Perks", csr: "99.62%", rating: "4.65/5", pmpartnersRating: 4.65 },
+                        { plan: "HDFC Life Click2Protect Supreme Plus", riders: "Accidental Death, Waiver of Premium, Critical Illness (60 illnesses), Spouse Cover", csr: "99.55%", rating: "4.55/5", pmpartnersRating: 4.55 },
+                        { plan: "ICICI Prudential iProtect Smart Plus", riders: "Accidental Death, Life Stage Benefit, Critical Illness (60 illnesses), Zero Cost Option", csr: "98.03%", rating: "4.30/5", pmpartnersRating: 4.30 },
+                        { plan: "Bajaj Life eTouch II", riders: "Accidental Death, Life Stage Benefit, Critical Illness (60 illnesses), Zero Cost Option", csr: "99.21%", rating: "4.20/5", pmpartnersRating: 4.20 },
                     ],
                 },
             },
             {
                 id: "b6",
-                type: "dittos_take",
+                type: "pmpartners_take",
                 data: {
-                    title: "Ditto's Take: Term vs Life Insurance",
-                    body: "At Ditto, we usually recommend pure term insurance as the most efficient way to protect your family. It gives you a large cover at a very low premium because it does not mix insurance with investment. Use term insurance for safety. Use mutual funds, PPF, or FDs for growth.",
+                    title: "PM Partners' Take: Term vs Life Insurance",
+                    body: "At PM Partners, we usually recommend pure term insurance as the most efficient way to protect your family. It gives you a large cover at a very low premium because it does not mix insurance with investment. Use term insurance for safety. Use mutual funds, PPF, or FDs for growth.",
                 },
             },
             {
@@ -380,8 +380,8 @@ async function seed() {
                     rating: 4.9,
                     totalCount: 20915,
                     items: [
-                        { name: "Pulkit Singh", initials: "PS", body: "Had a great experience with Ditto while exploring health insurance options. Everything was explained clearly with no pressure." },
-                        { name: "Raghappriya M", initials: "RM", body: "Great experience with Ditto while filing my health insurance claim. Their support made the process much smoother." },
+                        { name: "Pulkit Singh", initials: "PS", body: "Had a great experience with PM Partners while exploring health insurance options. Everything was explained clearly with no pressure." },
+                        { name: "Raghappriya M", initials: "RM", body: "Great experience with PM Partners while filing my health insurance claim. Their support made the process much smoother." },
                     ],
                 },
             },
@@ -455,8 +455,8 @@ async function seed() {
                 type: "cta_block",
                 data: {
                     title: "Talk to an expert today and find the right insurance for you.",
-                    bookCallText: "Book a Free Call",
-                    whatsappText: "Chat on WhatsApp",
+                    bookCallText: "Compare Plans",
+                    whatsappText: "Direct Support",
                 },
             },
             {
@@ -562,25 +562,397 @@ async function seed() {
         ],
     })
     await PageContent.create({
+        pageKey: "term-life/best-term-insurance-plans",
+        title: "Best Term Insurance Plans 2026",
+        section: "term-life",
+        published: true,
+        seo: {
+            metaTitle: "Best Term Insurance Plans in India 2026 — Compare & Save",
+            metaDescription: "Compare the best term insurance plans in India for 2026 side by side. Read reviews, claim settlement ratios, features and pricing.",
+            keywords: ["best term insurance", "best term plan 2026", "term insurance comparison"],
+        },
+        blocks: [
+            {
+                id: "bt1",
+                type: "hero",
+                data: {
+                    title: "Best Term Insurance Plans 2026",
+                    subtitle: "Compare top-rated pure risk protection plans side-by-side. View claim settlement ratios, features, and expert PM Partners ratings.",
+                    author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                    certificationId: "SP0738578124",
+                },
+            },
+            {
+                id: "bt2",
+                type: "rich_text",
+                data: {
+                    content: "<p>Finding the right term insurance plan is one of the most critical financial decisions you will make. With so many insurers claiming high settlement numbers and offering dozens of complex riders, it is easy to feel overwhelmed. At PM Partners, we evaluate term policies on three main criteria: Claim Settlement Ratio (CSR), operational smoothness, and rider utility.</p>",
+                },
+            },
+            {
+                id: "bt3",
+                type: "plans_table",
+                data: {
+                    title: "PM Partners Recommended Best Term Plans (2026)",
+                    rows: [
+                        { plan: "Axis Max Life Smart Term Plan Plus", riders: "Critical Illness (64 illnesses), Accidental Death, Zero Cost Exit", csr: "99.62%", rating: "4.65/5", pmpartnersRating: 4.65 },
+                        { plan: "HDFC Life Click2Protect Supreme Plus", riders: "Waiver of Premium, Spouse Cover, Life Stage Benefits", csr: "99.55%", rating: "4.55/5", pmpartnersRating: 4.55 },
+                        { plan: "ICICI Prudential iProtect Smart Plus", riders: "Accidental Death, Terminal Illness, Multi-payout", csr: "98.03%", rating: "4.30/5", pmpartnersRating: 4.30 },
+                    ],
+                },
+            },
+            {
+                id: "bt4",
+                type: "note_box",
+                data: {
+                    label: "Expert Tip",
+                    content: "Do not choose a term insurance plan based *only* on the cheapest premium. A slightly higher premium with an insurer that has a higher claim settlement ratio and a hassle-free paperless claim process is always a better option for your family.",
+                },
+            },
+            {
+                id: "bt5",
+                type: "cta_block",
+                data: {
+                    title: "Get a free customized term plan comparison report today.",
+                    bookCallText: "Compare Plans",
+                    whatsappText: "Direct Support",
+                },
+            },
+            {
+                id: "bt6",
+                type: "faq",
+                data: {
+                    items: [
+                        { question: "Which term insurance has the highest claim settlement ratio?", answer: "Max Life and HDFC Life currently lead the industry with Claim Settlement Ratios of 99.62% and 99.55% respectively for FY 2024-25." },
+                        { question: "Is zero-cost exit term plan worth it?", answer: "Yes! If you want to withdraw from the plan after your children are financially independent (e.g. at age 60), zero-cost exit allows you to get 100% of your paid premiums back." },
+                    ],
+                },
+            },
+        ],
+    })
+
+    await PageContent.create({
+        pageKey: "term-life/1-crore-term-insurance",
+        title: "1 Crore Term Insurance",
+        section: "term-life",
+        published: true,
+        seo: {
+            metaTitle: "1 Crore Term Insurance Plans — Premiums & Eligibility",
+            metaDescription: "Learn why a 1 Crore term insurance plan is the sweet spot for most Indian families. Check monthly premium estimates, tax benefits and eligibility.",
+            keywords: ["1 crore term insurance", "1 cr term plan", "crore life insurance"],
+        },
+        blocks: [
+            {
+                id: "oc1",
+                type: "hero",
+                data: {
+                    title: "1 Crore Term Insurance Plan",
+                    subtitle: "The gold standard of life protection. Understand why it is the perfect coverage amount and how to get it at the lowest premium.",
+                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                },
+            },
+            {
+                id: "oc2",
+                type: "rich_text",
+                data: {
+                    content: "<p>A 1 Crore cover is often highlighted as the standard benchmark for term insurance. But is it right for you? A good rule of thumb is to secure a term plan that is 10 to 15 times your annual income, plus any active debts (like home or education loans). For most middle-income salaried professionals, a ₹1 Crore cover perfectly bridges this gap.</p>",
+                },
+            },
+            {
+                id: "oc3",
+                type: "features_table",
+                data: {
+                    title: "Estimated Monthly Premiums for ₹1 Crore Cover (Non-Smoker)",
+                    note: "Estimated premiums for a regular cover up to age 60. Actual premiums vary based on medical test results.",
+                    rows: [
+                        { aspect: "Age 25", feature: "₹800 to ₹1,000 per month" },
+                        { aspect: "Age 30", feature: "₹1,000 to ₹1,300 per month" },
+                        { aspect: "Age 35", feature: "₹1,400 to ₹1,800 per month" },
+                        { aspect: "Age 40", feature: "₹2,000 to ₹2,500 per month" },
+                    ],
+                },
+            },
+            {
+                id: "oc4",
+                type: "benefits_list",
+                data: {
+                    title: "Why Choose a 1 Crore Term Cover?",
+                    items: [
+                        { heading: "Clears Existing Debt", body: "Provides enough lump sum to fully pay off home loans, car loans, or credit card bills without burdening your family." },
+                        { heading: "Secures Higher Education", body: "Ensures your children's future education and marriage plans are fully funded even in your absence." },
+                        { heading: "Affordable Cost", body: "At young ages, a ₹1 Crore term plan costs less than ₹30 a day, making it highly pocket-friendly." },
+                    ],
+                },
+            },
+            {
+                id: "oc5",
+                type: "cta_block",
+                data: {
+                    title: "Calculate your exact premium for 1 Crore term cover in 2 minutes.",
+                    bookCallText: "Calculate Premium",
+                    whatsappText: "Ask on WhatsApp",
+                },
+            },
+        ],
+    })
+
+    await PageContent.create({
+        pageKey: "term-life/nri-term-insurance",
+        title: "NRI Term Insurance",
+        section: "term-life",
+        published: true,
+        seo: {
+            metaTitle: "NRI Term Insurance India — Rules & Buying Guide 2026",
+            metaDescription: "Buying term insurance in India for NRIs. Understand rules, tax exemptions, tele-medicals, and premium payments from NRE/NRO accounts.",
+            keywords: ["nri term insurance", "term plan for nri india", "buy insurance nri"],
+        },
+        blocks: [
+            {
+                id: "nr1",
+                type: "hero",
+                data: {
+                    title: "NRI Term Insurance in India",
+                    subtitle: "Comprehensive guide for Non-Resident Indians seeking term life cover. Save up to 50% on premiums compared to foreign policies.",
+                    author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                },
+            },
+            {
+                id: "nr2",
+                type: "rich_text",
+                data: {
+                    content: "<p>Can NRIs buy term insurance in India? Yes, absolutely. In fact, Indian term insurance is often significantly cheaper than similar policies in the UK, USA, or Gulf countries. NRIs can buy policies through online portals with remote tele-medicals, paying premiums directly via NRE, NRO, or foreign bank accounts.</p>",
+                },
+            },
+            {
+                id: "nr3",
+                type: "how_it_works_steps",
+                data: {
+                    title: "How NRIs Can Buy Term Insurance Remotely",
+                    steps: [
+                        { text: "Select a plan and premium payment term on the platform." },
+                        { text: "Submit passports, visa copies, and country-of-residence proof." },
+                        { text: "Schedule a tele-medical interview (video call with a certified physician)." },
+                        { text: "Pay premium via NRE/NRO bank accounts to leverage tax-free proceeds." },
+                        { text: "The policy document is issued and sent digitally via email." },
+                    ],
+                },
+            },
+            {
+                id: "nr4",
+                type: "benefits_list",
+                data: {
+                    title: "Key Benefits for NRIs Buying in India",
+                    items: [
+                        { heading: "Lower Cost", body: "Indian term policies are highly cost-competitive globally, saving up to 50% on annual premium costs." },
+                        { heading: "GST Waiver Benefits", body: "NRIs paying premiums in foreign currency from NRE/FCNR accounts are eligible for an 18% GST refund on premium payments." },
+                        { heading: "Global Coverage", body: "The death benefit is paid out to beneficiaries globally in foreign currency or INR without any legal restrictions." },
+                    ],
+                },
+            },
+            {
+                id: "nr5",
+                type: "cta_block",
+                data: {
+                    title: "Connect with our specialized NRI support desk now.",
+                    bookCallText: "Book NRI Call",
+                    whatsappText: "Direct Support",
+                },
+            },
+        ],
+    })
+
+    await PageContent.create({
+        pageKey: "health/what-is-health-insurance",
+        title: "What is Health Insurance?",
+        section: "health",
+        published: true,
+        seo: {
+            metaTitle: "What is Health Insurance? A Simple Guide for Beginners",
+            metaDescription: "A beginner's guide to health insurance in India. Learn about network hospitals, cashless claims, deductibles, and waiting periods.",
+            keywords: ["what is health insurance", "health insurance basics", "medical insurance guide"],
+        },
+        blocks: [
+            {
+                id: "wh1",
+                type: "hero",
+                data: {
+                    title: "What is Health Insurance?",
+                    subtitle: "A simple guide to healthcare cover. Understand how medical policies shield you from soaring hospital bills and protect your savings.",
+                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                },
+            },
+            {
+                id: "wh2",
+                type: "rich_text",
+                data: {
+                    content: "<p>Medical emergencies never send a warning. With hospital room rents and treatment costs growing at 10-15% annually in India, a single hospitalization can wipe out years of savings. Health insurance is a contract between you and an insurer where they pay for your medical and surgical expenses in exchange for an annual premium.</p>",
+                },
+            },
+            {
+                id: "wh3",
+                type: "note_box",
+                data: {
+                    label: "Important Concept",
+                    content: "Health insurance pays for room rent, ICU charges, doctor fees, surgeries, medicines, and pre/post-hospitalization costs. However, all policies have standard waiting periods (usually 2-3 years) for pre-existing illnesses like diabetes or hypertension.",
+                },
+            },
+            {
+                id: "wh4",
+                type: "how_it_works_steps",
+                data: {
+                    title: "How Health Insurance Claims Work",
+                    steps: [
+                        { text: "Cashless Claim: You get admitted to a network hospital and submit your health card." },
+                        { text: "The hospital's third-party administrator (TPA) sends pre-authorization requests to the insurer." },
+                        { text: "The insurer approves the request and pays the hospital bills directly upon discharge." },
+                        { text: "Reimbursement Claim: If admitted to a non-network hospital, you pay the bills yourself first." },
+                        { text: "You submit original discharge cards, bills, and receipts within 30 days to get refunded." },
+                    ],
+                },
+            },
+            {
+                id: "wh5",
+                type: "cta_block",
+                data: {
+                    title: "Unsure which plan matches your medical history? Talk to us.",
+                    bookCallText: "Compare Health Plans",
+                    whatsappText: "WhatsApp Help",
+                },
+            },
+        ],
+    })
+
+    await PageContent.create({
+        pageKey: "health/best-health-insurance-plans",
+        title: "Best Health Insurance Plans 2026",
+        section: "health",
+        published: true,
+        seo: {
+            metaTitle: "Best Health Insurance Plans in India 2026 — Compare",
+            metaDescription: "Compare the best health insurance plans for 2026. View network hospital strength, co-payment clauses, claim ratios, and pricing.",
+            keywords: ["best health insurance", "best medical insurance plan", "top health policies 2026"],
+        },
+        blocks: [
+            {
+                id: "bh1",
+                type: "hero",
+                data: {
+                    title: "Best Health Insurance Plans 2026",
+                    subtitle: "Handpicked medical policies with high claim ratios, extensive hospital networks, and zero room-rent limits.",
+                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                },
+            },
+            {
+                id: "bh2",
+                type: "rich_text",
+                data: {
+                    content: "<p>The 'best' health insurance policy is one that has zero room rent limits, no co-payment clauses, and cover for pre-existing diseases with minimal waiting periods. In 2026, HDFC Ergo Optima Restore and Niva Bupa ReAssure remain highly popular due to their stellar cashless network and claim resolution rate.</p>",
+                },
+            },
+            {
+                id: "bh3",
+                type: "real_example_comparison",
+                data: {
+                    title: "Compare Best Selling Policies: HDFC Ergo vs Niva Bupa",
+                    plan1: { insurer: "HDFC Ergo", planName: "Optima Restore", recommended: true },
+                    plan2: { insurer: "Niva Bupa", planName: "ReAssure", recommended: false },
+                    rows: [
+                        { parameter: "Network Hospitals", plan1Value: "13,000+", plan2Value: "10,000+", plan1Good: true, plan2Good: true },
+                        { parameter: "Claim Settlement Ratio", plan1Value: "97%", plan2Value: "91.6%", plan1Good: true, plan2Good: true },
+                        { parameter: "Room Rent Limits", plan1Value: "No limit (Any Room)", plan2Value: "No limit (Any Room)", plan1Good: true, plan2Good: true },
+                        { parameter: "Disease Sub-limits", plan1Value: "None", plan2Value: "Yes (On specific procedures)", plan1Good: true, plan2Good: false },
+                    ],
+                },
+            },
+            {
+                id: "bh4",
+                type: "cta_block",
+                data: {
+                    title: "Get expert advice and buy the perfect health cover.",
+                    bookCallText: "Book Free Call",
+                    whatsappText: "Direct Support",
+                },
+            },
+        ],
+    })
+
+    await PageContent.create({
+        pageKey: "health/family-health-insurance",
+        title: "Family Health Insurance",
+        section: "health",
+        published: true,
+        seo: {
+            metaTitle: "Family Floater Health Insurance Plans — Save on Premiums",
+            metaDescription: "Secure the health of your entire family under a single health insurance policy. Compare family floater benefits, rates, and features.",
+            keywords: ["family health insurance", "family floater health plan", "best family health policy"],
+        },
+        blocks: [
+            {
+                id: "fh1",
+                type: "hero",
+                data: {
+                    title: "Family Floater Health Insurance",
+                    subtitle: "One policy to protect your whole family. Save up to 35% on premiums compared to buying separate individual policies.",
+                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                },
+            },
+            {
+                id: "fh2",
+                type: "rich_text",
+                data: {
+                    content: "<p>A Family Floater Health Insurance plan covers your entire family (spouse, children, and parents) under a single shared sum assured. For instance, a ₹10 Lakh sum assured can be utilized by any member of the family during the year. This is highly cost-effective and much easier to manage than paying for 4 separate policies.</p>",
+                },
+            },
+            {
+                id: "fh3",
+                type: "benefits_list",
+                data: {
+                    title: "Why Choose a Family Floater Cover?",
+                    items: [
+                        { heading: "Affordable Premium", body: "Buying one floater policy is 30-40% cheaper than buying individual policies for every family member." },
+                        { heading: "Easy Claims & Management", body: "One premium renewal date, one health card set, and a unified claims desk for the entire household." },
+                        { heading: "Restoration Benefits", body: "Modern floater plans instantly restore 100% of the sum assured if one member exhausts the limit, leaving it fully available for others." },
+                    ],
+                },
+            },
+            {
+                id: "fh4",
+                type: "cta_block",
+                data: {
+                    title: "Compare top family floater policies side-by-side with our advisors.",
+                    bookCallText: "Compare Floater Plans",
+                    whatsappText: "Talk to Advisor",
+                },
+            },
+        ],
+    })
+
+    await PageContent.create({
         pageKey: "home",
         title: "Homepage",
         section: "home",
         published: true,
         seo: {
             metaTitle: "Insurance Platform - Expert Advice, Free Consultation",
-            metaDescription: "Get expert advice on term life and health insurance. Book a free call with IRDAI-certified advisors.",
+            metaDescription: "Get expert advice on term life and health insurance. Get a free consultation with our top advisors.",
             keywords: ["insurance platform india", "term insurance", "health insurance"],
         },
         blocks: [
-            { id: "h1", type: "home_hero", data: { badge: "IRDAI-Certified Expert Advisors", title: "The Ultimate Insurance Buying Experience", subtitle: "Talk to IRDAI certified experts. No spam. Just honest guidance.", primaryCta: { text: "Book a free call now", href: "/contact" }, stats: [{ value: "8,00,000+", label: "Customers Helped" }, { value: "4.9/5", label: "Google Rating" }, { value: "21,000+", label: "Google Reviews" }], showInquiryForm: false } },
-            { id: "h2", type: "stat_bar", data: { stats: [{ value: "8,00,000+", label: "Customers helped" }, { value: "4.9", label: "Average rating" }, { value: "Rs.0", label: "Consultation cost" }, { value: "21,000+", label: "Google reviews" }] } },
-            { id: "h3", type: "ditto_experience", data: {} },
+            { id: "h1", type: "home_hero", data: { badge: "Top-Rated Expert Advisors", title: "The Ultimate Insurance Buying Experience", subtitle: "Simple, transparent, and direct comparisons. Get honest help from expert advisors without any sales pressure.", primaryCta: { text: "Compare Plans", href: "/contact" }, stats: [], showInquiryForm: false } },
+            { id: "h2", type: "stat_bar", data: { stats: [{ value: "100%", label: "Unbiased" }, { value: "Free", label: "Consultation" }, { value: "Direct", label: "Support" }] } },
+            { id: "h3", type: "pmpartners_experience", data: {} },
             { id: "h4", type: "comparison_section", data: {} },
             { id: "h5", type: "product_cards", data: { title: "Two products. Expert guidance on both.", cards: [{ title: "Term Life Insurance", desc: "Pure protection for your family at the lowest possible premium.", href: "/term-life", colorClass: "bg-blue-600" }, { title: "Health Insurance", desc: "Comprehensive coverage for you and your family.", href: "/health", colorClass: "bg-teal-600" }] } },
             { id: "h6", type: "insurance_checklist", data: {} },
-            { id: "h7", type: "reviews", data: { rating: 4.9, totalCount: 21000, items: [{ name: "Arjun Mehta", initials: "AM", body: "One call changed everything. Got a Rs.1 Cr term plan within a week." }, { name: "Priya Nair", initials: "PN", body: "No pushy sales pitch. Honest advice. Completely satisfied." }, { name: "Rohit Sharma", initials: "RS", body: "Best decision for my family. Incredibly patient advisor." }] } },
-            { id: "h8", type: "home_faq", data: { items: [{ question: "What is Ditto?", answer: "Ditto helps you make better decisions when buying insurance." }, { question: "Is it free?", answer: "Yes, completely free." }, { question: "Do you earn commission?", answer: "Yes, but our advice is never influenced by it." }, { question: "How quickly can I get a policy?", answer: "Within 3-7 working days after our call." }] } },
-            { id: "h9", type: "choose_ditto_cta", data: {} },
+            { id: "h7", type: "reviews", data: { rating: 5, totalCount: 21000, items: [{ name: "Arjun Mehta", initials: "AM", body: "One call changed everything. Got a Rs.1 Cr term plan within a week." }, { name: "Priya Nair", initials: "PN", body: "No pushy sales pitch. Honest advice. Completely satisfied." }, { name: "Rohit Sharma", initials: "RS", body: "Best decision for my family. Incredibly patient advisor." }] } },
+            { id: "h8", type: "home_faq", data: { items: [{ question: "What is PM Partners?", answer: "PM Partners helps you make better decisions when buying insurance." }, { question: "Is it free?", answer: "Yes, completely free." }, { question: "Do you earn commission?", answer: "Yes, but our advice is never influenced by it." }, { question: "How quickly can I get a policy?", answer: "Within 3-7 working days after our call." }] } },
+            { id: "h9", type: "choose_pmpartners_cta", data: {} },
         ],
     })
 

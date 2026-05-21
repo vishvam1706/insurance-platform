@@ -7,7 +7,7 @@ export type BlockType =
     | "types_list"
     | "info_section"
     | "note_box"
-    | "dittos_take"
+    | "pmpartners_take"
     | "numbered_cards"
     | "final_thoughts"
     | "features_table"
@@ -26,11 +26,11 @@ export type BlockType =
     | "faq"
     | "home_hero"
     | "product_cards"
-    | "ditto_experience"
+    | "pmpartners_experience"
     | "comparison_section"
     | "insurance_checklist"
     | "home_faq"
-    | "choose_ditto_cta"
+    | "choose_pmpartners_cta"
 
 export interface Block {
     id: string
@@ -101,8 +101,8 @@ export interface NoteBoxData {
     icon?: string
 }
 
-// Ditto's Take
-export interface DittosTakeData {
+// PM Partners' Take
+export interface PmPartnersTakeData {
     title: string
     body: string
     advisorImage?: string
@@ -152,7 +152,7 @@ export interface PlansTableData {
         riders: string
         csr: string
         rating: string
-        dittoRating?: number
+        pmpartnersRating?: number
     }[]
 }
 
@@ -229,11 +229,22 @@ export interface CtaBlockData {
 // Stat Bar
 export interface StatBarData {
     stats: { value: string; label: string; icon?: string }[]
+    floatingImage?: string
 }
 
 // FAQ
 export interface FaqBlockData {
     items: { question: string; answer: string }[]
+}
+
+export interface HomeHeroSlide {
+    title: string
+    backgroundColor: string
+    personImage: string
+    cardText1?: string
+    cardText2?: string
+    cardText3?: string
+    badgeText?: string
 }
 
 // Home Hero
@@ -245,6 +256,8 @@ export interface HomeHeroBlockData {
     secondaryCta?: { text: string; href: string }
     stats?: { value: string; label: string }[]
     showInquiryForm?: boolean
+    carouselImages?: string[]
+    slides?: HomeHeroSlide[]
 }
 
 // Product Cards
@@ -255,11 +268,21 @@ export interface ProductCardsBlockData {
         desc: string
         href: string
         colorClass: string
+        imageUrl?: string
+        badge?: string
+        ctaText?: string
     }[]
 }
 
-// Ditto Experience
-export interface DittoExperienceBlockData {
+// PM Partners Experience
+export interface PmPartnersExperienceBlockData {
+    heading?: string
+    subheading?: string
+    description?: string
+    leftImage?: string
+    step1Image?: string
+    step2Image?: string
+    step3Image?: string
     steps?: { num: string; title: string; body: string }[]
 }
 
@@ -267,6 +290,16 @@ export interface DittoExperienceBlockData {
 export interface ComparisonSectionBlockData {
     title?: string
     subtitle?: string
+    pmpartnersAvatar1?: string
+    pmpartnersAvatar2?: string
+    otherAvatar1?: string
+    otherAvatar2?: string
+    rows?: {
+        category: string
+        subtitle: string
+        pmpartnersPoints: { text: string; icon?: string; image?: string; showAvatars?: boolean }[]
+        otherPoints: { text: string }[]
+    }[]
 }
 
 // Insurance Checklist
@@ -280,7 +313,7 @@ export interface HomeFaqBlockData {
     items: { question: string; answer: string }[]
 }
 
-// Choose Ditto CTA
-export interface ChooseDittoCataBlockData {
+// Choose PM Partners CTA
+export interface ChoosePmPartnersCataBlockData {
     heading?: string
 }

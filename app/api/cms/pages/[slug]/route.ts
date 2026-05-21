@@ -5,6 +5,7 @@ import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import { getAuthUser } from "@/lib/auth"
 import { UpdatePageSchema } from "@/lib/validations/page.schema"
+import { revalidatePath } from "next/cache"
 
 export async function GET(
     _req: NextRequest,
@@ -74,6 +75,8 @@ export async function PUT(
             return NextResponse.json({ error: "Page not found" }, { status: 404 })
         }
 
+        revalidatePath("/", "layout")
+
         return NextResponse.json({ success: true, page })
     } catch {
         return NextResponse.json({ error: "Something went wrong" }, { status: 500 })
@@ -99,6 +102,8 @@ export async function DELETE(
 
         await connectDB()
         await PageContent.findOneAndDelete({ pageKey })
+
+        revalidatePath("/", "layout")
 
         return NextResponse.json({ success: true })
     } catch {

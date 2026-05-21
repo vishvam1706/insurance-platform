@@ -1,7 +1,7 @@
-import { DittosTakeData } from "@/types/blocks"
+import { PmPartnersTakeData } from "@/types/blocks"
 import { Lightbulb } from "lucide-react"
 
-export default function DittosTake({ data }: { data: DittosTakeData }) {
+export default function PmPartnersTake({ data }: { data: PmPartnersTakeData }) {
     return (
         <div
             className="my-10 rounded-2xl p-6"
@@ -10,15 +10,15 @@ export default function DittosTake({ data }: { data: DittosTakeData }) {
             <div className="flex items-center gap-2.5 mb-3">
                 <div
                     className="w-7 h-7 rounded-lg flex items-center justify-center"
-                    style={{ background: "var(--brand)", flexShrink: 0 }}
+                    style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)", flexShrink: 0 }}
                 >
-                    <Lightbulb className="w-4 h-4 text-white" />
+                    <Lightbulb className="w-4 h-4" style={{ color: "var(--brand-dark)" }} />
                 </div>
                 <h3
                     className="font-bold"
-                    style={{ fontFamily: "var(--font-heading)", color: "#065F46" }}
+                    style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}
                 >
-                    {data.title || "Ditto's Take"}
+                    {data.title || "PM Partners' Take"}
                 </h3>
             </div>
             <div

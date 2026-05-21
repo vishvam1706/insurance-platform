@@ -1,32 +1,44 @@
-/* eslint-disable no-var */
-declare global {
-  var __otpStore: Map<string, { code: string; expires: number }> | undefined
-}
+import { connectDB } from "@/lib/mongodb"
+import Otp from "@/lib/models/Otp"
 
-const store: Map<string, { code: string; expires: number }> =
-  globalThis.__otpStore ?? new Map()
-if (!globalThis.__otpStore) globalThis.__otpStore = store
-
+/** Generates a random 6-digit verification code. */
 export function generateOtp(): string {
   return Math.floor(100000 + Math.random() * 900000).toString()
 }
 
-export function setOtp(key: string, code: string, ttlMs = 5 * 60 * 1000) {
-  store.set(key, { code, expires: Date.now() + ttlMs })
+/** Saves an OTP for a given key to the database with a specific TTL. */
+export async function setOtp(key: string, code: string, ttlMs = 5 * 60 * 1000): Promise<void> {
+  await connectDB()
+  const expiresAt = new Date(Date.now() + ttlMs)
+  await Otp.findOneAndUpdate(
+    { key },
+    { code, expiresAt },
+    { upsert: true, new: true }
+  )
 }
 
-export function verifyAndConsumeOtp(key: string, code: string): boolean {
-  const entry = store.get(key)
+/** Verifies and consumes the OTP (destroys it immediately upon match). */
+export async function verifyAndConsumeOtp(key: string, code: string): Promise<boolean> {
+  await connectDB()
+  const entry = await Otp.findOne({ key })
   if (!entry) return false
-  if (Date.now() > entry.expires) { store.delete(key); return false }
+  if (new Date() > entry.expiresAt) {
+    await Otp.deleteOne({ key })
+    return false
+  }
   if (entry.code !== code) return false
-  store.delete(key)
+  await Otp.deleteOne({ key })
   return true
 }
 
-export function hasActiveOtp(key: string): boolean {
-  const entry = store.get(key)
+/** Checks if there is an active (unexpired) OTP for the given key. */
+export async function hasActiveOtp(key: string): Promise<boolean> {
+  await connectDB()
+  const entry = await Otp.findOne({ key })
   if (!entry) return false
-  if (Date.now() > entry.expires) { store.delete(key); return false }
+  if (new Date() > entry.expiresAt) {
+    await Otp.deleteOne({ key })
+    return false
+  }
   return true
 }

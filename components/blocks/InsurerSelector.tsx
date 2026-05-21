@@ -42,11 +42,11 @@ export default function InsurerSelector({ data }: { data: InsurerSelectorData })
                         <button
                             key={insurer.slug}
                             onClick={() => toggle(insurer.slug)}
-                            className={cn("flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-200 text-xs font-semibold")}
+                            className={cn("flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-200 text-xs font-semibold cursor-pointer hover:border-[var(--brand)] hover:shadow-sm")}
                             style={{
                                 border: isSelected ? "2px solid var(--brand)" : "1px solid var(--border)",
                                 background: isSelected ? "var(--brand-light)" : "#FFFFFF",
-                                color: isSelected ? "var(--brand)" : "var(--text-secondary)",
+                                color: isSelected ? "var(--brand-dark)" : "var(--text-secondary)",
                                 fontFamily: "var(--font-body)",
                             }}
                         >
@@ -67,16 +67,16 @@ export default function InsurerSelector({ data }: { data: InsurerSelectorData })
                 <Button
                     onClick={handleCompare}
                     disabled={selected.length < 2}
-                    className="font-semibold px-6 py-2 rounded-full transition-all active:scale-95 disabled:active:scale-100 disabled:opacity-50"
-                    style={{ background: "var(--brand)", color: "#FFFFFF", fontFamily: "var(--font-body)" }}
+                    className="font-bold px-8 py-5 rounded-xl transition-all bg-[var(--text-primary)] hover:bg-[var(--brand)] text-white hover:text-[var(--text-primary)] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                    style={{ fontFamily: "var(--font-body)" }}
                 >
                     Compare {selected.length > 0 ? `(${selected.length} selected)` : ""}
                 </Button>
                 {selected.length > 0 && (
                     <button
                         onClick={() => setSelected([])}
-                        className="text-sm font-medium transition-colors"
-                        style={{ color: "var(--text-muted)" }}
+                        className="text-sm font-bold transition-colors cursor-pointer"
+                        style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}
                         onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
                         onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
                     >

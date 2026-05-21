@@ -1,6 +1,9 @@
+"use client"
+
 import { HeroBlockData } from "@/types/blocks"
 import { BadgeCheck, CalendarDays, UserCheck } from "lucide-react"
 import Image from "next/image"
+import { motion } from "framer-motion"
 
 function formatDate(dateStr?: string) {
     if (!dateStr) return null
@@ -60,7 +63,7 @@ function Avatar({ name, photo, size = 44 }: { name: string; photo?: string; size
             style={{
                 width: size,
                 height: size,
-                background: "linear-gradient(135deg, var(--brand) 0%, #0097c4 100%)",
+                background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%)",
                 fontSize: size * 0.32,
             }}
         >
@@ -75,7 +78,7 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
     const authorRole = getRole(data.author)
     const authorPhoto = getPhoto(data.author)
     const reviewerName = getName(data.reviewer)
-    const reviewerRole = getRole(data.reviewer) || "IRDAI-Certified Expert"
+    const reviewerRole = getRole(data.reviewer) || "Insurance Expert"
     const reviewerPhoto = getPhoto(data.reviewer)
     const category = (data as any).category
 
@@ -83,11 +86,48 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
     const hasBottomImage = Boolean(data.bottomImage)
     const hasBgImage = Boolean(data.backgroundImage)
 
+    // Framer motion variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.12,
+                delayChildren: 0.1,
+            }
+        }
+    } as const
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 15 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { type: "spring", stiffness: 100, damping: 15 }
+        }
+    } as const
+
+    const imageVariants = {
+        hidden: { opacity: 0, scale: 0.98 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        }
+    } as const
+
     return (
-        <div className="pb-8" style={{ borderBottom: "1px solid var(--border-light)" }}>
+        <motion.div 
+            className="pb-8" 
+            style={{ borderBottom: "1px solid var(--border-light)" }}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+        >
             {/* Top bar: category + date */}
-            <div
+            <motion.div
                 className="flex items-center justify-between px-8 sm:px-10 pt-8 pb-5 flex-wrap gap-2"
+                variants={itemVariants}
             >
                 {category ? (
                     <span className="badge-green inline-flex">{category}</span>
@@ -108,11 +148,12 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                         Published on: {updatedStr}
                     </div>
                 )}
-            </div>
+            </motion.div>
 
             {/* Title */}
             <div className="px-8 sm:px-10">
-                <h1
+                <motion.h1
+                    variants={itemVariants}
                     style={{
                         fontSize: "var(--fs-hero)",
                         fontFamily: "var(--font-heading)",
@@ -123,19 +164,21 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                     }}
                 >
                     {data.title}
-                </h1>
+                </motion.h1>
 
                 {/* Author + Reviewer cards — 2 photos side by side */}
                 {hasPersonCards && (
-                    <div className="flex flex-wrap gap-4 mb-6">
+                    <motion.div className="flex flex-wrap gap-4 mb-6" variants={itemVariants}>
                         {/* Author card */}
                         {authorName && (
-                            <div
-                                className="flex items-center gap-3 rounded-xl px-4 py-3 flex-1 min-w-[200px]"
+                            <motion.div
+                                className="flex items-center gap-3 rounded-xl px-4 py-3 flex-1 min-w-[200px] transition-all hover:shadow-md hover:border-emerald-500/20"
                                 style={{
                                     background: "var(--surface-muted)",
                                     border: "1px solid var(--border)",
                                 }}
+                                whileHover={{ y: -3 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             >
                                 <Avatar name={authorName} photo={authorPhoto} size={44} />
                                 <div className="min-w-0">
@@ -164,69 +207,72 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                                         </p>
                                     )}
                                 </div>
-                            </div>
+                            </motion.div>
                         )}
 
                         {/* Reviewer card */}
                         {reviewerName && (
-                            <div
-                                className="flex items-center gap-3 rounded-xl px-4 py-3 flex-1 min-w-[200px]"
+                            <motion.div
+                                className="flex items-center gap-3 rounded-xl px-4 py-3 flex-1 min-w-[200px] transition-all hover:shadow-md hover:border-emerald-500/30"
                                 style={{
-                                    background: "#ECFDF5",
-                                    border: "1px solid #A7F3D0",
+                                    background: "var(--brand-light)",
+                                    border: "1px solid var(--brand-200)",
                                 }}
+                                whileHover={{ y: -3 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             >
                                 <Avatar name={reviewerName} photo={reviewerPhoto} size={44} />
                                 <div className="min-w-0">
                                     <p
                                         className="text-[10px] uppercase tracking-wider font-semibold mb-0.5"
-                                        style={{ color: "#059669", fontFamily: "var(--font-body)" }}
+                                        style={{ color: "var(--brand-dark)", fontFamily: "var(--font-body)" }}
                                     >
                                         Reviewed by
                                     </p>
                                     <p
                                         className="text-sm font-bold leading-tight flex items-center gap-1"
-                                        style={{ color: "#065F46", fontFamily: "var(--font-body)" }}
+                                        style={{ color: "var(--text-primary)", fontFamily: "var(--font-body)" }}
                                     >
                                         {reviewerName}
                                         <BadgeCheck
                                             className="w-3.5 h-3.5 shrink-0"
-                                            style={{ color: "#00B386" }}
+                                            style={{ color: "var(--brand)" }}
                                         />
                                     </p>
                                     <p
                                         className="text-xs mt-0.5 truncate"
-                                        style={{ color: "#059669", fontFamily: "var(--font-body)" }}
+                                        style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}
                                     >
                                         {reviewerRole}
                                     </p>
                                     {data.certificationId && (
                                         <p
                                             className="text-[10px] mt-0.5 font-mono"
-                                            style={{ color: "#059669" }}
+                                            style={{ color: "var(--brand-dark)" }}
                                         >
                                             {data.certificationId}
                                         </p>
                                     )}
                                 </div>
-                            </div>
+                            </motion.div>
                         )}
-                    </div>
+                    </motion.div>
                 )}
 
                 {/* Old-style certificationId outside cards (when no reviewer) */}
                 {data.certificationId && !reviewerName && (
-                    <div
+                    <motion.div
                         className="inline-flex text-xs px-3 py-1.5 rounded-full font-mono mb-4"
                         style={{ background: "var(--brand-light)", color: "var(--brand)", border: "1px solid var(--brand-100)" }}
+                        variants={itemVariants}
                     >
                         {data.certificationId}
-                    </div>
+                    </motion.div>
                 )}
 
                 {/* Subtitle */}
                 {data.subtitle && (
-                    <p
+                    <motion.p
                         className="text-base leading-relaxed p-4 rounded-2xl mb-6"
                         style={{
                             color: "var(--text-secondary)",
@@ -234,15 +280,16 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                             border: "1px solid var(--brand-100)",
                             fontFamily: "var(--font-body)",
                         }}
+                        variants={itemVariants}
                     >
                         {data.subtitle}
-                    </p>
+                    </motion.p>
                 )}
             </div>
 
             {/* Background / top feature image */}
             {hasBgImage && (
-                <div className="px-8 sm:px-10 mb-2">
+                <motion.div className="px-8 sm:px-10 mb-2" variants={imageVariants}>
                     <div
                         className="rounded-2xl overflow-hidden w-full"
                         style={{ border: "1px solid var(--border)" }}
@@ -255,12 +302,12 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                             className="w-full object-cover"
                         />
                     </div>
-                </div>
+                </motion.div>
             )}
 
             {/* Bottom image with caption */}
             {hasBottomImage && (
-                <div className="px-8 sm:px-10 mt-5">
+                <motion.div className="px-8 sm:px-10 mt-5" variants={imageVariants}>
                     <figure>
                         <div
                             className="rounded-2xl overflow-hidden w-full"
@@ -285,8 +332,8 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                             />
                         )}
                     </figure>
-                </div>
+                </motion.div>
             )}
-        </div>
+        </motion.div>
     )
 }

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select"
 import { Plus, Trash2 } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
+import ImageUploader from "../ImageUploader"
 
 interface Props { data: ProductCardsBlockData; onChange: (d: ProductCardsBlockData) => void }
 
@@ -93,6 +94,26 @@ export default function ProductCardsEditor({ data, onChange }: Props) {
                             onChange={(e) => updateCard(i, "href", e.target.value)}
                             placeholder="/term-life"
                             className="text-sm font-mono"
+                        />
+                        <div className="grid grid-cols-2 gap-2">
+                            <Input
+                                value={card.badge || ""}
+                                onChange={(e) => updateCard(i, "badge", e.target.value)}
+                                placeholder="Badge label (e.g. Best for Family)"
+                                className="text-xs"
+                            />
+                            <Input
+                                value={card.ctaText || ""}
+                                onChange={(e) => updateCard(i, "ctaText", e.target.value)}
+                                placeholder="Button label (e.g. Speak to Advisor)"
+                                className="text-xs"
+                            />
+                        </div>
+                        <ImageUploader
+                            label="Card Background Image (optional)"
+                            value={card.imageUrl || ""}
+                            onChange={(url) => updateCard(i, "imageUrl", url)}
+                            compact
                         />
                         <div className="space-y-1">
                             <Label className="text-xs text-slate-400">Icon color</Label>

@@ -67,7 +67,11 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
 
                     {/* RIGHT: Table of Contents */}
                     {hasToc && showSidebar && (
-                        <aside className="hidden lg:block self-start sticky top-24">
+                        <aside
+                            className="hidden lg:block relative"
+                            style={{ alignSelf: "stretch" }}
+                        >
+                            <div style={{ position: "sticky", top: "96px", maxHeight: "calc(100vh - 96px - 2rem)", display: "flex", flexDirection: "column" }}>
                                 {/* TOC Card */}
                                 <div
                                     className="rounded-2xl p-5 mb-4"
@@ -84,7 +88,7 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                                         On this page
                                     </p>
 
-                                    <nav className="space-y-0.5">
+                                    <nav className="space-y-0.5" style={{ overflowY: "auto", maxHeight: "calc(100vh - 96px - 10rem)", scrollbarWidth: "none" }}>
                                         {toc.map((item) => {
                                             const isActive = activeId === item.id
                                             return (
@@ -147,6 +151,7 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                                     <Phone className="w-4 h-4 shrink-0" />
                                     Talk to a free advisor
                                 </Link>
+                            </div>
                         </aside>
                     )}
                 </div>

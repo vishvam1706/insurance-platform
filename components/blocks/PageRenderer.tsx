@@ -8,7 +8,7 @@ import BenefitsList from "./BenefitsList"
 import TypesList from "./TypesList"
 import InfoSection from "./InfoSection"
 import NoteBox from "./NoteBox"
-import DittosTake from "./DittosTake"
+import PmPartnersTake from "./PmPartnersTake"
 import NumberedCards from "./NumberedCards"
 import FinalThoughts from "./FinalThoughts"
 import FeaturesTable from "./FeaturesTable"
@@ -27,13 +27,13 @@ import FaqBlock from "./FaqBlock"
 import StatBar from "./StatBar"
 import HomeHeroBlock from "./HomeHeroBlock"
 import ProductCardsBlock from "./ProductCardsBlock"
-import DittoExperienceBlock from "../home/DittoExperience"
+import PmPartnersExperienceBlock from "../home/PmPartnersExperience"
 import ComparisonSectionBlock from "../home/ComparisonSection"
 import InsuranceChecklistBlock from "../home/InsuranceChecklist"
 import HomeFaqBlock from "../home/HomeFaq"
-import ChooseDittoCtaBlock from "../home/ChooseDittoCta"
+import ChoosePmPartnersCtaBlock from "../home/ChoosePmPartnersCta"
 
-const HOMEPAGE_BLOCKS = new Set(["home_hero", "product_cards", "ditto_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_ditto_cta"])
+const HOMEPAGE_BLOCKS = new Set(["home_hero", "product_cards", "pmpartners_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_pmpartners_cta"])
 
 export default function PageRenderer({ blocks }: { blocks: Block[] }) {
     if (!blocks || blocks.length === 0) return null
@@ -56,7 +56,7 @@ export default function PageRenderer({ blocks }: { blocks: Block[] }) {
                     case "types_list": rendered = <TypesList data={d} />; break
                     case "info_section": rendered = <InfoSection data={d} />; break
                     case "note_box": rendered = <NoteBox data={d} />; break
-                    case "dittos_take": rendered = <DittosTake data={d} />; break
+                    case "pmpartners_take": rendered = <PmPartnersTake data={d} />; break
                     case "numbered_cards": rendered = <NumberedCards data={d} />; break
                     case "final_thoughts": rendered = <FinalThoughts data={d} />; break
                     case "features_table": rendered = <FeaturesTable data={d} />; break
@@ -75,11 +75,11 @@ export default function PageRenderer({ blocks }: { blocks: Block[] }) {
                     case "stat_bar": rendered = <StatBar data={d} />; break
                     case "home_hero": rendered = <HomeHeroBlock data={d} />; break
                     case "product_cards": rendered = <ProductCardsBlock data={d} />; break
-                    case "ditto_experience": rendered = <DittoExperienceBlock waUrl={waUrl} />; break
-                    case "comparison_section": rendered = <ComparisonSectionBlock />; break
+                    case "pmpartners_experience": rendered = <PmPartnersExperienceBlock data={d} waUrl={waUrl} />; break
+                    case "comparison_section": rendered = <ComparisonSectionBlock data={d} />; break
                     case "insurance_checklist": rendered = <InsuranceChecklistBlock waUrl={waUrl} />; break
                     case "home_faq": rendered = <HomeFaqBlock items={d?.items} />; break
-                    case "choose_ditto_cta": rendered = <ChooseDittoCtaBlock waUrl={waUrl} />; break
+                    case "choose_pmpartners_cta": rendered = <ChoosePmPartnersCtaBlock waUrl={waUrl} />; break
                     default: rendered = null
                 }
 

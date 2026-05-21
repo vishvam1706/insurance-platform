@@ -6,35 +6,27 @@ import { ArrowRight } from "lucide-react"
 
 export default function FrequentlyCompared({ data }: { data: FrequentlyComparedData }) {
     return (
-        <div className="my-10">
+        <div className="my-12">
             {data.title && (
-                <h2 className="text-2xl font-bold mb-5" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
+                <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                     {data.title}
                 </h2>
             )}
-            <div className="space-y-3">
+            <div className="space-y-4">
                 {(data.links || []).map((link, i) => (
                     <Link
                         key={i}
                         href={link.url}
-                        className="group flex items-center justify-between p-4 rounded-xl transition-all duration-200"
-                        style={{ background: "#FFFFFF", border: "1px solid var(--border)" }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.borderColor = "var(--brand-100)"
-                            e.currentTarget.style.background = "var(--brand-light)"
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = "var(--border)"
-                            e.currentTarget.style.background = "#FFFFFF"
-                        }}
+                        className="group flex items-center justify-between p-5 rounded-2xl border border-[var(--brand-100)] bg-white hover:border-[var(--brand)] hover:bg-[var(--brand-light)] shadow-sm hover:shadow transition-all duration-300 transform hover:-translate-y-0.5"
                     >
-                        <span className="text-sm font-semibold transition-colors duration-200" style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)" }}>
+                        <span className="text-sm md:text-base font-bold transition-colors duration-300 group-hover:text-[var(--text-primary)]" style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)" }}>
                             {link.label}
                         </span>
-                        <ArrowRight className="w-4 h-4 shrink-0" style={{ color: "var(--text-muted)" }} />
+                        <ArrowRight className="w-5 h-5 shrink-0 transition-transform duration-300 group-hover:translate-x-1.5" style={{ color: "var(--brand-dark)" }} />
                     </Link>
                 ))}
             </div>
         </div>
     )
 }
+

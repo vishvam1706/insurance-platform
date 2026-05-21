@@ -18,11 +18,11 @@ export default function CtaBlockEditor({ data, onChange }: Props) {
             <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                     <Label className="text-xs text-slate-500">Book Call Button Text</Label>
-                    <Input value={data.bookCallText || ""} onChange={(e) => set("bookCallText", e.target.value)} placeholder="Book a Free Call" />
+                    <Input value={data.bookCallText || ""} onChange={(e) => set("bookCallText", e.target.value)} placeholder="Compare Plans" />
                 </div>
                 <div className="space-y-1">
                     <Label className="text-xs text-slate-500">WhatsApp Button Text</Label>
-                    <Input value={data.whatsappText || ""} onChange={(e) => set("whatsappText", e.target.value)} placeholder="Chat on WhatsApp" />
+                    <Input value={data.whatsappText || ""} onChange={(e) => set("whatsappText", e.target.value)} placeholder="Direct Support" />
                 </div>
             </div>
             <div className="space-y-1">

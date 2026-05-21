@@ -170,7 +170,7 @@ export default function CmsEditorClient({ slug }: Props) {
                     blocks: [],
                     seo: {
                         metaTitle: "Insurance Platform - Expert Advice, Free Consultation",
-                        metaDescription: "Get expert advice on term life and health insurance. Book a free call with IRDAI-certified advisors.",
+                        metaDescription: "Get expert advice on term life and health insurance. Get a free consultation with our top advisors.",
                         keywords: ["insurance platform india", "term insurance", "health insurance"],
                     },
                 })

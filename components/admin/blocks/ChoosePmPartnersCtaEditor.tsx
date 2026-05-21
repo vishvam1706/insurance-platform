@@ -3,19 +3,19 @@
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 
-interface ChooseDittoCtaData {
+interface ChoosePmPartnersCtaData {
     headline?: string
     subtext?: string
     ctaText?: string
     ctaHref?: string
 }
-interface Props { data: ChooseDittoCtaData; onChange: (d: ChooseDittoCtaData) => void }
+interface Props { data: ChoosePmPartnersCtaData; onChange: (d: ChoosePmPartnersCtaData) => void }
 
-export default function ChooseDittoCtaEditor({ data: rawData, onChange }: Props) {
+export default function ChoosePmPartnersCtaEditor({ data: rawData, onChange }: Props) {
     // Guard: existing DB records may have been saved without any fields
-    const data: ChooseDittoCtaData = rawData ?? {}
+    const data: ChoosePmPartnersCtaData = rawData ?? {}
 
-    function set<K extends keyof ChooseDittoCtaData>(key: K, val: ChooseDittoCtaData[K]) {
+    function set<K extends keyof ChoosePmPartnersCtaData>(key: K, val: ChoosePmPartnersCtaData[K]) {
         onChange({ ...data, [key]: val })
     }
 
@@ -29,7 +29,7 @@ export default function ChooseDittoCtaEditor({ data: rawData, onChange }: Props)
                 <Input
                     value={data.headline || ""}
                     onChange={(e) => set("headline", e.target.value)}
-                    placeholder="Choose Ditto. Choose Honest Insurance."
+                    placeholder="Choose PM Partners. Choose Honest Insurance."
                 />
             </div>
             <div className="space-y-1.5">
@@ -46,7 +46,7 @@ export default function ChooseDittoCtaEditor({ data: rawData, onChange }: Props)
                     <Input
                         value={data.ctaText || ""}
                         onChange={(e) => set("ctaText", e.target.value)}
-                        placeholder="Book a free call"
+                        placeholder="Compare Plans"
                     />
                     <Input
                         value={data.ctaHref || ""}

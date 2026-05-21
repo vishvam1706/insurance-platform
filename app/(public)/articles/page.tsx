@@ -1,10 +1,11 @@
 import { Metadata } from "next"
 import Link from "next/link"
-import { connection } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import { ArrowRight, BookOpen } from "lucide-react"
 import { formatDate } from "@/lib/utils"
+
+export const revalidate = 1800 // Cache static page on Edge CDN, revalidate at most every 30 minutes
 
 export const metadata: Metadata = {
     title: "Insurance Articles & Guides",
@@ -12,7 +13,6 @@ export const metadata: Metadata = {
 }
 
 async function getArticles() {
-    await connection()
     await connectDB()
     const docs = await PageContent.find({ section: "articles", published: true })
         .select("pageKey title seo updatedAt")

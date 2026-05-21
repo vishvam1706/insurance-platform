@@ -19,7 +19,7 @@ import {
 import {
     Loader2, CheckCircle2, CalendarDays,
     ChevronLeft, ChevronRight, ChevronDown,
-    Clock, X, ShieldCheck, AlertCircle, Smartphone, Mail,
+    Clock, X, ShieldCheck, AlertCircle, Smartphone, Mail, Sparkles
 } from "lucide-react"
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -60,36 +60,32 @@ function MiniCalendar({ selected, onSelect }: { selected: Date | null; onSelect:
     ]
 
     return (
-        <div className="select-none">
-            <div className="flex items-center justify-between mb-3">
+        <div className="select-none p-1">
+            <div className="flex items-center justify-between mb-4">
                 <button type="button" onClick={prevMonth}
-                    className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors"
+                    className="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-50 hover:bg-slate-100 hover:text-emerald-600 transition-colors border border-slate-100"
                     style={{ color: "var(--text-muted)" }}
-                    onMouseEnter={e => (e.currentTarget.style.background = "var(--surface-muted)")}
-                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                 >
                     <ChevronLeft className="w-4 h-4" />
                 </button>
-                <span className="text-sm font-semibold" style={{ color: "var(--text-primary)", fontFamily: "var(--font-heading)" }}>
+                <span className="text-sm font-extrabold text-slate-800" style={{ fontFamily: "var(--font-heading)" }}>
                     {MONTHS[viewMonth]} {viewYear}
                 </span>
                 <button type="button" onClick={nextMonth}
-                    className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors"
+                    className="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-50 hover:bg-slate-100 hover:text-emerald-600 transition-colors border border-slate-100"
                     style={{ color: "var(--text-muted)" }}
-                    onMouseEnter={e => (e.currentTarget.style.background = "var(--surface-muted)")}
-                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                 >
                     <ChevronRight className="w-4 h-4" />
                 </button>
             </div>
 
-            <div className="grid grid-cols-7 mb-1">
+            <div className="grid grid-cols-7 mb-2">
                 {DAYS.map((d) => (
-                    <div key={d} className="text-center text-[10px] font-semibold py-1" style={{ color: "var(--text-muted)" }}>{d}</div>
+                    <div key={d} className="text-center text-[10px] font-black uppercase tracking-wider py-1 text-slate-400" style={{ fontFamily: "var(--font-heading)" }}>{d}</div>
                 ))}
             </div>
 
-            <div className="grid grid-cols-7 gap-0.5">
+            <div className="grid grid-cols-7 gap-1">
                 {cells.map((day, i) => {
                     if (!day) return <div key={i} />
                     const cellDate = new Date(viewYear, viewMonth, day)
@@ -103,12 +99,12 @@ function MiniCalendar({ selected, onSelect }: { selected: Date | null; onSelect:
                             type="button"
                             disabled={isPast}
                             onClick={() => !isPast && onSelect(cellDate)}
-                            className="h-8 w-full text-xs rounded-lg font-medium transition-all"
+                            className="h-9 w-full text-xs font-semibold rounded-xl transition-all hover:scale-105 active:scale-95 flex items-center justify-center"
                             style={{
-                                color: isPast ? "var(--text-muted)" : isSel ? "#FFFFFF" : isToday ? "var(--brand)" : "var(--text-secondary)",
+                                color: isPast ? "#CBD5E1" : isSel ? "#FFFFFF" : isToday ? "var(--brand-dark)" : "var(--text-secondary)",
                                 background: isSel ? "var(--brand)" : isToday && !isSel ? "var(--brand-light)" : "transparent",
                                 cursor: isPast ? "not-allowed" : "pointer",
-                                outline: isToday && !isSel ? "1px solid var(--brand-100)" : "none",
+                                border: isSel ? "none" : isToday ? "1px solid var(--brand)" : "1px solid transparent",
                             }}
                         >
                             {day}
@@ -125,15 +121,15 @@ function ScrollPicker({ items, value, onSelect, label, format: fmt = (v: number)
     items: number[]; value: number; onSelect: (v: number) => void; label: string; format?: (v: number) => string
 }) {
     return (
-        <div className="flex flex-col items-center gap-1">
-            <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>{label}</span>
-            <div className="h-40 overflow-y-auto rounded-xl w-16" style={{ border: "1px solid var(--border)", background: "#FFFFFF" }}>
+        <div className="flex flex-col items-center gap-1.5 flex-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400" style={{ fontFamily: "var(--font-heading)" }}>{label}</span>
+            <div className="h-40 overflow-y-auto rounded-2xl w-full border border-slate-100 bg-slate-50/50 shadow-inner scrollbar-thin">
                 {items.map((item) => (
                     <button
                         key={item}
                         type="button"
                         onClick={() => onSelect(item)}
-                        className="w-full py-2.5 text-sm font-mono font-semibold transition-all"
+                        className="w-full py-2.5 text-xs sm:text-sm font-mono font-bold transition-all hover:bg-slate-100 flex justify-center items-center"
                         style={{
                             background: value === item ? "var(--brand)" : "transparent",
                             color: value === item ? "#FFFFFF" : "var(--text-secondary)",
@@ -162,17 +158,17 @@ function FreeTimePicker({ value, onChange }: {
     }
 
     return (
-        <div className="rounded-xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "#FFFFFF" }}>
+        <div className="rounded-3xl overflow-hidden border border-emerald-100 bg-white shadow-xl animate-fade-up">
             {/* Tab bar */}
-            <div className="flex" style={{ borderBottom: "1px solid var(--border)" }}>
+            <div className="flex bg-slate-50 border-b border-emerald-50">
                 {(["date", "time"] as const).map((s) => (
                     <button
                         key={s}
                         type="button"
                         onClick={() => setStep(s)}
-                        className="flex-1 py-2.5 text-xs font-semibold capitalize transition-all flex items-center justify-center gap-1.5"
+                        className="flex-1 py-3 text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2"
                         style={{
-                            background: step === s ? "var(--brand)" : "var(--surface-muted)",
+                            background: step === s ? "var(--brand)" : "transparent",
                             color: step === s ? "#FFFFFF" : "var(--text-muted)",
                         }}
                     >
@@ -181,12 +177,12 @@ function FreeTimePicker({ value, onChange }: {
                 ))}
             </div>
 
-            <div className="p-4">
+            <div className="p-5 text-left">
                 {step === "date" && (
                     <>
                         <MiniCalendar selected={date} onSelect={(d) => { setDate(d); setStep("time") }} />
                         {date && (
-                            <div className="mt-3 text-center text-xs font-medium" style={{ color: "var(--brand)" }}>
+                            <div className="mt-3 text-center text-xs font-bold text-emerald-600 animate-pulse">
                                 Selected: {format(date, "d MMMM yyyy")} — now pick a time →
                             </div>
                         )}
@@ -195,32 +191,32 @@ function FreeTimePicker({ value, onChange }: {
 
                 {step === "time" && (
                     <>
-                        {!date && <p className="text-center text-xs py-4" style={{ color: "var(--text-muted)" }}>Please select a date first</p>}
+                        {!date && <p className="text-center text-xs py-8 text-slate-400 font-medium">Please select a date first</p>}
                         {date && (
-                            <>
-                                <p className="text-xs font-medium mb-4 text-center" style={{ color: "var(--text-secondary)" }}>
+                            <div className="space-y-4">
+                                <p className="text-xs font-bold text-slate-600 text-center">
                                     {format(date, "d MMMM yyyy")} — any time, 24/7
                                 </p>
-                                <div className="flex items-start justify-center gap-4">
+                                <div className="flex items-start justify-center gap-3">
                                     <ScrollPicker label="Hour" items={HOURS} value={hour} onSelect={setHour} />
                                     <div className="flex flex-col items-center justify-center h-40 pt-6">
-                                        <span className="text-2xl font-bold" style={{ color: "var(--text-muted)" }}>:</span>
+                                        <span className="text-2xl font-bold text-slate-300">:</span>
                                     </div>
                                     <ScrollPicker label="Minute" items={MINS} value={minute} onSelect={setMinute} />
                                 </div>
 
-                                <div className="mt-4 text-center rounded-xl py-3 px-4" style={{ background: "var(--brand-light)" }}>
-                                    <p className="text-xs mb-0.5" style={{ color: "var(--text-muted)" }}>Your selected time</p>
-                                    <p className="text-lg font-bold" style={{ fontFamily: "var(--font-heading)", color: "var(--brand)" }}>
+                                <div className="mt-4 text-center rounded-2xl py-3 px-4 border border-emerald-100 bg-emerald-50/50">
+                                    <p className="text-[10px] uppercase font-black tracking-wider text-emerald-600">Your selected time</p>
+                                    <p className="text-lg font-black text-emerald-700" style={{ fontFamily: "var(--font-heading)" }}>
                                         {pad(hour)}:{pad(minute)}
                                     </p>
-                                    <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
+                                    <p className="text-xs text-slate-500 font-medium mt-0.5">
                                         {format(date, "EEEE, d MMMM yyyy")}
                                     </p>
                                 </div>
 
-                                <div className="mt-3">
-                                    <Label className="text-xs mb-1 block" style={{ color: "var(--text-muted)" }}>Or type exact time</Label>
+                                <div className="space-y-1">
+                                    <Label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">Or type exact time</Label>
                                     <input
                                         type="time"
                                         value={`${pad(hour)}:${pad(minute)}`}
@@ -229,20 +225,18 @@ function FreeTimePicker({ value, onChange }: {
                                             if (!isNaN(h)) setHour(h)
                                             if (!isNaN(m)) setMinute(m)
                                         }}
-                                        className="w-full rounded-lg px-3 py-2 text-sm font-mono focus:outline-none"
-                                        style={{ border: "1px solid var(--border)", color: "var(--text-primary)" }}
+                                        className="w-full bg-slate-50/50 border border-slate-100 hover:border-emerald-100 focus:border-emerald-500 focus:bg-white rounded-xl px-3.5 py-2 text-sm font-mono font-bold text-slate-800 transition-all outline-none"
                                     />
                                 </div>
 
                                 <Button
                                     type="button"
                                     onClick={confirmDateTime}
-                                    className="w-full mt-4 h-9 text-sm font-semibold rounded-full"
-                                    style={{ background: "var(--brand)", color: "#FFFFFF" }}
+                                    className="w-full mt-4 h-11 text-sm font-extrabold rounded-full bg-emerald-600 text-white hover:bg-emerald-700 hover:-translate-y-0.5 shadow-md transition-all active:scale-95"
                                 >
                                     Confirm — {format(date, "d MMM")} at {pad(hour)}:{pad(minute)}
                                 </Button>
-                            </>
+                            </div>
                         )}
                     </>
                 )}
@@ -402,35 +396,47 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
 
     if (done) {
         return (
-            <div className="text-center py-8">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "var(--brand-light)" }}>
-                    <CheckCircle2 className="w-8 h-8" style={{ color: "var(--brand)" }} />
+            <div className="text-center py-12 px-4 animate-fade-up">
+                <div className="relative w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 bg-emerald-50 border border-emerald-100 shadow-sm shadow-emerald-50">
+                    <CheckCircle2 className="w-10 h-10 text-emerald-600 animate-bounce" />
+                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-emerald-300 animate-spin opacity-30" />
                 </div>
-                <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>We'll be in touch!</h3>
-                <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>
-                    {slotLabel ? `Our advisor will reach out on ${slotLabel}.` : "Our advisor will contact you shortly."}
+                <h3 className="text-2xl font-black mb-3 tracking-tight text-slate-900 animate-pulse" style={{ fontFamily: "var(--font-heading)" }}>
+                    You're Booked! 🎉
+                </h3>
+                <p className="text-sm leading-relaxed text-slate-500 max-w-sm mx-auto font-medium" style={{ fontFamily: "var(--font-body)" }}>
+                    {slotLabel ? `Our certified advisor has blocked a dedicated slot for you on ${slotLabel}.` : "Our certified advisor will contact you shortly."}
                 </p>
                 {slotLabel && (
-                    <div className="mt-4 inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl" style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)", color: "var(--brand)" }}>
-                        <CalendarDays className="w-4 h-4" />
+                    <div className="mt-6 inline-flex items-center gap-2 text-sm font-bold px-4.5 py-2.5 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm shadow-emerald-50">
+                        <CalendarDays className="w-4 h-4 shrink-0" />
                         {slotLabel}
                     </div>
                 )}
+                <p className="text-[11px] text-slate-400 mt-8 font-medium">Confirmation details have been sent to your verified mobile & email.</p>
             </div>
         )
     }
 
-    const fieldStyle = { border: "1px solid var(--border)", borderRadius: "10px", fontFamily: "var(--font-body)", fontSize: "0.875rem" }
-    const labelStyle = { fontSize: "0.75rem", fontWeight: 600, color: "var(--text-secondary)", fontFamily: "var(--font-body)" }
+    // Modern inputs visual variables
+    const inputClass = "w-full bg-slate-50/50 hover:bg-slate-50/80 border border-slate-100 hover:border-emerald-100 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-50/50 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 transition-all duration-200 outline-none placeholder:text-slate-400 placeholder:font-normal"
+    const textareaClass = "w-full bg-slate-50/50 hover:bg-slate-50/80 border border-slate-100 hover:border-emerald-100 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-50/50 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 transition-all duration-200 outline-none placeholder:text-slate-400 placeholder:font-normal resize-none"
+    const selectTriggerClass = "w-full flex items-center justify-between bg-slate-50/50 hover:bg-slate-50/80 border border-slate-100 hover:border-emerald-100 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-50/50 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-800 transition-all duration-200 outline-none text-left"
+    const labelStyle = { fontSize: "0.72rem", fontWeight: 900, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "var(--brand-dark)", fontFamily: "var(--font-heading)", display: "block", marginBottom: "0.35rem" }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 text-left">
 
             {/* Name */}
             <div className="space-y-1">
                 <Label style={labelStyle}>Full Name</Label>
-                <Input placeholder="Ravi Sharma" {...register("name")} style={fieldStyle} />
-                {errors.name && <p className="text-xs" style={{ color: "#DC2626" }}>{errors.name.message}</p>}
+                <Input placeholder="Ravi Sharma" {...register("name")} className={inputClass} style={{ border: "none" }} />
+                {errors.name && (
+                    <p className="text-xs text-red-500 flex items-center gap-1.5 mt-1 font-semibold animate-pulse">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {errors.name.message}
+                    </p>
+                )}
             </div>
 
             {/* Phone */}
@@ -438,46 +444,57 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                 <Label style={labelStyle}>Mobile Number</Label>
                 <div className="flex gap-2">
                     <div className="relative flex-1">
-                        <Input type="tel" placeholder="9876543210" {...register("phone")} style={fieldStyle}
-                            className={cn(otpPhase === "verified" && !phoneChanged ? "pr-8" : "")} />
+                        <Input type="tel" placeholder="9876543210" {...register("phone")} className={inputClass} style={{ border: "none" }} />
                         {otpPhase === "verified" && !phoneChanged && (
-                            <ShieldCheck className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "var(--brand)" }} />
+                            <ShieldCheck className="absolute right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-500 animate-pulse" />
                         )}
                     </div>
                     {(otpPhase === "idle" || otpPhase === "sending" || phoneChanged) && phoneValid && (
                         <button type="button" onClick={sendOtp} disabled={otpPhase === "sending"}
-                            className="shrink-0 px-3 h-10 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all"
-                            style={{ background: "var(--brand)", color: "#fff" }}>
-                            {otpPhase === "sending" ? <Loader2 className="w-3 h-3 animate-spin" /> : <Smartphone className="w-3 h-3" />}
+                            className="shrink-0 px-4 h-11.5 rounded-2xl text-xs font-bold flex items-center gap-1.5 transition-all bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm shadow-emerald-100 hover:-translate-y-0.5"
+                        >
+                            {otpPhase === "sending" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Smartphone className="w-3.5 h-3.5" />}
                             {phoneChanged ? "Re-verify" : "Send OTP"}
                         </button>
                     )}
                 </div>
-                {errors.phone && <p className="text-xs" style={{ color: "#DC2626" }}>{errors.phone.message}</p>}
+                {errors.phone && (
+                    <p className="text-xs text-red-500 flex items-center gap-1.5 mt-1 font-semibold animate-pulse">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {errors.phone.message}
+                    </p>
+                )}
 
-                {/* OTP entry */}
+                {/* OTP entry box */}
                 {(otpPhase === "sent" || otpPhase === "verifying") && (
-                    <div className="rounded-xl p-3 space-y-2" style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)" }}>
-                        <p className="text-xs font-medium" style={{ color: "var(--brand)" }}>Enter the 6-digit OTP sent via SMS to +91 {watchedPhone}</p>
+                    <div className="rounded-2xl p-4 space-y-3 border border-emerald-100 bg-emerald-50/50 shadow-inner animate-fade-up">
+                        <p className="text-xs font-bold text-emerald-700">Enter the 6-digit OTP sent to +91 {watchedPhone}</p>
                         <div className="flex gap-2">
                             <input ref={otpRef} maxLength={6} value={otpCode} onChange={e => { setOtpCode(e.target.value.replace(/\D/g, "")); setOtpError("") }}
-                                placeholder="123456" className="flex-1 rounded-lg px-3 py-2 text-sm font-mono tracking-widest text-center"
-                                style={{ border: "1px solid var(--border)", outline: "none" }} />
+                                placeholder="123456" className="flex-1 rounded-xl px-4 py-2.5 text-sm font-mono tracking-widest text-center border border-slate-100 focus:border-emerald-500 outline-none font-bold" />
                             <button type="button" onClick={verifyOtp} disabled={otpPhase === "verifying" || otpCode.length !== 6}
-                                className="px-4 rounded-lg text-xs font-semibold transition-all"
-                                style={{ background: "var(--brand)", color: "#fff", opacity: otpCode.length !== 6 ? 0.5 : 1 }}>
-                                {otpPhase === "verifying" ? <Loader2 className="w-3 h-3 animate-spin" /> : "Verify"}
+                                className="px-5 rounded-xl text-xs font-bold transition-all text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm"
+                                style={{ opacity: otpCode.length !== 6 ? 0.6 : 1 }}>
+                                {otpPhase === "verifying" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Verify"}
                             </button>
                         </div>
                         {countdown > 0
-                            ? <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>Resend in {countdown}s</p>
-                            : <button type="button" onClick={sendOtp} className="text-[10px] underline" style={{ color: "var(--brand)" }}>Resend OTP</button>
+                            ? <p className="text-[10px] text-slate-400 font-medium">Resend in {countdown}s</p>
+                            : <button type="button" onClick={sendOtp} className="text-[10px] font-black underline text-emerald-600 hover:text-emerald-700">Resend OTP</button>
                         }
                     </div>
                 )}
-                {otpError && <p className="text-xs flex items-center gap-1" style={{ color: "#DC2626" }}><AlertCircle className="w-3 h-3" />{otpError}</p>}
+                {otpError && (
+                    <p className="text-xs text-red-500 flex items-center gap-1.5 mt-1 font-semibold animate-pulse">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {otpError}
+                    </p>
+                )}
                 {otpPhase === "verified" && !phoneChanged && (
-                    <p className="text-xs flex items-center gap-1" style={{ color: "var(--brand)" }}><ShieldCheck className="w-3 h-3" />Mobile number verified</p>
+                    <p className="text-xs text-emerald-600 flex items-center gap-1.5 font-bold mt-1">
+                        <ShieldCheck className="w-4 h-4" />
+                        Mobile number verified
+                    </p>
                 )}
             </div>
 
@@ -486,48 +503,59 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                 <Label style={labelStyle}>Email</Label>
                 <div className="flex gap-2">
                     <div className="relative flex-1">
-                        <Input type="email" placeholder="ravi@example.com" {...register("email")} style={fieldStyle}
-                            className={cn(emailOtpPhase === "verified" && !emailChanged ? "pr-8" : "")} />
+                        <Input type="email" placeholder="ravi@example.com" {...register("email")} className={inputClass} style={{ border: "none" }} />
                         {emailOtpPhase === "verified" && !emailChanged && (
-                            <ShieldCheck className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "var(--brand)" }} />
+                            <ShieldCheck className="absolute right-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-500 animate-pulse" />
                         )}
                     </div>
                     {(emailOtpPhase === "idle" || emailOtpPhase === "sending" || emailChanged) && emailValid && (
                         <button type="button" onClick={sendEmailOtp} disabled={emailOtpPhase === "sending"}
-                            className="shrink-0 px-3 h-10 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all"
-                            style={{ background: "var(--brand)", color: "#fff" }}>
-                            {emailOtpPhase === "sending" ? <Loader2 className="w-3 h-3 animate-spin" /> : <Mail className="w-3 h-3" />}
+                            className="shrink-0 px-4 h-11.5 rounded-2xl text-xs font-bold flex items-center gap-1.5 transition-all bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm shadow-emerald-100 hover:-translate-y-0.5"
+                        >
+                            {emailOtpPhase === "sending" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
                             {emailChanged ? "Re-verify" : "Send OTP"}
                         </button>
                     )}
                 </div>
-                {errors.email && <p className="text-xs" style={{ color: "#DC2626" }}>{errors.email.message}</p>}
+                {errors.email && (
+                    <p className="text-xs text-red-500 flex items-center gap-1.5 mt-1 font-semibold animate-pulse">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {errors.email.message}
+                    </p>
+                )}
 
-                {/* Email OTP entry */}
+                {/* Email OTP entry box */}
                 {(emailOtpPhase === "sent" || emailOtpPhase === "verifying") && (
-                    <div className="rounded-xl p-3 space-y-2" style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)" }}>
-                        <p className="text-xs font-medium" style={{ color: "var(--brand)" }}>OTP sent to {watchedEmail}</p>
+                    <div className="rounded-2xl p-4 space-y-3 border border-emerald-100 bg-emerald-50/50 shadow-inner animate-fade-up">
+                        <p className="text-xs font-bold text-emerald-700">OTP sent to {watchedEmail}</p>
                         <div className="flex gap-2">
                             <input ref={emailOtpRef} maxLength={6} value={emailOtpCode}
                                 onChange={e => { setEmailOtpCode(e.target.value.replace(/\D/g, "")); setEmailOtpError("") }}
-                                placeholder="123456" className="flex-1 rounded-lg px-3 py-2 text-sm font-mono tracking-widest text-center"
-                                style={{ border: "1px solid var(--border)", outline: "none" }} />
+                                placeholder="123456" className="flex-1 rounded-xl px-4 py-2.5 text-sm font-mono tracking-widest text-center border border-slate-100 focus:border-emerald-500 outline-none font-bold" />
                             <button type="button" onClick={verifyEmailOtp}
                                 disabled={emailOtpPhase === "verifying" || emailOtpCode.length !== 6}
-                                className="px-4 rounded-lg text-xs font-semibold transition-all"
-                                style={{ background: "var(--brand)", color: "#fff", opacity: emailOtpCode.length !== 6 ? 0.5 : 1 }}>
-                                {emailOtpPhase === "verifying" ? <Loader2 className="w-3 h-3 animate-spin" /> : "Verify"}
+                                className="px-5 rounded-xl text-xs font-bold transition-all text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm"
+                                style={{ opacity: emailOtpCode.length !== 6 ? 0.6 : 1 }}>
+                                {emailOtpPhase === "verifying" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Verify"}
                             </button>
                         </div>
                         {emailCountdown > 0
-                            ? <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>Resend in {emailCountdown}s</p>
-                            : <button type="button" onClick={sendEmailOtp} className="text-[10px] underline" style={{ color: "var(--brand)" }}>Resend OTP</button>
+                            ? <p className="text-[10px] text-slate-400 font-medium">Resend in {emailCountdown}s</p>
+                            : <button type="button" onClick={sendEmailOtp} className="text-[10px] font-black underline text-emerald-600 hover:text-emerald-700">Resend OTP</button>
                         }
                     </div>
                 )}
-                {emailOtpError && <p className="text-xs flex items-center gap-1" style={{ color: "#DC2626" }}><AlertCircle className="w-3 h-3" />{emailOtpError}</p>}
+                {emailOtpError && (
+                    <p className="text-xs text-red-500 flex items-center gap-1.5 mt-1 font-semibold animate-pulse">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {emailOtpError}
+                    </p>
+                )}
                 {emailOtpPhase === "verified" && !emailChanged && (
-                    <p className="text-xs flex items-center gap-1" style={{ color: "var(--brand)" }}><ShieldCheck className="w-3 h-3" />Email verified</p>
+                    <p className="text-xs text-emerald-600 flex items-center gap-1.5 font-bold mt-1">
+                        <ShieldCheck className="w-4 h-4" />
+                        Email verified
+                    </p>
                 )}
             </div>
 
@@ -535,7 +563,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
             <div className="space-y-1">
                 <Label style={labelStyle}>Insurance Type</Label>
                 <Select value={insuranceType} onValueChange={(v) => { setType(v); setValue("insuranceType", v as "term" | "health"); setTypeErr("") }}>
-                    <SelectTrigger style={{ ...fieldStyle, borderColor: typeErr ? "#DC2626" : "var(--border)" }}>
+                    <SelectTrigger className={selectTriggerClass} style={{ border: typeErr ? "1px solid #DC2626" : "none" }}>
                         <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -543,41 +571,56 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                         <SelectItem value="health">Health Insurance</SelectItem>
                     </SelectContent>
                 </Select>
-                {typeErr && <p className="text-xs" style={{ color: "#DC2626" }}>{typeErr}</p>}
+                {typeErr && (
+                    <p className="text-xs text-red-500 flex items-center gap-1.5 mt-1 font-semibold animate-pulse">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {typeErr}
+                    </p>
+                )}
             </div>
 
             {/* State + Language */}
-            <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
+            <div className="grid grid-cols-2 gap-3.5">
+                <div className="space-y-1 text-left">
                     <Label style={labelStyle}>State</Label>
                     <Select value={state} onValueChange={(v) => { setState(v); setValue("state", v); setStateErr(""); setLangManual(false) }}>
-                        <SelectTrigger style={{ ...fieldStyle, borderColor: stateErr ? "#DC2626" : "var(--border)" }}>
+                        <SelectTrigger className={selectTriggerClass} style={{ border: stateErr ? "1px solid #DC2626" : "none" }}>
                             <SelectValue placeholder="State" />
                         </SelectTrigger>
                         <SelectContent>
                             {INDIAN_STATES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
                         </SelectContent>
                     </Select>
-                    {stateErr && <p className="text-xs" style={{ color: "#DC2626" }}>{stateErr}</p>}
+                    {stateErr && (
+                        <p className="text-xs text-red-500 flex items-center gap-1.5 mt-1 font-semibold animate-pulse">
+                            <AlertCircle className="w-3.5 h-3.5" />
+                            {stateErr}
+                        </p>
+                    )}
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1 text-left">
                     <Label style={labelStyle} className="flex items-center gap-1">
                         Language
                         {language && state && STATE_LANGUAGE_MAP[state] === language && !langManual && (
-                            <span className="font-normal text-[10px] px-1.5 py-0.5 rounded" style={{ background: "var(--brand-light)", color: "var(--brand)" }}>auto</span>
+                            <span className="font-bold text-[9px] uppercase tracking-widest px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">auto</span>
                         )}
                     </Label>
                     <Select value={language} onValueChange={(v) => { setLanguage(v); setValue("language", v); setLangErr(""); setLangManual(true) }}>
-                        <SelectTrigger style={{ ...fieldStyle, borderColor: langErr ? "#DC2626" : "var(--border)" }}>
+                        <SelectTrigger className={selectTriggerClass} style={{ border: langErr ? "1px solid #DC2626" : "none" }}>
                             <SelectValue placeholder="Language" />
                         </SelectTrigger>
                         <SelectContent>
                             {LANGUAGES.map((l) => <SelectItem key={l} value={l}>{l}</SelectItem>)}
                         </SelectContent>
                     </Select>
-                    {langErr && <p className="text-xs" style={{ color: "#DC2626" }}>{langErr}</p>}
+                    {langErr && (
+                        <p className="text-xs text-red-500 flex items-center gap-1.5 mt-1 font-semibold animate-pulse">
+                            <AlertCircle className="w-3.5 h-3.5" />
+                            {langErr}
+                        </p>
+                    )}
                     {language && state && !langManual && (
-                        <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>Pre-selected for {state}. You can change it.</p>
+                        <p className="text-[9px] text-slate-400 font-semibold mt-1">Auto-selected for {state}.</p>
                     )}
                 </div>
             </div>
@@ -585,48 +628,48 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
             {/* Preferred call time */}
             <div className="space-y-2">
                 <Label className="flex items-center gap-1.5" style={labelStyle}>
-                    <Clock className="w-3.5 h-3.5" style={{ color: "var(--text-muted)" }} />
+                    <Clock className="w-3.5 h-3.5 text-emerald-600" />
                     When should we call you?
-                    <span className="font-normal text-xs" style={{ color: "var(--text-muted)" }}>(optional)</span>
+                    <span className="font-bold text-[10px] text-slate-400 font-normal lowercase tracking-normal"> (optional)</span>
                 </Label>
 
                 {!slotLabel ? (
                     <button
                         type="button"
                         onClick={() => setPickerOpen(o => !o)}
-                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all"
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-200 border text-left"
                         style={{
-                            border: pickerOpen ? "2px solid var(--brand)" : "2px dashed var(--border)",
-                            background: pickerOpen ? "var(--brand-light)" : "transparent",
-                            color: pickerOpen ? "var(--brand)" : "var(--text-muted)",
+                            border: pickerOpen ? "2px solid var(--brand)" : "2px dashed var(--brand-100)",
+                            background: pickerOpen ? "var(--brand-light)" : "var(--surface-muted)",
+                            color: pickerOpen ? "var(--brand-dark)" : "var(--text-secondary)",
                             fontFamily: "var(--font-body)",
                         }}
                     >
-                        <span className="flex items-center gap-2">
-                            <CalendarDays className="w-4 h-4" />
+                        <span className="flex items-center gap-2.5">
+                            <CalendarDays className="w-4 h-4 text-emerald-600" />
                             Choose any date & time — 24/7
                         </span>
-                        <ChevronDown className={cn("w-4 h-4 transition-transform", pickerOpen && "rotate-180")} />
+                        <ChevronDown className={cn("w-4 h-4 transition-transform text-slate-400", pickerOpen && "rotate-180")} />
                     </button>
                 ) : (
-                    <div className="flex items-center gap-2 rounded-xl px-4 py-3" style={{ background: "#F0FDF4", border: "2px solid #BBF7D0" }}>
-                        <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: "var(--brand)" }} />
-                        <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium" style={{ color: "var(--brand)" }}>Call scheduled</p>
-                            <p className="text-sm font-semibold truncate" style={{ color: "#065F46" }}>{slotLabel}</p>
+                    <div className="flex items-center gap-3 rounded-2xl px-4 py-3 border border-emerald-500 bg-emerald-50/50 shadow-sm shadow-emerald-50 animate-fade-up">
+                        <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-600" />
+                        <div className="flex-1 min-w-0 text-left">
+                            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-600">Selected consultation time</p>
+                            <p className="text-sm font-bold truncate text-slate-800">{slotLabel}</p>
                         </div>
                         <button type="button" onClick={() => { setSlotIso(""); setSlotLabel(""); setPickerOpen(false) }}
-                            style={{ color: "var(--text-muted)" }}
-                            onMouseEnter={e => (e.currentTarget.style.color = "var(--text-primary)")}
-                            onMouseLeave={e => (e.currentTarget.style.color = "var(--text-muted)")}
+                            className="text-slate-400 hover:text-slate-800 transition-colors"
                         >
-                            <X className="w-4 h-4" />
+                            <X className="w-4.5 h-4.5" />
                         </button>
                     </div>
                 )}
 
                 {pickerOpen && !slotLabel && (
-                    <FreeTimePicker value={slotIso} onChange={(iso, label) => { setSlotIso(iso); setSlotLabel(label); setPickerOpen(false) }} />
+                    <div className="mt-2">
+                        <FreeTimePicker value={slotIso} onChange={(iso, label) => { setSlotIso(iso); setSlotLabel(label); setPickerOpen(false) }} />
+                    </div>
                 )}
             </div>
 
@@ -634,33 +677,41 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
             {!compact && (
                 <div className="space-y-1">
                     <Label style={labelStyle}>
-                        Message <span className="font-normal" style={{ color: "var(--text-muted)" }}>(optional)</span>
+                        Message <span className="font-bold text-[10px] text-slate-400 font-normal lowercase tracking-normal">(optional)</span>
                     </Label>
-                    <Textarea placeholder="Any specific questions or requirements..." rows={3} {...register("message")} style={fieldStyle} />
+                    <Textarea placeholder="Any specific questions or requirements..." rows={3} {...register("message")} className={textareaClass} style={{ border: "none" }} />
                 </div>
             )}
 
             {/* Submit */}
             <Button
                 type="submit"
-                className="w-full h-11 font-semibold rounded-full transition-all active:scale-95"
+                className="w-full h-12 font-extrabold rounded-full bg-emerald-600 text-white hover:bg-emerald-700 shadow-md shadow-emerald-100 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 active:scale-98 flex justify-center items-center gap-2"
                 disabled={isSubmitting}
-                style={{ background: "var(--brand)", color: "#FFFFFF", fontFamily: "var(--font-body)", boxShadow: "0 2px 8px rgba(0,179,134,0.3)",
+                style={{ 
                     opacity: (otpPhase !== "verified" || !!phoneChanged || emailOtpPhase !== "verified" || !!emailChanged) ? 0.6 : 1,
-                    cursor: (otpPhase !== "verified" || !!phoneChanged || emailOtpPhase !== "verified" || !!emailChanged) ? "not-allowed" : "pointer" }}
+                    cursor: (otpPhase !== "verified" || !!phoneChanged || emailOtpPhase !== "verified" || !!emailChanged) ? "not-allowed" : "pointer" 
+                }}
             >
                 {isSubmitting ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</>
-                ) : (otpPhase !== "verified" || emailOtpPhase !== "verified") ? "Verify to Continue" : "Book Free Consultation"}
+                    <><Loader2 className="h-4 w-4 animate-spin" /> Submitting...</>
+                ) : (otpPhase !== "verified" || emailOtpPhase !== "verified") ? (
+                    <>Verify to Continue</>
+                ) : (
+                    <>
+                        <Sparkles className="w-4 h-4 shrink-0 animate-pulse" />
+                        Book Free Consultation
+                    </>
+                )}
             </Button>
             {(otpPhase !== "verified" || emailOtpPhase !== "verified") && (
-                <p className="text-center text-xs" style={{ color: "var(--text-muted)" }}>
-                    Verify your {otpPhase !== "verified" ? "mobile number" : ""}{otpPhase !== "verified" && emailOtpPhase !== "verified" ? " & " : ""}{emailOtpPhase !== "verified" ? "email" : ""} to continue
+                <p className="text-center text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    Verify your {otpPhase !== "verified" ? "mobile" : ""}{otpPhase !== "verified" && emailOtpPhase !== "verified" ? " & " : ""}{emailOtpPhase !== "verified" ? "email" : ""} to activate booking
                 </p>
             )}
 
-            <p className="text-center text-xs" style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>
-                No spam · No salespeople · 100% free
+            <p className="text-center text-xs text-slate-400 font-bold" style={{ fontFamily: "var(--font-body)" }}>
+                No spam · Certified IRDAI Experts · 100% Free
             </p>
         </form>
     )

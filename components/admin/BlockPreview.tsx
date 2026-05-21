@@ -11,7 +11,7 @@ const SAMPLE_DATA: Partial<Record<BlockType, Record<string, unknown>>> = {
         title: "What is Term Insurance & Why You Need It",
         subtitle: "A comprehensive guide to term life insurance in India",
         author: { name: "Rahul Sharma", role: "Insurance Writer" },
-        reviewer: { name: "Dr. Priya Nair", role: "IRDAI-Certified Expert" },
+        reviewer: { name: "Dr. Priya Nair", role: "Insurance Expert" },
     },
     rich_text: {
         content: "<h2>Understanding Term Insurance</h2><p>Term insurance is the simplest and most affordable form of life insurance. You pay a premium for a specific period, and if something happens during that period, your family receives the sum assured.</p><p>Unlike traditional plans, term insurance has <strong>no maturity benefit</strong> — it's pure protection.</p>",
@@ -54,8 +54,8 @@ const SAMPLE_DATA: Partial<Record<BlockType, Record<string, unknown>>> = {
         label: "Take Note",
         content: "Always declare your complete medical history honestly. Non-disclosure is the #1 reason claims get rejected in India.",
     },
-    dittos_take: {
-        title: "Ditto's Take",
+    pmpartners_take: {
+        title: "PM Partners' Take",
         body: "We recommend buying term insurance as early as possible. A 25-year-old can get ₹1 Cr cover for roughly ₹600/month — the same plan at 35 would cost nearly double.",
     },
     numbered_cards: {
@@ -144,8 +144,8 @@ const SAMPLE_DATA: Partial<Record<BlockType, Record<string, unknown>>> = {
         ],
     },
     reviews: {
-        rating: 4.9,
-        totalCount: 21000,
+        rating: 5,
+        totalCount: 0,
         items: [
             { name: "Arjun M.", initials: "AM", body: "Excellent advice! Got my ₹1 Cr term plan sorted in 20 minutes." },
             { name: "Priya S.", initials: "PS", body: "No pushy sales. They genuinely helped me pick the right plan." },
@@ -153,8 +153,8 @@ const SAMPLE_DATA: Partial<Record<BlockType, Record<string, unknown>>> = {
     },
     cta_block: {
         title: "Confused about which plan to pick?",
-        bookCallText: "Book a Free Call",
-        whatsappText: "Chat on WhatsApp",
+        bookCallText: "Compare Plans",
+        whatsappText: "Direct Support",
     },
     faq: {
         items: [
@@ -164,17 +164,17 @@ const SAMPLE_DATA: Partial<Record<BlockType, Record<string, unknown>>> = {
     },
     stat_bar: {
         stats: [
-            { value: "8,00,000+", label: "Customers helped" },
-            { value: "4.9", label: "Average rating" },
-            { value: "₹0", label: "Consultation cost" },
+            { value: "100%", label: "Unbiased" },
+            { value: "Free", label: "Consultation" },
+            { value: "Direct", label: "Support" },
         ],
     },
     home_hero: {
-        badge: "IRDAI-Certified Expert Advisors",
+        badge: "Top-Rated Expert Advisors",
         title: "Life & Health Insurance Platform",
-        subtitle: "Get unbiased insurance advice from certified experts. Free forever.",
-        primaryCta: { text: "Book Free Call", href: "/contact" },
-        stats: [{ value: "8L+", label: "Customers" }, { value: "4.9★", label: "Rating" }],
+        subtitle: "Get unbiased insurance advice from top-rated experts. Free forever.",
+        primaryCta: { text: "Compare Plans", href: "/contact" },
+        stats: [{ value: "100%", label: "Unbiased" }, { value: "Free", label: "Consultation" }],
         showInquiryForm: false,
     },
     product_cards: {
@@ -184,19 +184,19 @@ const SAMPLE_DATA: Partial<Record<BlockType, Record<string, unknown>>> = {
             { title: "Health Insurance", desc: "Comprehensive family coverage", href: "/health", colorClass: "blue" },
         ],
     },
-    ditto_experience: {},
+    pmpartners_experience: {},
     comparison_section: {},
     insurance_checklist: {},
     home_faq: {
         items: [
-            { question: "Is Ditto really free?", answer: "Yes, our advisory service is completely free. We earn commissions from insurers." },
-            { question: "How is Ditto different?", answer: "We don't push products. Our advisors help you find what's right for your situation." },
+            { question: "Is PM Partners really free?", answer: "Yes, our advisory service is completely free. We earn commissions from insurers." },
+            { question: "How is PM Partners different?", answer: "We don't push products. Our advisors help you find what's right for your situation." },
         ],
     },
-    choose_ditto_cta: {
-        headline: "Why choose Ditto?",
-        subtext: "Unbiased advice from IRDAI-certified experts",
-        ctaText: "Book a free call",
+    choose_pmpartners_cta: {
+        headline: "Why choose PM Partners?",
+        subtext: "Unbiased advice from top-rated experts",
+        ctaText: "Compare Plans",
         ctaHref: "/contact",
     },
 }

@@ -5,27 +5,34 @@ export default function ProsConsTable({ data }: { data: ProsConsTableData }) {
     return (
         <div className="my-10">
             {data.title && (
-                <h2 className="text-2xl font-bold mb-5" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{data.title}</h2>
+                <h2 className="text-2xl font-bold mb-6" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{data.title}</h2>
             )}
-            <div className="grid sm:grid-cols-2 gap-4">
-                <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid #BBF7D0" }}>
-                    <div className="px-5 py-3 font-semibold text-sm" style={{ background: "#F0FDF4", color: "#15803D", fontFamily: "var(--font-heading)", borderBottom: "1px solid #BBF7D0" }}>Advantages</div>
+            <div className="grid sm:grid-cols-2 gap-6">
+                {/* Advantages Panel */}
+                <div className="rounded-2xl overflow-hidden shadow-sm" style={{ border: "1px solid #D1FAE5" }}>
+                    <div className="px-6 py-4 font-semibold text-sm uppercase tracking-wider" style={{ background: "#ECFDF5", color: "#065F46", fontFamily: "var(--font-heading)", borderBottom: "1px solid #D1FAE5" }}>
+                        Advantages
+                    </div>
                     <ul style={{ background: "#FFFFFF" }}>
                         {(data.pros || []).map((pro, i) => (
-                            <li key={i} className="flex items-start gap-3 px-5 py-3" style={{ borderBottom: i < (data.pros || []).length - 1 ? "1px solid #F0FDF4" : "none" }}>
-                                <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" style={{ color: "var(--brand)" }} />
-                                <span className="text-sm" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>{pro}</span>
+                            <li key={i} className="flex items-start gap-3 px-6 py-4 transition-colors hover:bg-[#F9FBF9]" style={{ borderBottom: i < (data.pros || []).length - 1 ? "1px solid #ECFDF5" : "none" }}>
+                                <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0" style={{ color: "#10B981" }} />
+                                <span className="text-sm md:text-base" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>{pro}</span>
                             </li>
                         ))}
                     </ul>
                 </div>
-                <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid #FECACA" }}>
-                    <div className="px-5 py-3 font-semibold text-sm" style={{ background: "#FEF2F2", color: "#DC2626", fontFamily: "var(--font-heading)", borderBottom: "1px solid #FECACA" }}>Disadvantages</div>
+
+                {/* Disadvantages Panel */}
+                <div className="rounded-2xl overflow-hidden shadow-sm" style={{ border: "1px solid #FEE2E2" }}>
+                    <div className="px-6 py-4 font-semibold text-sm uppercase tracking-wider" style={{ background: "#FEF2F2", color: "#991B1B", fontFamily: "var(--font-heading)", borderBottom: "1px solid #FEE2E2" }}>
+                        Disadvantages
+                    </div>
                     <ul style={{ background: "#FFFFFF" }}>
                         {(data.cons || []).map((con, i) => (
-                            <li key={i} className="flex items-start gap-3 px-5 py-3" style={{ borderBottom: i < (data.cons || []).length - 1 ? "1px solid #FEF2F2" : "none" }}>
-                                <XCircle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: "#F87171" }} />
-                                <span className="text-sm" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>{con}</span>
+                            <li key={i} className="flex items-start gap-3 px-6 py-4 transition-colors hover:bg-[#FDF9F9]" style={{ borderBottom: i < (data.cons || []).length - 1 ? "1px solid #FEF2F2" : "none" }}>
+                                <XCircle className="w-5 h-5 mt-0.5 shrink-0" style={{ color: "#EF4444" }} />
+                                <span className="text-sm md:text-base" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>{con}</span>
                             </li>
                         ))}
                     </ul>
@@ -34,3 +41,4 @@ export default function ProsConsTable({ data }: { data: ProsConsTableData }) {
         </div>
     )
 }
+

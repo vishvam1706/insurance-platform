@@ -1,9 +1,9 @@
 import { InsurerMetricsData } from "@/types/blocks"
 
 const VERDICT_STYLES: Record<string, { bg: string; text: string; border: string }> = {
-    good:  { bg: "#F0FDF4", text: "#16A34A", border: "#BBF7D0" },
-    okay:  { bg: "#FFFBEB", text: "#D97706", border: "#FDE68A" },
-    avoid: { bg: "#FEF2F2", text: "#DC2626", border: "#FECACA" },
+    good:  { bg: "var(--brand-light)", text: "var(--brand-dark)", border: "var(--brand-200)" },
+    okay:  { bg: "#FFFBEB", text: "#B45309", border: "#FDE68A" },
+    avoid: { bg: "#FEF2F2", text: "#B91C1C", border: "#FCA5A5" },
 }
 
 export default function InsurerMetrics({ data }: { data: InsurerMetricsData }) {
@@ -19,7 +19,7 @@ export default function InsurerMetrics({ data }: { data: InsurerMetricsData }) {
                     <div className="flex items-center gap-2.5 mb-2">
                         <span
                             className="w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center shrink-0"
-                            style={{ background: "var(--brand-light)", color: "var(--brand)", border: "1px solid var(--brand-100)", fontFamily: "var(--font-heading)" }}
+                            style={{ background: "var(--brand-light)", color: "var(--brand-dark)", border: "1px solid var(--brand-100)", fontFamily: "var(--font-heading)" }}
                         >
                             {metric.number}
                         </span>
@@ -57,7 +57,7 @@ export default function InsurerMetrics({ data }: { data: InsurerMetricsData }) {
                                 <tbody>
                                     {metric.csrTable.map((row, i) => {
                                         const val = parseFloat(row.csr)
-                                        const color = val >= 90 ? "#16A34A" : val >= 80 ? "#D97706" : "#DC2626"
+                                        const color = val >= 90 ? "#047857" : val >= 80 ? "#B45309" : "#B91C1C"
                                         return (
                                             <tr key={i} style={{ background: i % 2 === 0 ? "#FFFFFF" : "var(--surface-muted)" }}>
                                                 <td className="px-4 py-2.5 font-medium" style={{ borderBottom: "1px solid var(--border-light)", color: "var(--text-primary)", fontFamily: "var(--font-body)" }}>{row.company}</td>

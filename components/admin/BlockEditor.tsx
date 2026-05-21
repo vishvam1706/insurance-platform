@@ -28,7 +28,7 @@ import BenefitsListEditor from "./blocks/BenefitsListEditor"
 import TypesListEditor from "./blocks/TypesListEditor"
 import InfoSectionEditor from "./blocks/InfoSectionEditor"
 import NoteBoxEditor from "./blocks/NoteBoxEditor"
-import DittosTakeEditor from "./blocks/DittosTakeEditor"
+import PmPartnersTakeEditor from "./blocks/PmPartnersTakeEditor"
 import NumberedCardsEditor from "./blocks/NumberedCardsEditor"
 import FinalThoughtsEditor from "./blocks/FinalThoughtsEditor"
 import FeaturesTableEditor from "./blocks/FeaturesTableEditor"
@@ -48,11 +48,13 @@ import StatBarEditor from "./blocks/StatBarEditor"
 import HomeHeroBlockEditor from "./blocks/HomeHeroBlockEditor"
 import ProductCardsEditor from "./blocks/ProductCardsEditor"
 import HomeFaqBlockEditor from "./blocks/HomeFaqBlockEditor"
-import ChooseDittoCtaEditor from "./blocks/ChooseDittoCtaEditor"
+import ChoosePmPartnersCtaEditor from "./blocks/ChoosePmPartnersCtaEditor"
+import PmPartnersExperienceEditor from "./blocks/PmPartnersExperienceEditor"
+import ComparisonSectionEditor from "./blocks/ComparisonSectionEditor"
 
 // Block metadata
 const BLOCK_META: Record<BlockType, { label: string; color: string; defaultData: Record<string, unknown> }> = {
-    hero: { label: "Hero", color: "bg-purple-100 text-purple-700", defaultData: { title: "", subtitle: "", author: { name: "", role: "Insurance Writer" }, reviewer: { name: "", role: "IRDAI-Certified Expert" } } },
+    hero: { label: "Hero", color: "bg-purple-100 text-purple-700", defaultData: { title: "", subtitle: "", author: { name: "", role: "Insurance Writer" }, reviewer: { name: "", role: "Insurance Expert" } } },
     rich_text: { label: "Rich Text", color: "bg-slate-100 text-slate-700", defaultData: { content: "" } },
     image_block: { label: "Image", color: "bg-pink-100 text-pink-700", defaultData: { image: "", altText: "", caption: "" } },
     how_it_works_steps: { label: "Steps", color: "bg-emerald-100 text-emerald-700", defaultData: { title: "", steps: [] } },
@@ -60,7 +62,7 @@ const BLOCK_META: Record<BlockType, { label: string; color: string; defaultData:
     types_list: { label: "Types List", color: "bg-teal-100 text-teal-700", defaultData: { title: "", items: [] } },
     info_section: { label: "Info Section", color: "bg-cyan-100 text-cyan-700", defaultData: { title: "", body: "" } },
     note_box: { label: "Note Box", color: "bg-amber-100 text-amber-700", defaultData: { label: "Take Note", content: "" } },
-    dittos_take: { label: "Ditto's Take", color: "bg-indigo-100 text-indigo-700", defaultData: { title: "Ditto's Take", body: "" } },
+    pmpartners_take: { label: "PM Partners' Take", color: "bg-indigo-100 text-indigo-700", defaultData: { title: "PM Partners' Take", body: "" } },
     numbered_cards: { label: "Numbered Cards", color: "bg-emerald-100 text-emerald-700", defaultData: { title: "", cards: [] } },
     final_thoughts: { label: "Final Thoughts", color: "bg-slate-100 text-slate-700", defaultData: { title: "Final Thoughts", body: "" } },
     features_table: { label: "Features Table", color: "bg-orange-100 text-orange-700", defaultData: { title: "", rows: [] } },
@@ -73,17 +75,17 @@ const BLOCK_META: Record<BlockType, { label: string; color: string; defaultData:
     insurer_selector: { label: "Insurer Selector", color: "bg-sky-100 text-sky-700", defaultData: { label: "Select Insurer", helpText: "", insurers: [] } },
     calculator_embed: { label: "Calculator", color: "bg-yellow-100 text-yellow-700", defaultData: { title: "Term Cover Calculator", description: "", calculatorType: "cover" } },
     frequently_compared: { label: "Frequently Compared", color: "bg-orange-100 text-orange-700", defaultData: { title: "Frequently Compared", links: [] } },
-    reviews: { label: "Reviews", color: "bg-green-100 text-green-700", defaultData: { rating: 4.9, totalCount: 0, items: [] } },
-    cta_block: { label: "CTA Block", color: "bg-emerald-100 text-emerald-700", defaultData: { title: "Confused about which plan to pick?", bookCallText: "Book a Free Call", whatsappText: "Chat on WhatsApp" } },
+    reviews: { label: "Reviews", color: "bg-green-100 text-green-700", defaultData: { rating: 5, totalCount: 0, items: [] } },
+    cta_block: { label: "CTA Block", color: "bg-emerald-100 text-emerald-700", defaultData: { title: "Confused about which plan to pick?", bookCallText: "Compare Plans", whatsappText: "Direct Support" } },
     faq: { label: "FAQ", color: "bg-slate-100 text-slate-700", defaultData: { items: [] } },
     stat_bar: { label: "Stat Bar", color: "bg-indigo-100 text-indigo-700", defaultData: { stats: [] } },
-    home_hero: { label: "Home Hero", color: "bg-emerald-100 text-blue-800", defaultData: { title: "Life & Health Insurance Platform", badge: "IRDAI-Certified Expert Advisors", subtitle: "", primaryCta: { text: "Book Free Call", href: "/contact" }, stats: [], showInquiryForm: true } },
+    home_hero: { label: "Home Hero", color: "bg-emerald-100 text-blue-800", defaultData: { title: "Life & Health Insurance Platform", badge: "Top-Rated Expert Advisors", subtitle: "", primaryCta: { text: "Compare Plans", href: "/contact" }, stats: [], showInquiryForm: true } },
     product_cards: { label: "Product Cards", color: "bg-teal-100 text-teal-800", defaultData: { title: "What we cover", cards: [] } },
-    ditto_experience: { label: "Ditto Experience", color: "bg-blue-100 text-blue-700", defaultData: {} },
+    pmpartners_experience: { label: "PM Partners Experience", color: "bg-blue-100 text-blue-700", defaultData: {} },
     comparison_section: { label: "Comparison Section", color: "bg-orange-100 text-orange-700", defaultData: {} },
     insurance_checklist: { label: "Insurance Checklist", color: "bg-yellow-100 text-yellow-700", defaultData: {} },
     home_faq: { label: "Home FAQ", color: "bg-slate-100 text-slate-700", defaultData: { items: [] } },
-    choose_ditto_cta: { label: "Choose Ditto CTA", color: "bg-indigo-100 text-indigo-700", defaultData: { headline: "", subtext: "", ctaText: "Book a free call", ctaHref: "/contact" } },
+    choose_pmpartners_cta: { label: "Choose PM Partners CTA", color: "bg-indigo-100 text-indigo-700", defaultData: { headline: "", subtext: "", ctaText: "Compare Plans", ctaHref: "/contact" } },
 }
 
 // Render the right editor for a block type
@@ -98,7 +100,7 @@ function BlockEditorSwitch({ block, onChange }: { block: Block; onChange: (data:
         case "types_list": return <TypesListEditor data={d as any} onChange={onChange as any} />
         case "info_section": return <InfoSectionEditor data={d as any} onChange={onChange as any} />
         case "note_box": return <NoteBoxEditor data={d as any} onChange={onChange as any} />
-        case "dittos_take": return <DittosTakeEditor data={d as any} onChange={onChange as any} />
+        case "pmpartners_take": return <PmPartnersTakeEditor data={d as any} onChange={onChange as any} />
         case "numbered_cards": return <NumberedCardsEditor data={d as any} onChange={onChange as any} />
         case "final_thoughts": return <FinalThoughtsEditor data={d as any} onChange={onChange as any} />
         case "features_table": return <FeaturesTableEditor data={d as any} onChange={onChange as any} />
@@ -117,11 +119,11 @@ function BlockEditorSwitch({ block, onChange }: { block: Block; onChange: (data:
         case "stat_bar": return <StatBarEditor data={d as any} onChange={onChange as any} />
         case "home_hero": return <HomeHeroBlockEditor data={d as any} onChange={onChange as any} />
         case "product_cards": return <ProductCardsEditor data={d as any} onChange={onChange as any} />
-        case "ditto_experience": return <p className="text-xs text-slate-500 p-2 bg-blue-50 rounded-lg">📋 Ditto Experience — displays the 3-step experience section. No editable data.</p>
-        case "comparison_section": return <p className="text-xs text-slate-500 p-2 bg-orange-50 rounded-lg">📊 Comparison Section — Ditto vs Other Platforms table. No editable data.</p>
+        case "pmpartners_experience": return <PmPartnersExperienceEditor data={d as any} onChange={onChange as any} />
+        case "comparison_section": return <ComparisonSectionEditor data={d as any} onChange={onChange as any} />
         case "insurance_checklist": return <p className="text-xs text-slate-500 p-2 bg-yellow-50 rounded-lg">✅ Insurance Checklist — sticky note visual + checklist links. No editable data.</p>
         case "home_faq": return <HomeFaqBlockEditor data={d as any} onChange={onChange as any} />
-        case "choose_ditto_cta": return <ChooseDittoCtaEditor data={d as any} onChange={onChange as any} />
+        case "choose_pmpartners_cta": return <ChoosePmPartnersCtaEditor data={d as any} onChange={onChange as any} />
         default: return <p className="text-xs text-slate-400">Unknown block type: {block.type}</p>
     }
 }
@@ -364,11 +366,11 @@ function SortableBlock({
 // Block groups
 const BLOCK_GROUPS: { label: string; types: BlockType[] }[] = [
     { label: "Page Basics", types: ["hero", "rich_text", "image_block", "stat_bar"] },
-    { label: "Content", types: ["how_it_works_steps", "benefits_list", "types_list", "info_section", "note_box", "dittos_take", "numbered_cards", "final_thoughts"] },
+    { label: "Content", types: ["how_it_works_steps", "benefits_list", "types_list", "info_section", "note_box", "pmpartners_take", "numbered_cards", "final_thoughts"] },
     { label: "Tables", types: ["features_table", "comparison_table", "pros_cons_table", "plans_table", "insurer_metrics", "policy_features_list", "real_example_comparison"] },
     { label: "Interactive", types: ["insurer_selector", "calculator_embed", "frequently_compared"] },
     { label: "Social & CTAs", types: ["reviews", "cta_block", "faq"] },
-    { label: "Homepage", types: ["home_hero", "product_cards", "ditto_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_ditto_cta"] },
+    { label: "Homepage", types: ["home_hero", "product_cards", "pmpartners_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_pmpartners_cta"] },
 ]
 
 // Add block picker with outside-click close

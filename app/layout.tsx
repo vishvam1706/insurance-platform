@@ -6,14 +6,12 @@ import { Toaster } from "sonner"
 const plusJakartaSans = Plus_Jakarta_Sans({
     variable: "--font-heading",
     subsets: ["latin"],
-    weight: ["400", "500", "600", "700", "800"],
     display: "swap",
 })
 
 const dmSans = DM_Sans({
     variable: "--font-body",
     subsets: ["latin"],
-    weight: ["400", "500", "600"],
     display: "swap",
 })
 
@@ -27,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en" suppressHydrationWarning>
             <body
                 className={`${plusJakartaSans.variable} ${dmSans.variable} antialiased`}
-                style={{ fontFamily: "var(--font-body)" }}
+                style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}
                 suppressHydrationWarning
             >
                 {children}

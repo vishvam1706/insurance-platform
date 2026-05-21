@@ -24,14 +24,14 @@ export default function CalculatorEmbed({ data }: { data: CalculatorEmbedData })
     return (
         <div className="my-8 rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "#FFFFFF" }}>
             {/* Header bar */}
-            <div className="px-6 py-4 flex items-center gap-3" style={{ background: "#1A1A2E", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "var(--brand)" }}>
-                    <Calculator className="w-4 h-4 text-white" />
+            <div className="px-6 py-4 flex items-center gap-3" style={{ background: "var(--text-primary)", borderBottom: "1px solid var(--brand-200)" }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)" }}>
+                    <Calculator className="w-4 h-4" style={{ color: "var(--brand-dark)" }} />
                 </div>
                 <div>
                     <h2 className="font-bold text-white text-sm" style={{ fontFamily: "var(--font-heading)" }}>{data.title}</h2>
                     {data.description && (
-                        <p className="text-xs" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-body)" }}>{data.description}</p>
+                        <p className="text-xs" style={{ color: "rgba(252,250,247,0.75)", fontFamily: "var(--font-body)" }}>{data.description}</p>
                     )}
                 </div>
             </div>
@@ -45,7 +45,7 @@ export default function CalculatorEmbed({ data }: { data: CalculatorEmbedData })
                             value={age}
                             onChange={(e) => setAge(e.target.value)}
                             placeholder="e.g. 30"
-                            className="rounded-xl"
+                            className="rounded-xl focus:border-[var(--brand)] focus:ring-[var(--brand)]"
                             style={{ border: "1px solid var(--border)", fontFamily: "var(--font-body)" }}
                         />
                     </div>
@@ -56,7 +56,7 @@ export default function CalculatorEmbed({ data }: { data: CalculatorEmbedData })
                             value={income}
                             onChange={(e) => setIncome(e.target.value)}
                             placeholder="e.g. 1200000"
-                            className="rounded-xl"
+                            className="rounded-xl focus:border-[var(--brand)] focus:ring-[var(--brand)]"
                             style={{ border: "1px solid var(--border)", fontFamily: "var(--font-body)" }}
                         />
                     </div>
@@ -64,8 +64,8 @@ export default function CalculatorEmbed({ data }: { data: CalculatorEmbedData })
 
                 <Button
                     onClick={calculate}
-                    className="w-full font-semibold rounded-full"
-                    style={{ background: "var(--brand)", color: "#FFFFFF", fontFamily: "var(--font-body)" }}
+                    className="w-full font-bold rounded-xl bg-[var(--text-primary)] text-white hover:bg-[var(--brand)] hover:text-[var(--text-primary)] transition-all py-6 cursor-pointer"
+                    style={{ fontFamily: "var(--font-body)" }}
                 >
                     Calculate Cover
                 </Button>
@@ -73,7 +73,7 @@ export default function CalculatorEmbed({ data }: { data: CalculatorEmbedData })
                 {result && (
                     <div className="text-center rounded-2xl p-5" style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)" }}>
                         <p className="text-xs font-medium mb-1" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>Recommended Cover</p>
-                        <p className="text-3xl font-extrabold" style={{ fontFamily: "var(--font-heading)", color: "var(--brand)" }}>{result}</p>
+                        <p className="text-3xl font-extrabold" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{result}</p>
                         <p className="text-xs mt-1" style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>Based on income replacement method</p>
                     </div>
                 )}

@@ -31,7 +31,7 @@ export interface IInsurancePlan {
         age35?: number
         age45?: number
     }
-    dittoRating?: number
+    pmpartnersRating?: number
     csr?: string
     createdAt: Date
     updatedAt: Date

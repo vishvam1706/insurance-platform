@@ -5,6 +5,7 @@ import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import { getAuthUser } from "@/lib/auth"
 import { CreatePageSchema } from "@/lib/validations/page.schema"
+import { revalidatePath } from "next/cache"
 
 export async function GET(req: NextRequest) {
     try {
@@ -130,6 +131,8 @@ export async function POST(req: NextRequest) {
             // Non-critical — don't fail the page creation
             console.error("Auto-add to nav tree failed:", navErr)
         }
+
+        revalidatePath("/", "layout")
 
         return NextResponse.json({ success: true, page }, { status: 201 })
     } catch (err) {

@@ -57,7 +57,7 @@ export default function HeroBlockEditor({ data, onChange }: Props) {
                         <Input value={data.reviewer?.name || ""} onChange={(e) => setReviewer("name", e.target.value)} placeholder="Gaurav Bhat" />
                     </Field>
                     <Field label="Role">
-                        <Input value={data.reviewer?.role || ""} onChange={(e) => setReviewer("role", e.target.value)} placeholder="IRDAI-Certified Expert" />
+                        <Input value={data.reviewer?.role || ""} onChange={(e) => setReviewer("role", e.target.value)} placeholder="Insurance Expert" />
                     </Field>
                 </div>
                 <ImageUploader

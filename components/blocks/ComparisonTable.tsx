@@ -1,38 +1,145 @@
+"use client"
+
 import { ComparisonTableData } from "@/types/blocks"
+import { Check, X, Scale } from "lucide-react"
+import { motion } from "framer-motion"
+
+function renderCellContent(cell: string, colIndex: number) {
+    const trimmed = cell.trim()
+    const lower = trimmed.toLowerCase()
+    
+    if (lower === "yes" || lower === "true" || lower === "✓" || lower === "available") {
+        return (
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm select-none">
+                <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                <span>Yes</span>
+            </span>
+        )
+    }
+    if (lower === "no" || lower === "false" || lower === "✗" || lower === "not available") {
+        return (
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-50 text-slate-400 border border-slate-100 select-none">
+                <X className="w-3.5 h-3.5 text-slate-400 stroke-[3]" />
+                <span>No</span>
+            </span>
+        )
+    }
+    
+    // Check if it's a percentage (e.g. 98.5% or 99%)
+    const isPercentage = /^\d+(\.\d+)?%$/.test(trimmed)
+    if (isPercentage) {
+        return (
+            <span className="inline-flex items-center bg-emerald-50/70 border border-emerald-100/60 px-3 py-1 rounded-xl text-sm font-black text-emerald-800 font-mono shadow-sm">
+                {trimmed}
+            </span>
+        )
+    }
+
+    // Check if it is a number or currency (e.g. Rs. 5000 or ₹10,000 or 15 Lakhs)
+    const isNumeric = /^[₹$]?\d+/.test(trimmed) || trimmed.toLowerCase().includes("lakh") || trimmed.toLowerCase().includes("crore")
+    if (isNumeric && colIndex > 0) {
+        return (
+            <span className="text-slate-800 font-extrabold text-sm md:text-base font-mono">
+                {trimmed}
+            </span>
+        )
+    }
+
+    // Default rendering
+    return (
+        <span 
+            className={colIndex === 0 ? "font-extrabold text-slate-800 text-sm md:text-base tracking-tight" : "text-slate-500 font-medium text-sm md:text-base"}
+            style={{ fontFamily: colIndex === 0 ? "var(--font-heading)" : "var(--font-body)" }}
+        >
+            {cell}
+        </span>
+    )
+}
 
 export default function ComparisonTable({ data }: { data: ComparisonTableData }) {
     const columns = data.columns || []
     const rows = data.rows || []
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.08 }
+        }
+    } as const
+
+    const rowVariants = {
+        hidden: { opacity: 0, y: 8 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { type: "spring", stiffness: 80, damping: 15 }
+        }
+    } as const
+    
     return (
-        <div className="my-10">
+        <div className="my-16">
             {data.title && (
-                <h2 className="text-2xl font-bold mb-5" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{data.title}</h2>
+                <div className="flex items-center gap-3 mb-6 text-left">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm shrink-0">
+                        <Scale className="w-5 h-5" />
+                    </div>
+                    <h3 
+                        className="text-xl md:text-2xl font-black text-slate-900 tracking-tight" 
+                        style={{ fontFamily: "var(--font-heading)" }}
+                    >
+                        {data.title}
+                    </h3>
+                </div>
             )}
-            <div className="overflow-x-auto rounded-2xl" style={{ border: "1px solid var(--border)" }}>
-                <table className="w-full text-sm">
+            
+            <div className="overflow-x-auto rounded-[32px] shadow-[0_4px_30px_rgba(0,179,134,0.01)] hover:shadow-[0_20px_50px_rgba(0,179,134,0.06)] border border-slate-100 bg-white transition-all duration-300">
+                <table className="w-full border-collapse">
                     <thead>
-                        <tr style={{ background: "var(--surface-muted)", borderBottom: "1px solid var(--border)" }}>
+                        <tr style={{ background: "linear-gradient(180deg, #FAFAF9 0%, #F5F5F4 100%)", borderBottom: "1px solid #E7E5E4" }}>
                             {columns.map((col, i) => (
-                                <th key={i} className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-heading)" }}>{col}</th>
+                                <th 
+                                    key={i} 
+                                    className="text-left px-8 py-5.5 font-extrabold text-xs md:text-sm tracking-widest uppercase select-none" 
+                                    style={{ color: "var(--text-primary)", fontFamily: "var(--font-heading)" }}
+                                >
+                                    {col}
+                                </th>
                             ))}
                         </tr>
                     </thead>
-                    <tbody>
+                    <motion.tbody
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-50px" }}
+                    >
                         {rows.map((row, ri) => (
-                            <tr key={ri} style={{ background: ri % 2 === 0 ? "#FFFFFF" : "var(--surface-muted)" }}>
+                            <motion.tr 
+                                key={ri} 
+                                className="transition-colors hover:bg-emerald-50/20 group/row" 
+                                style={{ background: ri % 2 === 0 ? "#FFFFFF" : "#FAF9F6" }}
+                                variants={rowVariants}
+                            >
                                 {row.map((cell, ci) => (
-                                    <td key={ci} className="px-5 py-3.5 leading-relaxed" style={{
-                                        borderBottom: ri < rows.length - 1 ? "1px solid var(--border-light)" : "none",
-                                        color: ci === 0 ? "var(--text-primary)" : "var(--text-secondary)",
-                                        fontWeight: ci === 0 ? 600 : 400,
-                                        fontFamily: "var(--font-body)",
-                                    }}>{cell}</td>
+                                    <td 
+                                        key={ci} 
+                                        className="px-8 py-5 md:py-6 align-middle leading-relaxed" 
+                                        style={{
+                                            borderBottom: ri < rows.length - 1 ? "1px solid #F1F0EC" : "none",
+                                        }}
+                                    >
+                                        <div className="transition-transform duration-200 group-hover/row:translate-x-0.5">
+                                            {renderCellContent(cell, ci)}
+                                        </div>
+                                    </td>
                                 ))}
-                            </tr>
+                            </motion.tr>
                         ))}
-                    </tbody>
+                    </motion.tbody>
                 </table>
             </div>
         </div>
     )
 }
+

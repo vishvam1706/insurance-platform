@@ -126,7 +126,7 @@ export default async function HomePage() {
 
                                             {/* Title */}
                                             <h3
-                                                className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight transition-colors duration-300 group-hover:text-[var(--brand-dark)]"
+                                                className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight transition-colors duration-300 group-hover:text-[var(--brand-dark)] mt-3"
                                                 style={{ fontFamily: "var(--font-heading)" }}
                                             >
                                                 {p.title}

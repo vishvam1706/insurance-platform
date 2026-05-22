@@ -47,7 +47,7 @@ export default function ProductCardsBlock({ data }: { data: ProductCardsBlockDat
                 </div>
 
                 {/* Symmetrical Bento Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch mt-8">
                     {cards.map((card: any, i: number) => {
                         const isHealth = card.href?.includes("health")
                         const icon = ICON_MAP[isHealth ? "health" : "term"]
@@ -85,7 +85,7 @@ export default function ProductCardsBlock({ data }: { data: ProductCardsBlockDat
 
                                         {/* Title */}
                                         <h3
-                                            className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight transition-colors duration-300 group-hover:text-[var(--brand-dark)]"
+                                            className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight transition-colors duration-300 group-hover:text-[var(--brand-dark)] mt-3"
                                             style={{ fontFamily: "var(--font-heading)" }}
                                         >
                                             {card.title}

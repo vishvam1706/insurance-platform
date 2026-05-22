@@ -14,8 +14,14 @@ export function useImageUpload() {
             form.append("file", file)
             const res = await axios.post("/api/cms/upload", form)
             return res.data.url as string
-        } catch {
-            toast.error("Image upload failed")
+        } catch (error: unknown) {
+            let errMsg = "Image upload failed"
+            if (axios.isAxiosError(error)) {
+                errMsg = error.response?.data?.error || errMsg
+            } else if (error instanceof Error) {
+                errMsg = error.message
+            }
+            toast.error(errMsg)
             return null
         } finally {
             setUploading(false)

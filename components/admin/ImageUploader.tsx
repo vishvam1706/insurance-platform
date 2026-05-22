@@ -1,12 +1,13 @@
 "use client"
 
 import { useCallback, useState } from "react"
-import { useDropzone } from "react-dropzone"
+import { useDropzone, FileRejection } from "react-dropzone"
 import { useImageUpload } from "@/hooks/useImageUpload"
 import { cn } from "@/lib/utils"
 import { Upload, X, Loader2, Link as LinkIcon, ImageOff, CheckCircle2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
+import { toast } from "sonner"
 
 interface ImageUploaderProps {
     value: string
@@ -23,11 +24,26 @@ export default function ImageUploader({
     const [uploadSuccess, setUploadSuccess] = useState(false)
 
     const onDrop = useCallback(
-        async (files: File[]) => {
-            if (!files[0]) return
+        async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+            if (fileRejections && fileRejections.length > 0) {
+                const rejection = fileRejections[0]
+                const error = rejection.errors[0]
+                if (error?.code === "file-too-large") {
+                    toast.error("File is too large. Maximum size is 5MB")
+                } else if (error?.code === "file-invalid-type") {
+                    toast.error("Invalid file type. Allowed: JPG, PNG, WebP, GIF, SVG")
+                } else {
+                    toast.error(error?.message || "File upload rejected")
+                }
+                return
+            }
+
+            const file = acceptedFiles[0]
+            if (!file) return
+
             setImgError(false)
             setUploadSuccess(false)
-            const url = await uploadFile(files[0])
+            const url = await uploadFile(file)
             if (url) {
                 onChange(url)
                 setUploadSuccess(true)

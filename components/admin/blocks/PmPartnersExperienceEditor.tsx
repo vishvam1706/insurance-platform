@@ -53,7 +53,7 @@ export default function PmPartnersExperienceEditor({ data = {}, onChange }: Prop
                 </div>
             </div>
 
-            <hr className="border-slate-800" />
+            <hr className="border-slate-200" />
 
             {/* Images Section */}
             <div className="space-y-4">
@@ -68,7 +68,7 @@ export default function PmPartnersExperienceEditor({ data = {}, onChange }: Prop
                     Displays inside the left sticky card below the description text.
                 </p>
 
-                <div className="border border-slate-800 rounded-xl p-4 space-y-4 bg-slate-900/30">
+                <div className="border border-slate-200 rounded-xl p-4 space-y-4 bg-slate-50">
                     <h4 className="text-[11px] font-bold text-slate-500 uppercase">Step Side Panels (replaces custom interactive graphics)</h4>
 
                     <div className="space-y-2">

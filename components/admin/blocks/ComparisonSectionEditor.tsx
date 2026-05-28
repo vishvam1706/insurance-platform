@@ -124,16 +124,16 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                 </div>
             </div>
 
-            <hr className="border-slate-800" />
+            <hr className="border-slate-200" />
 
             {/* Profile Avatars Uploaders */}
             <div className="space-y-4">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Comparison Column Avatars (Header Circles)</h3>
+                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Comparison Column Avatars (Header Circles)</h3>
                 
-                <div className="grid md:grid-cols-2 gap-6 bg-slate-900/30 p-4 border border-slate-800 rounded-xl">
+                <div className="grid md:grid-cols-2 gap-6 bg-slate-50 p-4 border border-slate-200 rounded-xl">
                     {/* PM Partners Avatars */}
                     <div className="space-y-3">
-                        <h4 className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">PM Partners Column Avatars</h4>
+                        <h4 className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">PM Partners Column Avatars</h4>
                         <ImageUploader
                             label="PM Partners Advisor Avatar 1"
                             value={data.pmpartnersAvatar1 || ""}
@@ -148,7 +148,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
 
                     {/* Other Platforms Avatars */}
                     <div className="space-y-3">
-                        <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Other Platforms Avatars</h4>
+                        <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Other Platforms Avatars</h4>
                         <ImageUploader
                             label="Other Platform Agent Avatar 1"
                             value={data.otherAvatar1 || ""}
@@ -163,35 +163,35 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                 </div>
             </div>
 
-            <hr className="border-slate-800" />
+            <hr className="border-slate-200" />
 
             {/* Comparison Rows Manager */}
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Comparison Matrix Rows</h3>
+                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Comparison Matrix Rows</h3>
                     <Button 
                         type="button" 
                         variant="outline" 
                         size="xs" 
                         onClick={addRow} 
-                        className="text-xs flex items-center gap-1 border-emerald-900/50 hover:bg-emerald-950/20 text-emerald-600"
+                        className="text-xs flex items-center gap-1 border-emerald-200 hover:bg-emerald-50 text-emerald-700"
                     >
                         <Plus className="w-3 h-3" /> Add Row
                     </Button>
                 </div>
 
                 {rows.length === 0 && (
-                    <p className="text-xs text-slate-500 italic p-4 border border-dashed border-slate-800 rounded-xl text-center">
+                    <p className="text-xs text-slate-500 italic p-4 border border-dashed border-slate-200 rounded-xl text-center">
                         No rows added yet. Frontend will render default demo rows.
                     </p>
                 )}
 
                 <div className="space-y-6">
                     {rows.map((row, rIdx) => (
-                        <div key={rIdx} className="border border-slate-800 rounded-xl p-4 bg-slate-900/20 space-y-4">
+                        <div key={rIdx} className="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-4">
                             {/* Row Header controls */}
-                            <div className="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
-                                <span className="text-xs font-black text-slate-400 uppercase">
+                            <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+                                <span className="text-xs font-black text-slate-500 uppercase">
                                     Row #{rIdx + 1}
                                 </span>
                                 
@@ -202,7 +202,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                         size="icon" 
                                         disabled={rIdx === 0} 
                                         onClick={() => moveRow(rIdx, -1)}
-                                        className="h-7 w-7 text-slate-500 hover:text-slate-200"
+                                        className="h-7 w-7 text-slate-500 hover:text-slate-800 hover:bg-slate-100"
                                     >
                                         <ChevronUp className="w-3.5 h-3.5" />
                                     </Button>
@@ -212,7 +212,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                         size="icon" 
                                         disabled={rIdx === rows.length - 1} 
                                         onClick={() => moveRow(rIdx, 1)}
-                                        className="h-7 w-7 text-slate-500 hover:text-slate-200"
+                                        className="h-7 w-7 text-slate-500 hover:text-slate-800 hover:bg-slate-100"
                                     >
                                         <ChevronDown className="w-3.5 h-3.5" />
                                     </Button>
@@ -221,7 +221,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                         variant="ghost" 
                                         size="icon" 
                                         onClick={() => removeRow(rIdx)}
-                                        className="h-7 w-7 text-red-500/80 hover:text-red-400 hover:bg-red-950/20"
+                                        className="h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50"
                                     >
                                         <Trash2 className="w-3.5 h-3.5" />
                                     </Button>
@@ -253,15 +253,15 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                             {/* PM Partners Points & Other Points side by side */}
                             <div className="grid md:grid-cols-2 gap-6 pt-2">
                                 {/* PM Partners Points (Green Benefits Column) */}
-                                <div className="space-y-3 border-r border-slate-800/40 pr-2">
+                                <div className="space-y-3 border-r border-slate-200 pr-2">
                                     <div className="flex items-center justify-between">
-                                        <h5 className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">PM Partners Advantages</h5>
+                                        <h5 className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">PM Partners Advantages</h5>
                                         <Button 
                                             type="button" 
                                             variant="ghost" 
                                             size="xs" 
                                             onClick={() => addPmPartnersPoint(rIdx)} 
-                                            className="text-[10px] h-6 flex items-center gap-0.5 text-emerald-700 hover:bg-emerald-950/10"
+                                            className="text-[10px] h-6 flex items-center gap-0.5 text-emerald-700 hover:bg-emerald-50"
                                         >
                                             <Plus className="w-2.5 h-2.5" /> Add point
                                         </Button>
@@ -269,7 +269,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
 
                                     <div className="space-y-3">
                                         {(row.pmpartnersPoints || []).map((point, pIdx) => (
-                                            <div key={pIdx} className="p-3 border border-slate-800/80 rounded-lg bg-slate-950/30 space-y-2.5">
+                                            <div key={pIdx} className="p-3 border border-slate-200 rounded-lg bg-white space-y-2.5">
                                                 <div className="flex items-start gap-2 justify-between">
                                                     <Input 
                                                         value={point.text || ""} 
@@ -282,7 +282,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                                         variant="ghost" 
                                                         size="icon" 
                                                         onClick={() => removePmPartnersPoint(rIdx, pIdx)}
-                                                        className="h-7 w-7 text-red-500/80 hover:text-red-400 hover:bg-red-950/20 shrink-0"
+                                                        className="h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50 shrink-0"
                                                     >
                                                         <Trash2 className="w-3 h-3" />
                                                     </Button>
@@ -290,12 +290,12 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
 
                                                 <div className="grid grid-cols-2 gap-3 items-center">
                                                     {/* Toggle showAvatars */}
-                                                    <label className="flex items-center gap-1.5 text-[9px] text-slate-400 cursor-pointer">
+                                                    <label className="flex items-center gap-1.5 text-[9px] text-slate-500 cursor-pointer">
                                                         <input 
                                                             type="checkbox" 
-                                                            checked={!!point.showAvatars} 
+                                                            checked={point.showAvatars || false} 
                                                             onChange={(e) => updatePmPartnersPoint(rIdx, pIdx, { showAvatars: e.target.checked })} 
-                                                            className="rounded border-slate-700 text-emerald-600 focus:ring-emerald-500 w-3 h-3"
+                                                            className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-3 h-3"
                                                         />
                                                         <span>Show overlapping avatars</span>
                                                     </label>
@@ -305,7 +305,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                                         <select
                                                             value={point.icon || ""}
                                                             onChange={(e) => updatePmPartnersPoint(rIdx, pIdx, { icon: e.target.value })}
-                                                            className="text-[9px] h-6 px-1 rounded border border-slate-800 bg-slate-900 text-slate-300 outline-none"
+                                                            className="text-[9px] h-6 px-1 rounded border border-slate-200 bg-white text-slate-800 outline-none"
                                                         >
                                                             {AVAILABLE_ICONS.map((i) => (
                                                                 <option key={i.value} value={i.value}>{i.label}</option>
@@ -315,7 +315,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                                 </div>
 
                                                 {/* Point Image */}
-                                                <div className="pt-1.5 border-t border-slate-800/40">
+                                                <div className="pt-1.5 border-t border-slate-200">
                                                     <ImageUploader
                                                         label="Custom Point Image / Graphic (optional)"
                                                         value={point.image || ""}
@@ -330,13 +330,13 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                 {/* Other Points (Grey Negative Column) */}
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
-                                        <h5 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Other Platforms Painpoints</h5>
+                                        <h5 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Other Platforms Painpoints</h5>
                                         <Button 
                                             type="button" 
                                             variant="ghost" 
                                             size="xs" 
                                             onClick={() => addOtherPoint(rIdx)} 
-                                            className="text-[10px] h-6 flex items-center gap-0.5 text-slate-400 hover:bg-slate-800/10"
+                                            className="text-[10px] h-6 flex items-center gap-0.5 text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                                         >
                                             <Plus className="w-2.5 h-2.5" /> Add point
                                         </Button>
@@ -356,7 +356,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                                     variant="ghost" 
                                                     size="icon" 
                                                     onClick={() => removeOtherPoint(rIdx, pIdx)}
-                                                    className="h-7 w-7 text-red-500/80 hover:text-red-400 hover:bg-red-950/20 shrink-0"
+                                                    className="h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50 shrink-0"
                                                 >
                                                     <Trash2 className="w-3 h-3" />
                                                 </Button>

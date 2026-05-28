@@ -43,7 +43,7 @@ export default function StatBarEditor({ data, onChange }: Props) {
                 </Button>
             </div>
 
-            <hr className="border-slate-800" />
+            <hr className="border-slate-200" />
 
             <div className="space-y-2">
                 <ImageUploader

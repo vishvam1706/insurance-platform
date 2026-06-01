@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+﻿import mongoose from "mongoose"
 import bcrypt from "bcryptjs"
 import * as dotenv from "dotenv"
 import path from "path"
@@ -8,6 +8,8 @@ dotenv.config({ path: path.resolve(process.cwd(), ".env.local") })
 import User from "../models/User"
 import PageContent from "../models/PageContent"
 import InsurancePlan from "../models/InsurancePlan"
+import SystemSettings from "../models/SystemSettings"
+import Testimonial from "../models/Testimonial"
 
 async function seed() {
     const uri = process.env.MONGODB_URI
@@ -83,7 +85,7 @@ async function seed() {
                 zeroCostExit: true,
             },
             csr: "99.62%",
-            pmpartnersRating: 4.65,
+            policymineRating: 4.65,
         },
         {
             slug: "hdfc-life-click2protect-supreme-plus",
@@ -98,7 +100,7 @@ async function seed() {
                 spousecover: true,
             },
             csr: "99.55%",
-            pmpartnersRating: 4.55,
+            policymineRating: 4.55,
         },
         {
             slug: "hdfc-ergo-optima-restore",
@@ -121,7 +123,7 @@ async function seed() {
                 healthCheckup: "Once every year",
             },
             csr: "97%",
-            pmpartnersRating: 4.5,
+            policymineRating: 4.5,
         },
         {
             slug: "niva-bupa-reassure",
@@ -144,11 +146,84 @@ async function seed() {
                 healthCheckup: "Once every year",
             },
             csr: "92%",
-            pmpartnersRating: 4.2,
+            policymineRating: 4.2,
         },
     ])
 
     console.log("✅ Insurance plans seeded")
+
+    // ── SYSTEM SETTINGS ────────────────────────────────────
+    await SystemSettings.deleteMany({})
+    console.log("🗑  Cleared system settings")
+    
+    await SystemSettings.create({
+        key: "global_settings",
+        languages: [
+            { language: "Hindi", visible: true },
+            { language: "English", visible: true },
+            { language: "Bengali", visible: true },
+            { language: "Marathi", visible: true },
+            { language: "Telugu", visible: true },
+            { language: "Tamil", visible: true },
+            { language: "Gujarati", visible: true },
+            { language: "Kannada", visible: true },
+            { language: "Malayalam", visible: true },
+            { language: "Punjabi", visible: true },
+            { language: "Odia", visible: true },
+            { language: "Assamese", visible: true },
+            { language: "Urdu", visible: true },
+            { language: "Maithili", visible: true },
+            { language: "Santali", visible: true },
+            { language: "Kashmiri", visible: true }
+        ],
+        shifts: [
+            { shiftName: "Morning Shift", startTime: "09:00", endTime: "13:00", frozen: false },
+            { shiftName: "Afternoon Shift", startTime: "13:00", endTime: "17:00", frozen: false },
+            { shiftName: "Evening Shift", startTime: "17:00", endTime: "21:00", frozen: false },
+            { shiftName: "Night Shift", startTime: "21:00", endTime: "09:00", frozen: false }
+        ]
+    })
+    console.log("✅ System settings seeded")
+
+    // ── TESTIMONIALS ────────────────────────────────────────
+    await Testimonial.deleteMany({})
+    console.log("🗑  Cleared testimonials")
+
+    await Testimonial.insertMany([
+        {
+            name: "Rahul Shah",
+            role: "Ahmedabad",
+            body: "The entire process was smooth and professionally handled. Everything was explained clearly before purchase.",
+            rating: 5,
+            initials: "RS",
+            active: true
+        },
+        {
+            name: "Neha Mehta",
+            role: "Surat",
+            body: "I finally understood the actual difference between plans because of their simple guidance.",
+            rating: 5,
+            initials: "NM",
+            active: true
+        },
+        {
+            name: "Amit Verma",
+            role: "Mumbai",
+            body: "Very supportive team during medical requirements and policy issuance process.",
+            rating: 5,
+            initials: "AV",
+            active: true
+        },
+        {
+            name: "Priya Sharma",
+            role: "Delhi",
+            body: "They genuinely focused on what was right for my family instead of pushing expensive plans.",
+            rating: 5,
+            initials: "PS",
+            active: true
+        }
+    ])
+    console.log("✅ Testimonials seeded")
 
     // ── PAGE CONTENT ───────────────────────────────────────
     await PageContent.deleteMany({})
@@ -173,7 +248,7 @@ async function seed() {
                     title: "What is Term Insurance?",
                     publishedDate: "20 Feb, 2026",
                     author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -278,7 +353,7 @@ async function seed() {
                     rating: 4.9,
                     totalCount: 20915,
                     items: [
-                        { name: "INDHUMATHI M", initials: "I", body: "PM Partners is doing really great. Absolutely spam free — that's the best part. Advisor Nuha was very patient and answered all my questions with clarity." },
+                        { name: "INDHUMATHI M", initials: "I", body: "Policymine is doing really great. Absolutely spam free — that's the best part. Advisor Nuha was very patient and answered all my questions with clarity." },
                         { name: "Ragul Kumar", initials: "RK", body: "Loved the service! Maheta Nidhi Hitesh was incredibly helpful and knowledgeable. No pressure at all, just clear and honest advice." },
                         { name: "Samil Shah", initials: "SS", body: "Ishita Sudrania was extremely helpful in guiding me through choosing the right term plan. Highly recommend!" },
                     ],
@@ -304,7 +379,7 @@ async function seed() {
                 data: {
                     title: "Term Insurance vs Life Insurance",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -345,21 +420,21 @@ async function seed() {
                 id: "b5",
                 type: "plans_table",
                 data: {
-                    title: "PM Partners's Recommended Term Plans (2026)",
+                    title: "Policymine'ss Recommended Term Plans (2026)",
                     rows: [
-                        { plan: "Axis Max Life Smart Term Plan Plus", riders: "Accidental Death, Critical Illness (64 illnesses), Zero-Cost Exit, Women's Perks", csr: "99.62%", rating: "4.65/5", pmpartnersRating: 4.65 },
-                        { plan: "HDFC Life Click2Protect Supreme Plus", riders: "Accidental Death, Waiver of Premium, Critical Illness (60 illnesses), Spouse Cover", csr: "99.55%", rating: "4.55/5", pmpartnersRating: 4.55 },
-                        { plan: "ICICI Prudential iProtect Smart Plus", riders: "Accidental Death, Life Stage Benefit, Critical Illness (60 illnesses), Zero Cost Option", csr: "98.03%", rating: "4.30/5", pmpartnersRating: 4.30 },
-                        { plan: "Bajaj Life eTouch II", riders: "Accidental Death, Life Stage Benefit, Critical Illness (60 illnesses), Zero Cost Option", csr: "99.21%", rating: "4.20/5", pmpartnersRating: 4.20 },
+                        { plan: "Axis Max Life Smart Term Plan Plus", riders: "Accidental Death, Critical Illness (64 illnesses), Zero-Cost Exit, Women's Perks", csr: "99.62%", rating: "4.65/5", policymineRating: 4.65 },
+                        { plan: "HDFC Life Click2Protect Supreme Plus", riders: "Accidental Death, Waiver of Premium, Critical Illness (60 illnesses), Spouse Cover", csr: "99.55%", rating: "4.55/5", policymineRating: 4.55 },
+                        { plan: "ICICI Prudential iProtect Smart Plus", riders: "Accidental Death, Life Stage Benefit, Critical Illness (60 illnesses), Zero Cost Option", csr: "98.03%", rating: "4.30/5", policymineRating: 4.30 },
+                        { plan: "Bajaj Life eTouch II", riders: "Accidental Death, Life Stage Benefit, Critical Illness (60 illnesses), Zero Cost Option", csr: "99.21%", rating: "4.20/5", policymineRating: 4.20 },
                     ],
                 },
             },
             {
                 id: "b6",
-                type: "pmpartners_take",
+                type: "policymine_take",
                 data: {
-                    title: "PM Partners' Take: Term vs Life Insurance",
-                    body: "At PM Partners, we usually recommend pure term insurance as the most efficient way to protect your family. It gives you a large cover at a very low premium because it does not mix insurance with investment. Use term insurance for safety. Use mutual funds, PPF, or FDs for growth.",
+                    title: "Policymine's Take: Term vs Life Insurance",
+                    body: "At Policymine, we usually recommend pure term insurance as the most efficient way to protect your family. It gives you a large cover at a very low premium because it does not mix insurance with investment. Use term insurance for safety. Use mutual funds, PPF, or FDs for growth.",
                 },
             },
             {
@@ -380,8 +455,8 @@ async function seed() {
                     rating: 4.9,
                     totalCount: 20915,
                     items: [
-                        { name: "Pulkit Singh", initials: "PS", body: "Had a great experience with PM Partners while exploring health insurance options. Everything was explained clearly with no pressure." },
-                        { name: "Raghappriya M", initials: "RM", body: "Great experience with PM Partners while filing my health insurance claim. Their support made the process much smoother." },
+                        { name: "Pulkit Singh", initials: "PS", body: "Had a great experience with Policymine while exploring health insurance options. Everything was explained clearly with no pressure." },
+                        { name: "Raghappriya M", initials: "RM", body: "Great experience with Policymine while filing my health insurance claim. Their support made the process much smoother." },
                     ],
                 },
             },
@@ -577,9 +652,9 @@ async function seed() {
                 type: "hero",
                 data: {
                     title: "Best Term Insurance Plans 2026",
-                    subtitle: "Compare top-rated pure risk protection plans side-by-side. View claim settlement ratios, features, and expert PM Partners ratings.",
+                    subtitle: "Compare top-rated pure risk protection plans side-by-side. View claim settlement ratios, features, and expert Policymine ratings.",
                     author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -587,18 +662,18 @@ async function seed() {
                 id: "bt2",
                 type: "rich_text",
                 data: {
-                    content: "<p>Finding the right term insurance plan is one of the most critical financial decisions you will make. With so many insurers claiming high settlement numbers and offering dozens of complex riders, it is easy to feel overwhelmed. At PM Partners, we evaluate term policies on three main criteria: Claim Settlement Ratio (CSR), operational smoothness, and rider utility.</p>",
+                    content: "<p>Finding the right term insurance plan is one of the most critical financial decisions you will make. With so many insurers claiming high settlement numbers and offering dozens of complex riders, it is easy to feel overwhelmed. At Policymine, we evaluate term policies on three main criteria: Claim Settlement Ratio (CSR), operational smoothness, and rider utility.</p>",
                 },
             },
             {
                 id: "bt3",
                 type: "plans_table",
                 data: {
-                    title: "PM Partners Recommended Best Term Plans (2026)",
+                    title: "Policymine Recommended Best Term Plans (2026)",
                     rows: [
-                        { plan: "Axis Max Life Smart Term Plan Plus", riders: "Critical Illness (64 illnesses), Accidental Death, Zero Cost Exit", csr: "99.62%", rating: "4.65/5", pmpartnersRating: 4.65 },
-                        { plan: "HDFC Life Click2Protect Supreme Plus", riders: "Waiver of Premium, Spouse Cover, Life Stage Benefits", csr: "99.55%", rating: "4.55/5", pmpartnersRating: 4.55 },
-                        { plan: "ICICI Prudential iProtect Smart Plus", riders: "Accidental Death, Terminal Illness, Multi-payout", csr: "98.03%", rating: "4.30/5", pmpartnersRating: 4.30 },
+                        { plan: "Axis Max Life Smart Term Plan Plus", riders: "Critical Illness (64 illnesses), Accidental Death, Zero Cost Exit", csr: "99.62%", rating: "4.65/5", policymineRating: 4.65 },
+                        { plan: "HDFC Life Click2Protect Supreme Plus", riders: "Waiver of Premium, Spouse Cover, Life Stage Benefits", csr: "99.55%", rating: "4.55/5", policymineRating: 4.55 },
+                        { plan: "ICICI Prudential iProtect Smart Plus", riders: "Accidental Death, Terminal Illness, Multi-payout", csr: "98.03%", rating: "4.30/5", policymineRating: 4.30 },
                     ],
                 },
             },
@@ -650,7 +725,7 @@ async function seed() {
                     title: "1 Crore Term Insurance Plan",
                     subtitle: "The gold standard of life protection. Understand why it is the perfect coverage amount and how to get it at the lowest premium.",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -716,7 +791,7 @@ async function seed() {
                     title: "NRI Term Insurance in India",
                     subtitle: "Comprehensive guide for Non-Resident Indians seeking term life cover. Save up to 50% on premiums compared to foreign policies.",
                     author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -782,7 +857,7 @@ async function seed() {
                     title: "What is Health Insurance?",
                     subtitle: "A simple guide to healthcare cover. Understand how medical policies shield you from soaring hospital bills and protect your savings.",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -844,7 +919,7 @@ async function seed() {
                     title: "Best Health Insurance Plans 2026",
                     subtitle: "Handpicked medical policies with high claim ratios, extensive hospital networks, and zero room-rent limits.",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -899,7 +974,7 @@ async function seed() {
                     title: "Family Floater Health Insurance",
                     subtitle: "One policy to protect your whole family. Save up to 35% on premiums compared to buying separate individual policies.",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at PM Partners" },
+                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -935,26 +1010,312 @@ async function seed() {
 
     await PageContent.create({
         pageKey: "home",
-        title: "Homepage",
+        title: "Home",
         section: "home",
         published: true,
         seo: {
-            metaTitle: "Insurance Platform - Expert Advice, Free Consultation",
-            metaDescription: "Get expert advice on term life and health insurance. Get a free consultation with our top advisors.",
-            keywords: ["insurance platform india", "term insurance", "health insurance"],
+            metaTitle: "Policymine | Premium Insurance Guidance",
+            metaDescription: "Protect Your Family With Smarter Insurance Decisions.",
+            keywords: ["insurance", "Policymine", "term insurance", "health insurance"]
         },
         blocks: [
-            { id: "h1", type: "home_hero", data: { badge: "Top-Rated Expert Advisors", title: "The Ultimate Insurance Buying Experience", subtitle: "Simple, transparent, and direct comparisons. Get honest help from expert advisors without any sales pressure.", primaryCta: { text: "Compare Plans", href: "/contact" }, stats: [], showInquiryForm: false } },
-            { id: "h2", type: "stat_bar", data: { stats: [{ value: "100%", label: "Unbiased" }, { value: "Free", label: "Consultation" }, { value: "Direct", label: "Support" }] } },
-            { id: "h3", type: "pmpartners_experience", data: {} },
-            { id: "h4", type: "comparison_section", data: {} },
-            { id: "h5", type: "product_cards", data: { title: "Two products. Expert guidance on both.", cards: [{ title: "Term Life Insurance", desc: "Pure protection for your family at the lowest possible premium.", href: "/term-life", colorClass: "bg-blue-600" }, { title: "Health Insurance", desc: "Comprehensive coverage for you and your family.", href: "/health", colorClass: "bg-teal-600" }] } },
-            { id: "h6", type: "insurance_checklist", data: {} },
-            { id: "h7", type: "reviews", data: { rating: 5, totalCount: 21000, items: [{ name: "Arjun Mehta", initials: "AM", body: "One call changed everything. Got a Rs.1 Cr term plan within a week." }, { name: "Priya Nair", initials: "PN", body: "No pushy sales pitch. Honest advice. Completely satisfied." }, { name: "Rohit Sharma", initials: "RS", body: "Best decision for my family. Incredibly patient advisor." }] } },
-            { id: "h8", type: "home_faq", data: { items: [{ question: "What is PM Partners?", answer: "PM Partners helps you make better decisions when buying insurance." }, { question: "Is it free?", answer: "Yes, completely free." }, { question: "Do you earn commission?", answer: "Yes, but our advice is never influenced by it." }, { question: "How quickly can I get a policy?", answer: "Within 3-7 working days after our call." }] } },
-            { id: "h9", type: "choose_pmpartners_cta", data: {} },
-        ],
-    })
+            {
+                id: "h1",
+                type: "home_hero",
+                data: {
+                    title: "Protect Your Family With Smarter Insurance Decisions",
+                    subtitle: "Get personalized insurance guidance, transparent plan comparisons, and expert claim support — all in one place.",
+                    badge: "Premium Insurance Website",
+                    primaryCta: { text: "Book Free Consultation", href: "/contact" },
+                    secondaryCta: { text: "Get WhatsApp Support", href: "#" },
+                    stats: [
+                        { label: "Trusted Insurance Advisors", value: "✔" },
+                        { label: "Personalized Plan Comparison", value: "✔" },
+                        { label: "Claim Support Assistance", value: "✔" },
+                        { label: "Multi-Language Guidance", value: "✔" },
+                        { label: "End-to-End Support", value: "✔" }
+                    ]
+                }
+            },
+            {
+                id: "h2",
+                type: "stat_bar",
+                data: {
+                    stats: [
+                        { label: "Customers Assisted", value: "100K+" },
+                        { label: "Premium Managed", value: "₹400Cr+" },
+                        { label: "Partners Across India", value: "3000+" },
+                        { label: "Specialist Team", value: "50+" }
+                    ]
+                }
+            },
+            {
+                id: "h3",
+                type: "home_guidance",
+                data: {
+                    title: "Insurance Guidance, Not Just Policy Selling",
+                    subtitle: "We help customers make smarter protection decisions based on their financial goals, responsibilities, lifestyle, and future needs — not rigid sales targets.",
+                    quote: "Every recommendation is designed to be practical, easy to understand, and aligned with your future financial security.",
+                    items: [
+                        { title: "Personalized Recommendations", desc: "Tailored protection advice designed specifically for your life stage, budget, and family goals." },
+                        { title: "Transparent Plan Comparison", desc: "Objective side-by-side analysis of policy details, coverage options, and claim histories." },
+                        { title: "Simple Explanations", desc: "Direct, jargon-free explanations of riders, sub-limits, and co-payment conditions." },
+                        { title: "Long-Term Customer Support", desc: "Continuous advisor access for queries, policy updates, and annual family reviews." },
+                        { title: "Dedicated Claim Assistance", desc: "Round-the-clock claim filing coordination, documentation review, and insurer follow-up." }
+                    ]
+                }
+            },
+            {
+                id: "h4",
+                type: "home_trust",
+                data: {
+                    title: "Why Customers Trust Policymine",
+                    items: [
+                        { heading: "Best Value Plans", body: "Compare plans from leading insurers to find suitable coverage at competitive pricing." },
+                        { heading: "Transparent Advice", body: "Recommendations focused on your actual needs and long-term goals." },
+                        { heading: "Dedicated Claim Assistance", body: "Support from experienced advisors during the claim process." },
+                        { heading: "Personalized Customer Support", body: "Quick guidance and assistance whenever required." },
+                        { heading: "IRDAI-Compliant Process", body: "Professional and ethical practices aligned with industry standards." },
+                        { heading: "Multi-Language Support", body: "Guidance available in multiple languages based on advisor availability." }
+                    ]
+                }
+            },
+            {
+                id: "h5",
+                type: "home_understanding",
+                data: {
+                    title: "Insurance Should Be Understood — Not Just Purchased",
+                    subtitle: "Buying insurance shouldn't feel like a guessing game. We ensure you know exactly what you are paying for, what benefits you receive, and how your family is protected.",
+                    items: [
+                        { title: "The Knowledge Gap", desc: "Most people buy insurance without fully understanding what is actually covered, what is excluded, or how claims work during difficult situations. That’s where we help." },
+                        { title: "Our Simplified Mission", desc: "To simplify insurance with completely transparent guidance, practical recommendations, and dedicated long-term support throughout your journey." },
+                        { title: "Confident Protection", desc: "Whether you are planning for family protection, health security, wealth creation, retirement, or your child’s future — choose the right financial safety net with total confidence." }
+                    ]
+                }
+            },
+            {
+                id: "h6",
+                type: "product_cards",
+                data: {
+                    title: "Our Insurance Solutions",
+                    cards: [
+                        { title: "Term Insurance", desc: "Secure your family’s financial future with high life coverage at affordable premiums.", href: "/term-life", colorClass: "bg-blue-600" },
+                        { title: "Health Insurance", desc: "Protect yourself and your loved ones against rising medical expenses, hospitalization, surgeries, and critical illnesses.", href: "/health", colorClass: "bg-teal-600" },
+                        { title: "Investment & Wealth Plans", desc: "Build long-term financial growth through market-linked and guaranteed return solutions.", href: "/wealth", colorClass: "bg-indigo-600" },
+                        { title: "Retirement Planning", desc: "Create a financially secure retirement with structured income and wealth protection strategies.", href: "/retirement", colorClass: "bg-orange-600" },
+                        { title: "Child Future Planning", desc: "Plan confidently for your child’s education, marriage, and future aspirations.", href: "/child-future", colorClass: "bg-purple-600" },
+                        { title: "Business & Keyman Insurance", desc: "Protect businesses against financial uncertainties and operational risks.", href: "/business", colorClass: "bg-slate-600" }
+                    ]
+                }
+            },
+            {
+                id: "h7",
+                type: "home_process",
+                data: {
+                    title: "Simple, Transparent & Guided Process",
+                    subtitle: "How we help you secure the right insurance plan.",
+                    steps: [
+                        { title: "Analyze Needs", text: "We analyze your financial goals, responsibilities, income, and existing coverage." },
+                        { title: "Compare Plans", text: "Our advisors compare suitable plans from trusted insurers based on your requirements." },
+                        { title: "Explain Jargon", text: "We explain benefits, exclusions, premiums, and claim processes in easy-to-understand language." },
+                        { title: "Complete Forms", text: "Complete support for forms, medicals, verification, and policy issuance." },
+                        { title: "Lifetime Support", text: "We stay connected even after policy issuance and assist whenever support is needed." }
+                    ]
+                }
+            },
+            {
+                id: "h8",
+                type: "policymine_take",
+                data: {
+                    title: "Helping Customers Make Better Insurance Decisions",
+                    body: "We focus on transparency, clarity, and customer-first support throughout the insurance journey. Highlights include: Personalized Insurance Planning, Quick Processing Assistance, Support For Salaried & Self-Employed Individuals, Online & Offline Consultation Available, Guidance From Application To Claim Settlement, Dedicated Advisor Assistance."
+                }
+            },
+            {
+                id: "h9",
+                type: "reviews",
+                data: {
+                    rating: 5,
+                    totalCount: 100000,
+                    items: [
+                        { name: "Rahul Shah", initials: "RS", body: "The entire process was smooth and professionally handled. Everything was explained clearly before purchase." },
+                        { name: "Neha Mehta", initials: "NM", body: "I finally understood the actual difference between plans because of their simple guidance." },
+                        { name: "Amit Verma", initials: "AV", body: "Very supportive team during medical requirements and policy issuance process." },
+                        { name: "Priya Sharma", initials: "PS", body: "They genuinely focused on what was right for my family instead of pushing expensive plans." }
+                    ]
+                }
+            },
+            {
+                id: "h10",
+                type: "home_faq",
+                data: {
+                    items: [
+                        { question: "Is your consultation free?", answer: "Yes, our insurance consultation and guidance are completely free." },
+                        { question: "Which insurance companies do you work with?", answer: "We coordinate with multiple leading insurance providers to help customers compare suitable plans." },
+                        { question: "Can the process be completed online?", answer: "Yes, the entire process including consultation and documentation can be completed digitally." },
+                        { question: "Do you provide claim assistance?", answer: "Yes, our team provides dedicated support during claim coordination and assistance." },
+                        { question: "Who can use your services?", answer: "We assist salaried individuals, business owners, professionals, families, and senior citizens." },
+                        { question: "Do you support multiple languages?", answer: "Yes, language support is available based on advisor availability." }
+                    ]
+                }
+            },
+            {
+                id: "h11",
+                type: "cta_block",
+                data: {
+                    title: "Secure What Matters Most",
+                    bookCallText: "Schedule Free Consultation",
+                    whatsappText: "Connect On WhatsApp"
+                }
+            }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "contact",
+        title: "Contact Us",
+        section: "support",
+        published: true,
+        seo: { metaTitle: "Contact Us - Policymine", metaDescription: "Get In Touch With Our Insurance Experts" },
+        blocks: [
+            { id: "c1", type: "hero", data: { title: "Get In Touch With Our Insurance Experts", subtitle: "Whether you need help understanding plans, comparing policies, or getting claim support — our team is here to guide you." } },
+            { id: "c2", type: "rich_text", data: { content: "<h3>Contact Information</h3><ul><li>support@policymine.in</li><li>+91-XXXXXXXXXX</li><li>Consultation Hours Available based on advisor availability and active support timings.</li></ul>" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "about",
+        title: "About Policymine",
+        section: "support",
+        published: true,
+        seo: { metaTitle: "About Us - Policymine", metaDescription: "Building Trust Through Smarter Insurance Guidance" },
+        blocks: [
+            { id: "a1", type: "hero", data: { title: "Building Trust Through Smarter Insurance Guidance", subtitle: "Policymine was created with a simple mission — to make insurance easier to understand, transparent, and customer-focused." } },
+            { id: "a2", type: "rich_text", data: { content: "<p>Many people purchase insurance without proper guidance, clear understanding, or long-term support. We aim to change that experience by helping customers make informed financial protection decisions with confidence.</p><p>Our team focuses on simplifying insurance through:</p><ul><li>Transparent plan comparison</li><li>Personalized recommendations</li><li>Practical financial guidance</li><li>End-to-end assistance</li><li>Dedicated claim support</li></ul><p>We believe insurance should never feel confusing or sales-driven. It should feel secure, supportive, and built around your actual life goals.</p>" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "term-life",
+        title: "Term Insurance",
+        section: "term-life",
+        published: true,
+        seo: { metaTitle: "Term Insurance - Policymine", metaDescription: "Protect Your Family’s Financial Future" },
+        blocks: [
+            { id: "tl1", type: "hero", data: { title: "Protect Your Family’s Financial Future", subtitle: "Term insurance provides financial protection for your loved ones in case of unforeseen circumstances." } },
+            { id: "tl2", type: "benefits_list", data: { title: "Why Term Insurance Matters", items: [{ heading: "Affordable", body: "High life coverage at affordable premiums" }, { heading: "Protection", body: "Financial protection for dependents" }, { heading: "Tax Savings", body: "Tax benefits as per applicable laws" }, { heading: "Peace of Mind", body: "Peace of mind for your family’s future" }] } },
+            { id: "tl3", type: "cta_block", data: { title: "Our Support Includes Coverage assessment, Plan comparison, Premium guidance, Documentation assistance, Claim support coordination", bookCallText: "Compare Term Plans", whatsappText: "Connect on WhatsApp" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "health",
+        title: "Health Insurance",
+        section: "health",
+        published: true,
+        seo: { metaTitle: "Health Insurance - Policymine", metaDescription: "Health Protection For You & Your Family" },
+        blocks: [
+            { id: "hi1", type: "hero", data: { title: "Health Protection For You & Your Family", subtitle: "Medical expenses continue to rise every year. Health insurance helps protect your savings during emergencies, hospitalization, surgeries, and critical illnesses." } },
+            { id: "hi2", type: "features_table", data: { title: "Coverage Benefits", rows: [{ aspect: "Cashless hospitalization", feature: "Support" }, { aspect: "Family health", feature: "Coverage options" }, { aspect: "Critical illness", feature: "Protection" }, { aspect: "Pre/Post hospitalization", feature: "Benefits" }, { aspect: "Tax-saving", feature: "Advantages" }] } },
+            { id: "hi3", type: "cta_block", data: { title: "Compare multiple insurers, Understand policy benefits clearly, Transparent guidance without confusion, Support during claims and renewals", bookCallText: "Explore Health Plans", whatsappText: "Connect on WhatsApp" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "wealth",
+        title: "Investment & Wealth Plans",
+        section: "wealth",
+        published: true,
+        seo: { metaTitle: "Investment & Wealth - Policymine", metaDescription: "Build Long-Term Financial Growth With Confidence" },
+        blocks: [
+            { id: "w1", type: "hero", data: { title: "Build Long-Term Financial Growth With Confidence", subtitle: "Investment and wealth plans help create disciplined long-term savings while supporting important financial goals." } },
+            { id: "w2", type: "cta_block", data: { title: "Suitable For Wealth creation, Child future planning, Goal-based investing, Financial stability", bookCallText: "Start Wealth Planning", whatsappText: "Connect on WhatsApp" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "retirement",
+        title: "Retirement Planning",
+        section: "wealth",
+        published: true,
+        seo: { metaTitle: "Retirement Planning - Policymine", metaDescription: "Plan Today For A Financially Secure Retirement" },
+        blocks: [
+            { id: "rp1", type: "hero", data: { title: "Plan Today For A Financially Secure Retirement", subtitle: "Retirement planning helps create a stable future income and financial independence after your working years." } },
+            { id: "rp2", type: "cta_block", data: { title: "Benefits include Stable retirement income, Long-term wealth protection, Financial independence.", bookCallText: "Plan Your Retirement", whatsappText: "Connect on WhatsApp" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "child-future",
+        title: "Child Future Planning",
+        section: "wealth",
+        published: true,
+        seo: { metaTitle: "Child Future Planning - Policymine", metaDescription: "Secure Your Child’s Future Goals" },
+        blocks: [
+            { id: "cf1", type: "hero", data: { title: "Secure Your Child’s Future Goals", subtitle: "Prepare confidently for your child’s future education, career goals, and important life milestones." } },
+            { id: "cf2", type: "cta_block", data: { title: "We Help With Child education planning, Goal-based investment guidance, Protection-linked savings options.", bookCallText: "Start Child Future Planning", whatsappText: "Connect on WhatsApp" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "business",
+        title: "Business & Keyman Insurance",
+        section: "corporate",
+        published: true,
+        seo: { metaTitle: "Business Insurance - Policymine", metaDescription: "Protect Your Business Against Financial Risks" },
+        blocks: [
+            { id: "bi1", type: "hero", data: { title: "Protect Your Business Against Financial Risks", subtitle: "Business insurance solutions help organizations reduce financial uncertainty and maintain stability during unexpected situations." } },
+            { id: "bi2", type: "cta_block", data: { title: "Coverage Areas: Keyman insurance, Liability protection, Business continuity support, Financial risk management.", bookCallText: "Explore Business Protection", whatsappText: "Connect on WhatsApp" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "claims",
+        title: "Claim Support",
+        section: "support",
+        published: true,
+        seo: { metaTitle: "Claim Support - Policymine", metaDescription: "Dedicated Support During Claims" },
+        blocks: [
+            { id: "cs1", type: "hero", data: { title: "Dedicated Support During Claims", subtitle: "Claim situations can feel stressful and overwhelming. Our team assists customers throughout the coordination and documentation process." } },
+            { id: "cs2", type: "note_box", data: { label: "Important Note", content: "Final claim approval and settlement remain subject to insurer policies, terms, and underwriting conditions." } },
+            { id: "cs3", type: "cta_block", data: { title: "Our Claim Assistance Includes Claim guidance support, Documentation assistance, Coordination with insurer teams", bookCallText: "Get Claim Assistance", whatsappText: "Connect on WhatsApp" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "careers",
+        title: "Careers",
+        section: "company",
+        published: true,
+        seo: { metaTitle: "Careers - Policymine", metaDescription: "Grow Your Career With Policymine" },
+        blocks: [
+            { id: "car1", type: "hero", data: { title: "Grow Your Career With Policymine", subtitle: "We are building a customer-focused insurance advisory platform driven by transparency, support, and long-term relationships." } },
+            { id: "car2", type: "rich_text", data: { content: "<h3>Open Roles</h3><ul><li>Insurance Advisor</li><li>Customer Support Executive</li><li>Relationship Manager</li><li>Operations Coordinator</li></ul>" } },
+            { id: "car3", type: "cta_block", data: { title: "Join a growth-oriented environment with learning and development support.", bookCallText: "Apply Now", whatsappText: "Connect on WhatsApp" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "privacy",
+        title: "Privacy Policy",
+        section: "company",
+        published: true,
+        seo: { metaTitle: "Privacy Policy - Policymine", metaDescription: "Your Privacy Matters" },
+        blocks: [
+            { id: "pp1", type: "rich_text", data: { content: "<h2>Your Privacy Matters</h2><p>We are committed to protecting customer information and maintaining confidentiality.</p><p>Personal details shared through consultations, inquiries, and documentation are handled responsibly and used only for insurance-related assistance and communication purposes. Information is processed in accordance with applicable legal and regulatory requirements.</p>" } }
+        ]
+    });
+
+    await PageContent.create({
+        pageKey: "terms",
+        title: "Terms & Conditions",
+        section: "company",
+        published: true,
+        seo: { metaTitle: "Terms & Conditions - Policymine", metaDescription: "Terms Of Use" },
+        blocks: [
+            { id: "tc1", type: "rich_text", data: { content: "<h2>Terms Of Use</h2><p>By accessing this website and using our services, users agree to the applicable terms, policies, and regulatory guidelines.</p><p>Policymine provides insurance-related guidance and assistance services. Final policy issuance, underwriting, premium decisions, and claim settlement are governed by the respective insurer’s terms and conditions. Users are advised to review all policy documents carefully before making purchase decisions.</p>" } }
+        ]
+    });
 
     console.log("Page content seeded")
     console.log("Seed complete! Login credentials:")

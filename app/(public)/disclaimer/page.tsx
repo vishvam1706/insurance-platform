@@ -1,9 +1,9 @@
-import { Metadata } from "next"
+﻿import { Metadata } from "next"
 import { ShieldAlert } from "lucide-react"
 
 export const metadata: Metadata = {
-    title: "Disclaimer — PM Partners Insurance",
-    description: "Read the Disclaimer of PM Partners Insurance regarding quotes, partner insurers, and underwriting policy limitations.",
+    title: "Disclaimer — Policymine Insurance",
+    description: "Read the Disclaimer of Policymine Insurance regarding quotes, partner insurers, and underwriting policy limitations.",
 }
 
 export default function DisclaimerPage() {
@@ -37,7 +37,7 @@ export default function DisclaimerPage() {
                     <section className="space-y-3">
                         <h2 className="text-xl font-extrabold text-slate-800" style={{ fontFamily: "var(--font-heading)" }}>2. Partner Insurers & Underwriting</h2>
                         <p className="text-sm leading-relaxed">
-                            PM Partners acts as a certified insurance referral and digital advisory facilitator. All insurance products (Term Life and Health) are underwritten by respective partner insurance companies registered with the IRDAI. PM Partners does not guarantee, represent, or warrant policy issuance or claim payouts, which are at the sole discretion of the underwriter.
+                            Policymine acts as a certified insurance referral and digital advisory facilitator. All insurance products (Term Life and Health) are underwritten by respective partner insurance companies registered with the IRDAI. Policymine does not guarantee, represent, or warrant policy issuance or claim payouts, which are at the sole discretion of the underwriter.
                         </p>
                     </section>
 
@@ -51,7 +51,7 @@ export default function DisclaimerPage() {
                     <section className="space-y-3">
                         <h2 className="text-xl font-extrabold text-slate-800" style={{ fontFamily: "var(--font-heading)" }}>4. Reference Links & Third-Party Portals</h2>
                         <p className="text-sm leading-relaxed">
-                            Our articles and comparison tables may contain links to partner insurer portals or external reference sites. PM Partners is not responsible for the privacy policies, transaction processing, or content accuracy of external web assets.
+                            Our articles and comparison tables may contain links to partner insurer portals or external reference sites. Policymine is not responsible for the privacy policies, transaction processing, or content accuracy of external web assets.
                         </p>
                     </section>
                 </div>

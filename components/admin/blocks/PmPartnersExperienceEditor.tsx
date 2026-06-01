@@ -1,18 +1,18 @@
-"use client"
+﻿"use client"
 
-import { PmPartnersExperienceBlockData } from "@/types/blocks"
+import { policymineExperienceBlockData } from "@/types/blocks"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import ImageUploader from "../ImageUploader"
 
 interface Props {
-    data: PmPartnersExperienceBlockData
-    onChange: (d: PmPartnersExperienceBlockData) => void
+    data: policymineExperienceBlockData
+    onChange: (d: policymineExperienceBlockData) => void
 }
 
-export default function PmPartnersExperienceEditor({ data = {}, onChange }: Props) {
-    function set(key: keyof PmPartnersExperienceBlockData, val: any) {
+export default function policymineExperienceEditor({ data = {}, onChange }: Props) {
+    function set(key: keyof policymineExperienceBlockData, val: any) {
         onChange({ ...data, [key]: val })
     }
 
@@ -33,11 +33,11 @@ export default function PmPartnersExperienceEditor({ data = {}, onChange }: Prop
                 </div>
 
                 <div className="space-y-2">
-                    <Label className="text-xs text-slate-500">Section Title (e.g. "The PM Partners Experience.")</Label>
+                    <Label className="text-xs text-slate-500">Section Title (e.g. "The Policymine Experience.")</Label>
                     <Input 
                         value={data?.subheading || ""} 
                         onChange={(e) => set("subheading", e.target.value)} 
-                        placeholder="The PM Partners Experience. (default)" 
+                        placeholder="The Policymine Experience. (default)" 
                         className="text-sm font-medium"
                     />
                 </div>

@@ -1,11 +1,12 @@
 import { ProsConsTableData } from "@/types/blocks"
 import { CheckCircle2, XCircle } from "lucide-react"
 
-export default function ProsConsTable({ data }: { data: ProsConsTableData }) {
+export default function ProsConsTable({ data, isHome = false }: { data: ProsConsTableData, isHome?: boolean }) {
     return (
-        <div className="my-10">
+        <div className={isHome ? "py-12 sm:py-16" : "my-10"}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full"}>
             {data.title && (
-                <h2 className="text-2xl font-bold mb-6" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{data.title}</h2>
+                <h2 className="font-bold mb-6" style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{data.title}</h2>
             )}
             <div className="grid sm:grid-cols-2 gap-6">
                 {/* Advantages Panel */}
@@ -37,6 +38,7 @@ export default function ProsConsTable({ data }: { data: ProsConsTableData }) {
                         ))}
                     </ul>
                 </div>
+            </div>
             </div>
         </div>
     )

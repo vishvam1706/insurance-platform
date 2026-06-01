@@ -1,4 +1,4 @@
-export interface InsurancePlanFeatures {
+﻿export interface InsurancePlanFeatures {
     networkHospitals?: number
     csr?: number
     coPayment?: boolean
@@ -31,7 +31,7 @@ export interface IInsurancePlan {
         age35?: number
         age45?: number
     }
-    pmpartnersRating?: number
+    policymineRating?: number
     csr?: string
     createdAt: Date
     updatedAt: Date

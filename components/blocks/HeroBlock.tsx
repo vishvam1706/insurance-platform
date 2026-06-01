@@ -72,7 +72,7 @@ function Avatar({ name, photo, size = 44 }: { name: string; photo?: string; size
     )
 }
 
-export default function HeroBlock({ data }: { data: HeroBlockData }) {
+export default function HeroBlock({ data, isHome = false }: { data: HeroBlockData, isHome?: boolean }) {
     const updatedStr = formatDate(data.publishedDate)
     const authorName = getName(data.author)
     const authorRole = getRole(data.author)
@@ -118,12 +118,13 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
 
     return (
         <motion.div 
-            className="pb-8" 
+            className={isHome ? "py-12 sm:py-16 pb-8" : "pb-8"} 
             style={{ borderBottom: "1px solid var(--border-light)" }}
             variants={containerVariants}
             initial="hidden"
             animate="visible"
         >
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full"}>
             {/* Top bar: category + date */}
             <motion.div
                 className="flex items-center justify-between px-8 sm:px-10 pt-8 pb-5 flex-wrap gap-2"
@@ -172,7 +173,7 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                         {/* Author card */}
                         {authorName && (
                             <motion.div
-                                className="flex items-center gap-3 rounded-xl px-4 py-3 flex-1 min-w-[200px] transition-all hover:shadow-md hover:border-emerald-500/20"
+                                className="flex items-center gap-3 rounded-xl px-4 py-3 flex-1 min-w-[200px] transition-all hover:shadow-md hover:border-[var(--brand)]/20"
                                 style={{
                                     background: "var(--surface-muted)",
                                     border: "1px solid var(--border)",
@@ -213,7 +214,7 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                         {/* Reviewer card */}
                         {reviewerName && (
                             <motion.div
-                                className="flex items-center gap-3 rounded-xl px-4 py-3 flex-1 min-w-[200px] transition-all hover:shadow-md hover:border-emerald-500/30"
+                                className="flex items-center gap-3 rounded-xl px-4 py-3 flex-1 min-w-[200px] transition-all hover:shadow-md hover:border-[var(--brand)]/30"
                                 style={{
                                     background: "var(--brand-light)",
                                     border: "1px solid var(--brand-200)",
@@ -334,6 +335,7 @@ export default function HeroBlock({ data }: { data: HeroBlockData }) {
                     </figure>
                 </motion.div>
             )}
+            </div>
         </motion.div>
     )
 }

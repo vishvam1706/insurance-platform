@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 
 const files = [
@@ -38,27 +38,27 @@ for (const file of files) {
   let content = fs.readFileSync(file, 'utf8');
   
   // Specific phrases first to prevent partial replacements
-  content = content.replace(/Ditto's Take/g, "PM Partners' Take");
-  content = content.replace(/DittosTake/g, "PmPartnersTake");
-  content = content.replace(/dittos_take/g, "pmpartners_take");
-  content = content.replace(/dittos-take/g, "pmpartners-take");
+  content = content.replace(/Ditto's Take/g, "Policymine's Take");
+  content = content.replace(/DittosTake/g, "policymineTake");
+  content = content.replace(/dittos_take/g, "policymine_take");
+  content = content.replace(/dittos-take/g, "policymine-take");
   
-  content = content.replace(/Ditto Experience/g, "PM Partners Experience");
-  content = content.replace(/DittoExperience/g, "PmPartnersExperience");
-  content = content.replace(/ditto_experience/g, "pmpartners_experience");
-  content = content.replace(/ditto-experience/g, "pmpartners-experience");
+  content = content.replace(/Ditto Experience/g, "Policymine Experience");
+  content = content.replace(/DittoExperience/g, "policymineExperience");
+  content = content.replace(/ditto_experience/g, "policymine_experience");
+  content = content.replace(/ditto-experience/g, "policymine-experience");
   
-  content = content.replace(/Choose Ditto/g, "Choose PM Partners");
-  content = content.replace(/ChooseDitto/g, "ChoosePmPartners");
-  content = content.replace(/choose_ditto/g, "choose_pmpartners");
-  content = content.replace(/choose-ditto/g, "choose-pmpartners");
+  content = content.replace(/Choose Ditto/g, "Choose Policymine");
+  content = content.replace(/ChooseDitto/g, "Choosepolicymine");
+  content = content.replace(/choose_ditto/g, "choose_policymine");
+  content = content.replace(/choose-ditto/g, "choose-policymine");
   
-  content = content.replace(/dittoRating/g, "pmpartnersRating");
-  content = content.replace(/ditto-rating/g, "pmpartners-rating");
-  content = content.replace(/Ditto Rating/g, "PM Partners Rating");
+  content = content.replace(/dittoRating/g, "policymineRating");
+  content = content.replace(/ditto-rating/g, "policymine-rating");
+  content = content.replace(/Ditto Rating/g, "Policymine Rating");
   
-  content = content.replace(/Ditto/g, "PM Partners");
-  content = content.replace(/ditto/g, "pmpartners");
+  content = content.replace(/Ditto/g, "Policymine");
+  content = content.replace(/ditto/g, "policymine");
   
   fs.writeFileSync(file, content, 'utf8');
   console.log(`Processed: ${file}`);

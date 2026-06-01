@@ -4,11 +4,12 @@ import { FrequentlyComparedData } from "@/types/blocks"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
-export default function FrequentlyCompared({ data }: { data: FrequentlyComparedData }) {
+export default function FrequentlyCompared({ data, isHome = false }: { data: FrequentlyComparedData, isHome?: boolean }) {
     return (
-        <div className="my-12">
+        <div className={isHome ? "py-12 sm:py-16" : "my-12"}>
+            <div className={isHome ? "max-w-4xl mx-auto px-6 lg:px-8" : "w-full"}>
             {data.title && (
-                <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
+                <h2 className="font-bold mb-6" style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                     {data.title}
                 </h2>
             )}
@@ -25,6 +26,7 @@ export default function FrequentlyCompared({ data }: { data: FrequentlyComparedD
                         <ArrowRight className="w-5 h-5 shrink-0 transition-transform duration-300 group-hover:translate-x-1.5" style={{ color: "var(--brand-dark)" }} />
                     </Link>
                 ))}
+            </div>
             </div>
         </div>
     )

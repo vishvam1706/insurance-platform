@@ -1,10 +1,11 @@
 import { StepsBlockData } from "@/types/blocks"
 
-export default function StepsBlock({ data }: { data: StepsBlockData }) {
+export default function StepsBlock({ data, isHome = false }: { data: StepsBlockData, isHome?: boolean }) {
     return (
-        <div className="my-12">
-            {data.title && (
-                <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
+        <div className={isHome ? "py-16 sm:py-20" : "my-12"}>
+            <div className={isHome ? "max-w-5xl mx-auto px-6 lg:px-8" : "w-full"}>
+                {data.title && (
+                <h2 className="font-bold mb-8" style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                     {data.title}
                 </h2>
             )}
@@ -44,6 +45,7 @@ export default function StepsBlock({ data }: { data: StepsBlockData }) {
                         </div>
                     )
                 })}
+            </div>
             </div>
         </div>
     )

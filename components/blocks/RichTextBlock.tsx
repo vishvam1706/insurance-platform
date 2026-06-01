@@ -1,11 +1,11 @@
 import { RichTextBlockData } from "@/types/blocks"
 import Image from "next/image"
 
-export default function RichTextBlock({ data }: { data: RichTextBlockData }) {
+export default function RichTextBlock({ data, isHome = false }: { data: RichTextBlockData, isHome?: boolean }) {
     return (
-        <div className="my-6">
+        <div className={isHome ? "py-12 sm:py-16 bg-transparent" : "my-6"}>
             <div
-                className="prose max-w-none"
+                className={`prose ${isHome ? "max-w-4xl mx-auto px-6 lg:px-8" : "max-w-none"}`}
                 style={{ fontFamily: "var(--font-body)" }}
                 dangerouslySetInnerHTML={{ __html: data.content || "" }}
             />
@@ -17,3 +17,4 @@ export default function RichTextBlock({ data }: { data: RichTextBlockData }) {
         </div>
     )
 }
+

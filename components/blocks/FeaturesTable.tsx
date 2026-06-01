@@ -20,8 +20,8 @@ function renderFeatureDetail(featureText: string) {
         lower === "available"
     ) {
         return (
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm select-none">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black bg-[var(--brand-light)] text-[var(--brand-dark)] border border-[var(--brand-100)] shadow-sm select-none">
+                <ShieldCheck className="w-3.5 h-3.5 text-[var(--brand)] shrink-0" />
                 {featureText}
             </span>
         )
@@ -31,7 +31,7 @@ function renderFeatureDetail(featureText: string) {
     const isPercentage = /^\d+(\.\d+)?%$/.test(trimmed)
     if (isPercentage) {
         return (
-            <span className="inline-flex items-center bg-emerald-50/70 border border-emerald-100/60 px-3 py-1 rounded-xl text-sm font-black text-emerald-800 font-mono shadow-sm">
+            <span className="inline-flex items-center bg-[var(--brand-light)]/70 border border-[var(--brand-100)]/60 px-3 py-1 rounded-xl text-sm font-black text-[var(--brand-dark)] font-mono shadow-sm">
                 {trimmed}
             </span>
         )
@@ -44,7 +44,7 @@ function renderFeatureDetail(featureText: string) {
     )
 }
 
-export default function FeaturesTable({ data }: { data: FeaturesTableData }) {
+export default function FeaturesTable({ data, isHome = false }: { data: FeaturesTableData, isHome?: boolean }) {
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -63,22 +63,23 @@ export default function FeaturesTable({ data }: { data: FeaturesTableData }) {
     } as const
 
     return (
-        <div className="my-16">
+        <div className={isHome ? "py-12 sm:py-16" : "my-12 sm:my-16"}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full"}>
             {data.title && (
                 <div className="flex items-center gap-3 mb-6 text-left">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-[var(--brand-light)] border border-[var(--brand-100)] flex items-center justify-center text-[var(--brand)] shadow-sm shrink-0">
                         <ClipboardList className="w-5 h-5" />
                     </div>
                     <h3 
-                        className="text-xl md:text-2xl font-black text-slate-900 tracking-tight" 
-                        style={{ fontFamily: "var(--font-heading)" }}
+                        className="font-extrabold text-slate-900 tracking-tight" 
+                        style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)" }}
                     >
                         {data.title}
                     </h3>
                 </div>
             )}
             
-            <div className="overflow-x-auto rounded-[32px] shadow-[0_4px_30px_rgba(0,179,134,0.01)] hover:shadow-[0_20px_50px_rgba(0,179,134,0.06)] border border-slate-100 bg-white transition-all duration-300">
+            <div className="overflow-x-auto rounded-[32px] shadow-[0_4px_30px_rgba(249,115,22,0.01)] hover:shadow-[0_20px_50px_rgba(249,115,22,0.06)] border border-slate-100 bg-white transition-all duration-300">
                 <table className="w-full border-collapse">
                     <thead>
                         <tr style={{ background: "linear-gradient(180deg, #FAFAF9 0%, #F5F5F4 100%)", borderBottom: "1px solid #E7E5E4" }}>
@@ -105,7 +106,7 @@ export default function FeaturesTable({ data }: { data: FeaturesTableData }) {
                         {(data.rows || []).map((row, i) => (
                             <motion.tr 
                                 key={i} 
-                                className="transition-colors hover:bg-emerald-50/20 group/row" 
+                                className="transition-colors hover:bg-[var(--brand-light)]/40 group/row" 
                                 style={{ background: i % 2 === 0 ? "#FFFFFF" : "#FAF9F6" }}
                                 variants={rowVariants}
                             >
@@ -114,7 +115,7 @@ export default function FeaturesTable({ data }: { data: FeaturesTableData }) {
                                     style={{ borderBottom: i < data.rows.length - 1 ? "1px solid #F1F0EC" : "none" }}
                                 >
                                     <div className="flex items-start gap-2.5 transition-transform duration-200 group-hover/row:translate-x-0.5">
-                                        <span className="w-1.5 h-5 rounded-full bg-emerald-500/80 shrink-0 mt-0.5" />
+                                        <span className="w-1.5 h-5 rounded-full bg-[var(--brand)] shrink-0 mt-0.5" />
                                         <span 
                                             className="font-extrabold text-slate-800 text-sm md:text-base tracking-tight" 
                                             style={{ fontFamily: "var(--font-heading)" }}
@@ -145,6 +146,7 @@ export default function FeaturesTable({ data }: { data: FeaturesTableData }) {
                     </p>
                 </div>
             )}
+            </div>
         </div>
     )
 }

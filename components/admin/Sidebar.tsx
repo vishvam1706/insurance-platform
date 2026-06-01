@@ -15,6 +15,8 @@ import {
     ChevronRight,
     X,
     ExternalLink,
+    Sliders,
+    MessageCircle,
 } from "lucide-react"
 
 interface NavItem {
@@ -38,7 +40,18 @@ const NAV_ITEMS: NavItem[] = [
         icon: <MessageSquare className="w-[18px] h-[18px]" />,
         roles: ["super_admin", "admin", "employee"],
     },
-
+    {
+        label: "Testimonials",
+        href: "/admin/testimonials",
+        icon: <MessageCircle className="w-[18px] h-[18px]" />,
+        roles: ["super_admin", "admin"],
+    },
+    {
+        label: "Settings",
+        href: "/admin/settings",
+        icon: <Sliders className="w-[18px] h-[18px]" />,
+        roles: ["super_admin", "admin"],
+    },
     {
         label: "Users",
         href: "/admin/users",
@@ -51,12 +64,12 @@ const NAV_ITEMS: NavItem[] = [
         icon: <FileEdit className="w-[18px] h-[18px]" />,
         roles: ["super_admin", "admin"],
     },
-    {
-        label: "Navigation",
-        href: "/admin/nav",
-        icon: <FolderTree className="w-[18px] h-[18px]" />,
-        roles: ["super_admin", "admin"],
-    },
+    // {
+    //     label: "Navigation",
+    //     href: "/admin/nav",
+    //     icon: <FolderTree className="w-[18px] h-[18px]" />,
+    //     roles: ["super_admin", "admin"],
+    // },
 ]
 
 interface SidebarProps {

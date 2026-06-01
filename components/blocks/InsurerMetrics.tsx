@@ -6,11 +6,13 @@ const VERDICT_STYLES: Record<string, { bg: string; text: string; border: string 
     avoid: { bg: "#FEF2F2", text: "#B91C1C", border: "#FCA5A5" },
 }
 
-export default function InsurerMetrics({ data }: { data: InsurerMetricsData }) {
+export default function InsurerMetrics({ data, isHome = false }: { data: InsurerMetricsData, isHome?: boolean }) {
     return (
-        <div className="my-10 space-y-8">
+        <div className={isHome ? "py-12 sm:py-16" : "my-10"}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full space-y-8"}>
+                <div className={isHome ? "space-y-8" : ""}>
             {data.title && (
-                <h2 className="text-2xl font-bold" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
+                <h2 className="font-bold" style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                     {data.title}
                 </h2>
             )}
@@ -71,6 +73,8 @@ export default function InsurerMetrics({ data }: { data: InsurerMetricsData }) {
                     )}
                 </div>
             ))}
+                </div>
+            </div>
         </div>
     )
 }

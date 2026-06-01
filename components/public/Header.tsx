@@ -1,7 +1,8 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Phone, Menu, X, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -159,20 +160,15 @@ export default function PublicHeader() {
         >
             <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between" style={{ height: 72 }}>
 
-                {/* Logo with clean glowing text transitions */}
-                <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-                    <span
-                        className="font-black text-2xl tracking-tight transition-all duration-300 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent group-hover:from-emerald-600 group-hover:to-teal-500"
-                        style={{ fontFamily: "var(--font-heading)", letterSpacing: "-0.03em" }}
-                    >
-                        pmpartners
-                    </span>
-                    <span
-                        className="hidden sm:inline-flex text-[9px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-xs border transition-all duration-300 group-hover:bg-emerald-500 group-hover:text-white group-hover:border-emerald-500"
-                        style={{ background: "var(--brand-light)", color: "var(--brand-dark)", border: "1px solid var(--brand-100)" }}
-                    >
-                        insurance
-                    </span>
+                <Link href="/" className="flex items-center gap-2 shrink-0 group">
+                    <Image
+                        src="/logo.png"
+                        alt="Policymine Insurance"
+                        width={140}
+                        height={40}
+                        className="h-9 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+                        priority
+                    />
                 </Link>
 
                 {/* Desktop nav with capsule floating hover effects */}

@@ -32,7 +32,7 @@ const DEFAULT_SLIDES = [
     }
 ]
 
-export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
+export default function HomeHeroBlock({ data, isHome = false }: { data: HomeHeroBlockData, isHome?: boolean }) {
     // Primary CTA parsing with solid fallbacks
     const rawPrimaryCta = data.primaryCta ?? { text: "Book a free call now", href: "/contact" }
     let primaryCtaText = rawPrimaryCta.text?.trim() || "Book a free call now"
@@ -126,45 +126,48 @@ export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
     const activeBgColor = activeSlides[slideIndex]?.backgroundColor || "#FF7A50"
 
     return (
-        <section className="relative overflow-hidden gold-mesh py-16 md:py-24 border-b border-[var(--brand-100)]">
-            <div className="relative max-w-7xl mx-auto px-6 z-10">
-                <motion.div 
-                    className="grid lg:grid-cols-[0.6fr_0.4fr] gap-12 lg:gap-16 items-center"
+        <section className={`relative overflow-hidden gold-mesh py-16 md:py-24 border-b border-[var(--brand-100)] ${isHome ? "pt-24 pb-16 md:pt-32 md:pb-24" : ""}`}>
+            <div className={`relative max-w-7xl mx-auto px-6 z-10 ${isHome ? "px-6 lg:px-8" : ""}`}>
+                <motion.div
+                    className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
                 >
-
                     {/* Left Column */}
                     <div className="flex flex-col items-start text-left space-y-6">
-                        
+
                         {/* Wreath Rating Badges */}
-                        <motion.div 
+                        <motion.div
                             variants={itemVariants}
-                            className="flex flex-wrap items-center gap-6 mb-2 select-none"
+                            className="flex flex-wrap items-center gap-3 mb-2 select-none"
                         >
-                            {/* Google Laurel Badge */}
-                            <div className="flex items-center gap-1">
-                                {/* Left Laurel */}
-                                <svg viewBox="0 0 24 48" className="w-5 h-10 text-slate-300 fill-none stroke-current" strokeWidth="2">
+                            {/* Google Rating Badge */}
+                            <div className="flex items-center gap-2.5 bg-white border border-slate-100 shadow-sm rounded-2xl px-4 py-2.5">
+                                {/* Laurel Left */}
+                                <svg viewBox="0 0 24 48" className="w-4 h-8 text-amber-300 fill-none stroke-current shrink-0" strokeWidth="2">
                                     <path d="M20,40 C8,30 8,15 18,5" strokeLinecap="round" />
                                     <path d="M16,33 C10,31 9,26 14,24" fill="currentColor" />
                                     <path d="M14,23 C8,21 7,16 12,14" fill="currentColor" />
                                     <path d="M15,12 C9,9 9,4 14,4" fill="currentColor" />
                                 </svg>
-                                
-                                <div className="text-center px-1.5">
-                                    <div className="flex items-center justify-center gap-0.5">
-                                        <span className="text-lg font-black text-slate-800 leading-none">4.9</span>
-                                        <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+
+                                <div className="flex flex-col items-center">
+                                    <div className="flex items-center gap-1">
+                                        <span className="text-[22px] font-black text-slate-900 leading-none tracking-tight">4.9</span>
+                                        <div className="flex gap-px mt-0.5">
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                                            ))}
+                                        </div>
                                     </div>
-                                    <p className="text-[9px] font-extrabold text-slate-400 leading-tight mt-0.5 uppercase tracking-wide">
-                                        22,000+ ratings<br/>on Google
+                                    <p className="text-[9.5px] font-bold text-slate-400 leading-tight mt-0.5 uppercase tracking-widest whitespace-nowrap">
+                                        22,000+ Google Reviews
                                     </p>
                                 </div>
-                                
-                                {/* Right Laurel */}
-                                <svg viewBox="0 0 24 48" className="w-5 h-10 text-slate-300 fill-none stroke-current" strokeWidth="2">
+
+                                {/* Laurel Right */}
+                                <svg viewBox="0 0 24 48" className="w-4 h-8 text-amber-300 fill-none stroke-current shrink-0" strokeWidth="2">
                                     <path d="M4,40 C16,30 16,15 6,5" strokeLinecap="round" />
                                     <path d="M8,33 C14,31 15,26 10,24" fill="currentColor" />
                                     <path d="M10,23 C16,21 17,16 12,14" fill="currentColor" />
@@ -172,29 +175,32 @@ export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
                                 </svg>
                             </div>
 
-                            {/* Zerodha Laurel Badge */}
-                            <div className="flex items-center gap-1">
-                                {/* Left Laurel */}
-                                <svg viewBox="0 0 24 48" className="w-5 h-10 text-slate-300 fill-none stroke-current" strokeWidth="2">
+                            {/* Divider */}
+                            <div className="h-10 w-px bg-slate-200 hidden sm:block" />
+
+                            {/* Zerodha Backed Badge */}
+                            <div className="flex items-center gap-2.5 bg-white border border-slate-100 shadow-sm rounded-2xl px-4 py-2.5">
+                                {/* Laurel Left */}
+                                <svg viewBox="0 0 24 48" className="w-4 h-8 text-blue-200 fill-none stroke-current shrink-0" strokeWidth="2">
                                     <path d="M20,40 C8,30 8,15 18,5" strokeLinecap="round" />
                                     <path d="M16,33 C10,31 9,26 14,24" fill="currentColor" />
                                     <path d="M14,23 C8,21 7,16 12,14" fill="currentColor" />
                                     <path d="M15,12 C9,9 9,4 14,4" fill="currentColor" />
                                 </svg>
-                                
-                                <div className="text-center px-1.5 flex flex-col items-center">
-                                    {/* Zerodha Blue Kite Logo */}
-                                    <svg viewBox="0 0 100 100" className="w-5 h-5 text-[#2453a5] fill-current mb-0.5">
+
+                                <div className="flex flex-col items-center gap-0.5">
+                                    {/* Zerodha Kite Logo */}
+                                    <svg viewBox="0 0 100 100" className="w-6 h-6 text-[#2453a5] fill-current" >
                                         <path d="M50,12 L80,42 L50,72 L20,42 Z" />
                                         <path d="M42,42 C42,47 45,50 50,50 C55,50 58,47 58,42 C58,37 55,34 50,34 C45,34 42,37 42,42 Z" fill="white" />
                                     </svg>
-                                    <p className="text-[9px] font-extrabold text-slate-400 leading-tight uppercase tracking-wide">
-                                        Backed by<br/>Zerodha
+                                    <p className="text-[9.5px] font-bold text-slate-400 leading-tight uppercase tracking-widest whitespace-nowrap">
+                                        Backed by Policymine
                                     </p>
                                 </div>
-                                
-                                {/* Right Laurel */}
-                                <svg viewBox="0 0 24 48" className="w-5 h-10 text-slate-300 fill-none stroke-current" strokeWidth="2">
+
+                                {/* Laurel Right */}
+                                <svg viewBox="0 0 24 48" className="w-4 h-8 text-blue-200 fill-none stroke-current shrink-0" strokeWidth="2">
                                     <path d="M4,40 C16,30 16,15 6,5" strokeLinecap="round" />
                                     <path d="M8,33 C14,31 15,26 10,24" fill="currentColor" />
                                     <path d="M10,23 C16,21 17,16 12,14" fill="currentColor" />
@@ -210,27 +216,24 @@ export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
                             variants={itemVariants}
                         >
                             The Ultimate<br />
-                            <span className="italic font-normal" style={{ color: "var(--brand-dark)" }}>Insurance Buying</span><br />
+                            <span className="font-bold" style={{ color: "var(--brand-dark)" }}>Insurance Buying</span><br />
                             Experience.
                         </motion.h1>
 
                         {/* Description */}
-                        <motion.p 
-                            className="text-base md:text-lg leading-relaxed text-slate-600 max-w-xl font-medium"
-                            style={{ fontFamily: "var(--font-body)" }}
+                        <motion.p
+                            className="leading-relaxed text-slate-600 max-w-xl font-medium"
+                            style={{ fontSize: "var(--fs-body)", fontFamily: "var(--font-body)" }}
                             variants={itemVariants}
                         >
                             {data.subtitle || "Unbiased expert advice, completely free. Book a call to speak with our expert advisors. Absolutely no spam, no sales pressure."}
                         </motion.p>
 
                         {/* CTA Action */}
-                        <motion.div className="pt-2" variants={itemVariants}>
+                        <motion.div className="pt-1" variants={itemVariants}>
                             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                                <Link 
-                                    href={primaryCta.href} 
-                                    className="inline-flex items-center gap-2.5 bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white font-extrabold text-[15px] px-8 py-4.5 rounded-[18px] transition-all duration-300 shadow-[0_4px_16px_rgba(0,179,134,0.18)]"
-                                >
-                                    <Calendar className="w-4.5 h-4.5" />
+                                <Link href={primaryCta.href} className="btn-primary group">
+                                    <Calendar className="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
                                     {primaryCta.text}
                                 </Link>
                             </motion.div>
@@ -240,8 +243,8 @@ export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
 
                     {/* Right Column — CRM Sleek Slideshow Panel */}
                     <motion.div className="w-full flex justify-center lg:justify-end overflow-visible" variants={visualVariants}>
-                        <div className="relative w-full max-w-[480px] h-[270px] overflow-visible group">
-                            
+                        <div className="relative w-full max-w-[560px] h-[310px] overflow-visible group">
+
                             {/* Glassmorphic Arrows (visible on hover / touch active) */}
                             <button
                                 onClick={handlePrevClick}
@@ -259,7 +262,7 @@ export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
                             </button>
 
                             {/* Main Slide Card Container */}
-                            <div 
+                            <div
                                 className="w-full h-full rounded-[24px] overflow-visible shadow-[0_15px_40px_rgba(0,0,0,0.06)] relative select-none"
                                 style={{ backgroundColor: activeBgColor, transition: "background-color 600ms ease-in-out" }}
                             >
@@ -267,17 +270,17 @@ export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
                                 <div className="absolute right-0 bottom-0 w-[42%] h-[110%] pointer-events-none z-10 overflow-visible">
                                     {activeSlides.map((slide, idx) => (
                                         // eslint-disable-next-line @next/next/no-img-element
-                                        <img 
+                                        <img
                                             key={idx}
-                                            src={slide.personImage} 
-                                            alt={slide.title} 
+                                            src={slide.personImage}
+                                            alt={slide.title}
                                             className={`absolute bottom-0 right-0 h-full object-contain transition-opacity duration-400 ease-in-out ${slideIndex === idx ? "opacity-100" : "opacity-0"}`}
                                         />
                                     ))}
                                 </div>
 
                                 {/* Left 58% Feature UI Content Area */}
-                                <div className="w-[58%] h-full flex flex-col justify-between p-5.5 pl-6.5 z-20 relative overflow-hidden">
+                                <div className="w-[58%] h-full flex flex-col justify-between p-6 pl-7 z-20 relative overflow-hidden">
                                     <AnimatePresence mode="wait">
                                         <motion.div
                                             key={slideIndex}
@@ -287,7 +290,7 @@ export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
                                             transition={{ duration: 0.32, ease: "easeInOut" }}
                                             className="h-full flex flex-col justify-between"
                                         >
-                                            <motion.div 
+                                            <motion.div
                                                 variants={staggerContainer}
                                                 initial="hidden"
                                                 animate="visible"
@@ -297,14 +300,14 @@ export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
                                                 {slideIndex % 3 === 0 && (
                                                     <>
                                                         {/* LEAD FOLLOW-UP STYLE */}
-                                                        <motion.h3 variants={staggerItem} className="text-[17.5px] font-extrabold text-black/90 tracking-tight leading-none">
+                                                        <motion.h3 variants={staggerItem} className="text-[19px] font-extrabold text-black/90 tracking-tight leading-none">
                                                             {activeSlides[slideIndex]?.title}
                                                         </motion.h3>
-                                                        
+
                                                         <motion.div variants={staggerItem} className="flex items-center gap-2">
-                                                            <div className="w-5.5 h-5.5 rounded-full bg-black/15 flex items-center justify-center overflow-hidden shrink-0">
+                                                            <div className="w-6 h-6 rounded-full bg-black/15 flex items-center justify-center overflow-hidden shrink-0">
                                                                 <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-black/60 fill-current">
-                                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
                                                                 </svg>
                                                             </div>
                                                             <div className="space-y-1 flex-1">
@@ -312,122 +315,122 @@ export default function HomeHeroBlock({ data }: { data: HomeHeroBlockData }) {
                                                                 <div className="w-20 h-1 bg-black/10 rounded-full" />
                                                             </div>
                                                         </motion.div>
- 
-                                                        <motion.div variants={staggerItem} className="bg-white rounded-[14px] p-2.5 shadow-md border border-slate-100 flex flex-col gap-1.5 w-full max-w-[195px] text-left">
+
+                                                        <motion.div variants={staggerItem} className="bg-white rounded-[14px] p-3 shadow-md border border-slate-100 flex flex-col gap-2 w-full max-w-[220px] text-left">
                                                             <div className="flex items-center justify-between">
-                                                                <span className="font-extrabold text-[11px] text-emerald-600">
+                                                                <span className="font-extrabold text-[11.5px] text-[var(--brand-dark)]">
                                                                     {activeSlides[slideIndex]?.cardText1 || "Deal Closed ✓"}
                                                                 </span>
-                                                                <div className="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                                                                    <span className="text-[8px] text-emerald-600 font-bold">✓</span>
+                                                                <div className="w-4 h-4 rounded-full bg-[var(--brand-100)] flex items-center justify-center shrink-0">
+                                                                    <span className="text-[8px] text-[var(--brand)] font-bold">✓</span>
                                                                 </div>
                                                             </div>
-                                                            <div className="space-y-1">
-                                                                <div className="w-[80%] h-1 bg-slate-100 rounded-full" />
-                                                                <div className="w-[55%] h-1 bg-slate-100 rounded-full" />
+                                                            <div className="space-y-1.5">
+                                                                <div className="w-[80%] h-1.5 bg-slate-100 rounded-full" />
+                                                                <div className="w-[55%] h-1.5 bg-slate-100 rounded-full" />
                                                             </div>
-                                                            <div className="flex justify-between items-center mt-0.5 pt-1 border-t border-slate-50">
-                                                                <span className="text-xs font-black text-slate-800">
+                                                            <div className="flex justify-between items-center mt-0.5 pt-1.5 border-t border-slate-50">
+                                                                <span className="text-[13px] font-black text-slate-800">
                                                                     {activeSlides[slideIndex]?.cardText2 || "$4,800"}
                                                                 </span>
-                                                                <span className="text-[8px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-full font-bold">
+                                                                <span className="text-[9px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-bold">
                                                                     {activeSlides[slideIndex]?.badgeText || "Deal value"}
                                                                 </span>
                                                             </div>
                                                         </motion.div>
                                                     </>
                                                 )}
- 
+
                                                 {slideIndex % 3 === 1 && (
                                                     <>
                                                         {/* SMART SUGGESTIONS STYLE */}
-                                                        <motion.h3 variants={staggerItem} className="text-[17.5px] font-extrabold text-black/90 tracking-tight leading-none">
+                                                        <motion.h3 variants={staggerItem} className="text-[19px] font-extrabold text-black/90 tracking-tight leading-none">
                                                             {activeSlides[slideIndex]?.title}
                                                         </motion.h3>
- 
+
                                                         <motion.div variants={staggerItem} className="flex items-start gap-2">
-                                                            <div className="w-5.5 h-5.5 rounded-full bg-black/15 flex items-center justify-center overflow-hidden shrink-0 mt-0.5">
+                                                            <div className="w-6 h-6 rounded-full bg-black/15 flex items-center justify-center overflow-hidden shrink-0 mt-0.5">
                                                                 <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-black/60 fill-current">
-                                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
                                                                 </svg>
                                                             </div>
-                                                            <div className="bg-white text-slate-800 font-bold text-[10px] px-2.5 py-1.5 rounded-[12px] rounded-tl-none shadow-sm border border-slate-100 text-left leading-tight">
+                                                            <div className="bg-white text-slate-800 font-bold text-[11px] px-3 py-2 rounded-[12px] rounded-tl-none shadow-sm border border-slate-100 text-left leading-tight">
                                                                 {activeSlides[slideIndex]?.cardText1 || "Which plan fits this lead?"}
                                                             </div>
                                                         </motion.div>
- 
-                                                        <div className="space-y-1.5 w-full max-w-[195px]">
-                                                            <motion.div variants={staggerItem} className="bg-white rounded-[10px] p-1.5 shadow-sm border border-slate-100 flex items-center gap-2 text-left">
-                                                                <div className="w-5 h-5 rounded-md bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100">
-                                                                    <span className="text-[8px] font-black text-emerald-600">★</span>
+
+                                                        <div className="space-y-2 w-full max-w-[220px]">
+                                                            <motion.div variants={staggerItem} className="bg-white rounded-[10px] p-2 shadow-sm border border-slate-100 flex items-center gap-2 text-left">
+                                                                <div className="w-6 h-6 rounded-md bg-[var(--brand-light)] flex items-center justify-center shrink-0 border border-[var(--brand-100)]">
+                                                                    <span className="text-[9px] font-black text-[var(--brand)]">★</span>
                                                                 </div>
                                                                 <div className="flex-1">
-                                                                    <p className="text-[10.5px] font-extrabold text-slate-800 leading-tight">
+                                                                    <p className="text-[11px] font-extrabold text-slate-800 leading-tight">
                                                                         {activeSlides[slideIndex]?.cardText2 || "Enterprise Plan"}
                                                                     </p>
-                                                                    <div className="w-10 h-0.5 bg-slate-100 rounded-full mt-0.5" />
+                                                                    <div className="w-12 h-0.5 bg-slate-100 rounded-full mt-0.5" />
                                                                 </div>
                                                             </motion.div>
- 
-                                                            <motion.div variants={staggerItem} className="bg-white rounded-[10px] p-1.5 shadow-sm border border-slate-100 flex items-center gap-2 text-left">
-                                                                <div className="w-5 h-5 rounded-md bg-blue-50 flex items-center justify-center shrink-0 border border-blue-100">
-                                                                    <span className="text-[8px] font-black text-blue-600">▲</span>
+
+                                                            <motion.div variants={staggerItem} className="bg-white rounded-[10px] p-2 shadow-sm border border-slate-100 flex items-center gap-2 text-left">
+                                                                <div className="w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center shrink-0 border border-blue-100">
+                                                                    <span className="text-[9px] font-black text-blue-600">▲</span>
                                                                 </div>
                                                                 <div className="flex-1">
-                                                                    <p className="text-[10.5px] font-extrabold text-slate-800 leading-tight">
+                                                                    <p className="text-[11px] font-extrabold text-slate-800 leading-tight">
                                                                         {activeSlides[slideIndex]?.cardText3 || "Growth Plan"}
                                                                     </p>
-                                                                    <div className="w-14 h-0.5 bg-slate-100 rounded-full mt-0.5" />
+                                                                    <div className="w-16 h-0.5 bg-slate-100 rounded-full mt-0.5" />
                                                                 </div>
                                                             </motion.div>
                                                         </div>
                                                     </>
                                                 )}
- 
+
                                                 {slideIndex % 3 === 2 && (
                                                     <>
                                                         {/* AUTO FORM FILL STYLE */}
                                                         <motion.div variants={staggerItem} className="flex items-center justify-between w-full">
-                                                            <h3 className="text-[17.5px] font-extrabold text-black/90 tracking-tight leading-none">
+                                                            <h3 className="text-[19px] font-extrabold text-black/90 tracking-tight leading-none">
                                                                 {activeSlides[slideIndex]?.title}
                                                             </h3>
-                                                            <div className="w-5.5 h-5.5 rounded-full bg-black/15 flex items-center justify-center overflow-hidden shrink-0">
+                                                            <div className="w-6 h-6 rounded-full bg-black/15 flex items-center justify-center overflow-hidden shrink-0">
                                                                 <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-black/60 fill-current">
-                                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
                                                                 </svg>
                                                             </div>
                                                         </motion.div>
- 
-                                                        <motion.div variants={staggerItem} className="bg-white rounded-[14px] p-2.5 shadow-md border border-slate-100 flex flex-col gap-2 w-full max-w-[195px] text-left">
-                                                            <div className="flex justify-between items-center border-b border-slate-50 pb-1">
-                                                                <span className="text-[8.5px] uppercase font-black tracking-widest text-slate-400">
+
+                                                        <motion.div variants={staggerItem} className="bg-white rounded-[14px] p-3 shadow-md border border-slate-100 flex flex-col gap-2.5 w-full max-w-[220px] text-left">
+                                                            <div className="flex justify-between items-center border-b border-slate-50 pb-1.5">
+                                                                <span className="text-[9px] uppercase font-black tracking-widest text-slate-400">
                                                                     {activeSlides[slideIndex]?.cardText1 || "Lead Info Form"}
                                                                 </span>
-                                                                <span className="text-[8px] text-emerald-500 font-bold flex items-center gap-0.5">
-                                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> 
+                                                                <span className="text-[8.5px] text-[var(--brand)] font-bold flex items-center gap-0.5">
+                                                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand)] animate-pulse" />
                                                                     {activeSlides[slideIndex]?.cardText2 || "Auto filling"}
                                                                 </span>
                                                             </div>
-                                                            <div className="space-y-1.5">
+                                                            <div className="space-y-2">
                                                                 {/* Row 1 */}
                                                                 <div className="grid grid-cols-2 gap-2">
-                                                                    <div className="h-2 bg-emerald-100/50 animate-pulse rounded-full w-full" />
-                                                                    <div className="h-2 bg-emerald-100/50 animate-pulse rounded-full w-[80%]" />
+                                                                    <div className="h-2 bg-[var(--brand-100)]/50 animate-pulse rounded-full w-full" />
+                                                                    <div className="h-2 bg-[var(--brand-100)]/50 animate-pulse rounded-full w-[80%]" />
                                                                 </div>
                                                                 {/* Row 2 */}
                                                                 <div className="grid grid-cols-2 gap-2">
-                                                                    <div className="h-2 bg-emerald-100/50 animate-pulse rounded-full w-[90%]" />
-                                                                    <div className="h-2 bg-emerald-100/50 animate-pulse rounded-full w-[95%]" />
+                                                                    <div className="h-2 bg-[var(--brand-100)]/50 animate-pulse rounded-full w-[90%]" />
+                                                                    <div className="h-2 bg-[var(--brand-100)]/50 animate-pulse rounded-full w-[95%]" />
                                                                 </div>
                                                                 {/* Row 3 */}
                                                                 <div className="grid grid-cols-2 gap-2">
-                                                                    <div className="h-2 bg-emerald-100/50 animate-pulse rounded-full w-[70%]" />
-                                                                    <div className="h-2 bg-emerald-100/50 animate-pulse rounded-full w-full" />
+                                                                    <div className="h-2 bg-[var(--brand-100)]/50 animate-pulse rounded-full w-[70%]" />
+                                                                    <div className="h-2 bg-[var(--brand-100)]/50 animate-pulse rounded-full w-full" />
                                                                 </div>
                                                                 {/* Row 4 */}
                                                                 <div className="grid grid-cols-2 gap-2">
-                                                                    <div className="h-2 bg-emerald-100/50 animate-pulse rounded-full w-full" />
-                                                                    <div className="h-2 bg-emerald-100/50 animate-pulse rounded-full w-[60%]" />
+                                                                    <div className="h-2 bg-[var(--brand-100)]/50 animate-pulse rounded-full w-full" />
+                                                                    <div className="h-2 bg-[var(--brand-100)]/50 animate-pulse rounded-full w-[60%]" />
                                                                 </div>
                                                             </div>
                                                         </motion.div>

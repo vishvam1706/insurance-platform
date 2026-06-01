@@ -3,7 +3,7 @@
 import { StatBarData } from "@/types/blocks"
 import { motion } from "framer-motion"
 
-export default function StatBar({ data }: { data: StatBarData }) {
+export default function StatBar({ data, isHome = false }: { data: StatBarData, isHome?: boolean }) {
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -24,10 +24,10 @@ export default function StatBar({ data }: { data: StatBarData }) {
     const stats = data.stats || []
 
     return (
-        <section className="py-6 sm:py-8 bg-transparent">
-            <div className="max-w-7xl mx-auto px-6">
+        <section className={`py-6 sm:py-8 bg-transparent ${isHome ? "py-12 sm:py-16" : ""}`}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full px-6"}>
                 <motion.div
-                    className="relative rounded-[28px] px-6 py-8 md:px-12 md:py-10 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6 md:gap-x-2 md:gap-y-0 shadow-[0_20px_50px_-12px_rgba(0,179,134,0.1)] border border-emerald-500/20 backdrop-blur-md"
+                    className="relative rounded-[28px] px-6 py-8 md:px-12 md:py-10 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6 md:gap-x-2 md:gap-y-0 shadow-[0_20px_50px_-12px_rgba(249,115,22,0.1)] border border-[var(--brand)]/20 backdrop-blur-md"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -51,14 +51,14 @@ export default function StatBar({ data }: { data: StatBarData }) {
 
                     {/* Floating top-right overlay icon/logo */}
                     {data.floatingImage && (
-                        <div className="absolute -top-5 -right-3 md:-top-7 md:-right-5 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-[#09142e] border border-emerald-500/30 p-2 shadow-[0_8px_30px_rgb(0,0,0,0.5)] z-20 flex items-center justify-center backdrop-blur-md hover:scale-110 hover:rotate-6 transition-all duration-300 select-none group">
+                        <div className="absolute -top-5 -right-3 md:-top-7 md:-right-5 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-[#09142e] border border-[var(--brand)]/30 p-2 shadow-[0_8px_30px_rgb(0,0,0,0.5)] z-20 flex items-center justify-center backdrop-blur-md hover:scale-110 hover:rotate-6 transition-all duration-300 select-none group">
                             <img 
                                 src={data.floatingImage} 
                                 alt="Brand accent icon" 
                                 className="w-full h-full object-contain filter drop-shadow-sm" 
                             />
                             {/* Subtle logo ambient glow */}
-                            <div className="absolute inset-0 rounded-2xl bg-emerald-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none blur-xs" />
+                            <div className="absolute inset-0 rounded-2xl bg-[var(--brand)]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none blur-xs" />
                         </div>
                     )}
 
@@ -85,8 +85,8 @@ export default function StatBar({ data }: { data: StatBarData }) {
                                 transition={{ type: "spring", stiffness: 350, damping: 22 }}
                             >
                                 <p
-                                    className="text-3xl md:text-4xl font-extrabold mb-1 tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-300 bg-clip-text text-transparent transition-transform duration-300 inline-block font-mono leading-none"
-                                    style={{ fontFamily: "var(--font-heading)" }}
+                                    className="font-extrabold mb-1 tracking-tight bg-gradient-to-r from-[var(--brand-200)] via-[var(--brand)] to-[var(--brand-dark)] bg-clip-text text-transparent transition-transform duration-300 inline-block font-mono leading-none"
+                                    style={{ fontSize: "var(--fs-h1)", fontFamily: "var(--font-heading)" }}
                                 >
                                     {stat.value}
                                 </p>

@@ -28,7 +28,7 @@ import BenefitsListEditor from "./blocks/BenefitsListEditor"
 import TypesListEditor from "./blocks/TypesListEditor"
 import InfoSectionEditor from "./blocks/InfoSectionEditor"
 import NoteBoxEditor from "./blocks/NoteBoxEditor"
-import PmPartnersTakeEditor from "./blocks/PmPartnersTakeEditor"
+import PolicymineTakeEditor from "./blocks/PmPartnersTakeEditor"
 import NumberedCardsEditor from "./blocks/NumberedCardsEditor"
 import FinalThoughtsEditor from "./blocks/FinalThoughtsEditor"
 import FeaturesTableEditor from "./blocks/FeaturesTableEditor"
@@ -48,9 +48,13 @@ import StatBarEditor from "./blocks/StatBarEditor"
 import HomeHeroBlockEditor from "./blocks/HomeHeroBlockEditor"
 import ProductCardsEditor from "./blocks/ProductCardsEditor"
 import HomeFaqBlockEditor from "./blocks/HomeFaqBlockEditor"
-import ChoosePmPartnersCtaEditor from "./blocks/ChoosePmPartnersCtaEditor"
-import PmPartnersExperienceEditor from "./blocks/PmPartnersExperienceEditor"
+import ChoosepolicymineCtaEditor from "./blocks/ChoosePmPartnersCtaEditor"
+import PolicymineExperienceEditor from "./blocks/PmPartnersExperienceEditor"
 import ComparisonSectionEditor from "./blocks/ComparisonSectionEditor"
+import HomeGuidanceEditor from "./blocks/HomeGuidanceEditor"
+import HomeTrustEditor from "./blocks/HomeTrustEditor"
+import HomeUnderstandingEditor from "./blocks/HomeUnderstandingEditor"
+import HomeProcessEditor from "./blocks/HomeProcessEditor"
 
 // Block metadata
 const BLOCK_META: Record<BlockType, { label: string; color: string; defaultData: Record<string, unknown> }> = {
@@ -62,7 +66,7 @@ const BLOCK_META: Record<BlockType, { label: string; color: string; defaultData:
     types_list: { label: "Types List", color: "bg-teal-100 text-teal-700", defaultData: { title: "", items: [] } },
     info_section: { label: "Info Section", color: "bg-cyan-100 text-cyan-700", defaultData: { title: "", body: "" } },
     note_box: { label: "Note Box", color: "bg-amber-100 text-amber-700", defaultData: { label: "Take Note", content: "" } },
-    pmpartners_take: { label: "PM Partners' Take", color: "bg-indigo-100 text-indigo-700", defaultData: { title: "PM Partners' Take", body: "" } },
+    policymine_take: { label: "Policymine's Take", color: "bg-indigo-100 text-indigo-700", defaultData: { title: "Policymine's Take", body: "" } },
     numbered_cards: { label: "Numbered Cards", color: "bg-emerald-100 text-emerald-700", defaultData: { title: "", cards: [] } },
     final_thoughts: { label: "Final Thoughts", color: "bg-slate-100 text-slate-700", defaultData: { title: "Final Thoughts", body: "" } },
     features_table: { label: "Features Table", color: "bg-orange-100 text-orange-700", defaultData: { title: "", rows: [] } },
@@ -81,11 +85,15 @@ const BLOCK_META: Record<BlockType, { label: string; color: string; defaultData:
     stat_bar: { label: "Stat Bar", color: "bg-indigo-100 text-indigo-700", defaultData: { stats: [] } },
     home_hero: { label: "Home Hero", color: "bg-emerald-100 text-blue-800", defaultData: { title: "Life & Health Insurance Platform", badge: "Top-Rated Expert Advisors", subtitle: "", primaryCta: { text: "Compare Plans", href: "/contact" }, stats: [], showInquiryForm: true } },
     product_cards: { label: "Product Cards", color: "bg-teal-100 text-teal-800", defaultData: { title: "What we cover", cards: [] } },
-    pmpartners_experience: { label: "PM Partners Experience", color: "bg-blue-100 text-blue-700", defaultData: {} },
+    policymine_experience: { label: "Policymine Experience", color: "bg-blue-100 text-blue-700", defaultData: {} },
     comparison_section: { label: "Comparison Section", color: "bg-orange-100 text-orange-700", defaultData: {} },
     insurance_checklist: { label: "Insurance Checklist", color: "bg-yellow-100 text-yellow-700", defaultData: {} },
     home_faq: { label: "Home FAQ", color: "bg-slate-100 text-slate-700", defaultData: { items: [] } },
-    choose_pmpartners_cta: { label: "Choose PM Partners CTA", color: "bg-indigo-100 text-indigo-700", defaultData: { headline: "", subtext: "", ctaText: "Compare Plans", ctaHref: "/contact" } },
+    choose_policymine_cta: { label: "Choose Policymine CTA", color: "bg-indigo-100 text-indigo-700", defaultData: { headline: "", subtext: "", ctaText: "Compare Plans", ctaHref: "/contact" } },
+    home_guidance: { label: "Home Guidance", color: "bg-blue-100 text-blue-800", defaultData: { title: "Insurance Guidance, Not Just Policy Selling", subtitle: "", quote: "", items: [] } },
+    home_trust: { label: "Home Trust", color: "bg-green-100 text-green-800", defaultData: { title: "Why Customers Trust Policymine", items: [] } },
+    home_understanding: { label: "Home Understanding", color: "bg-cyan-100 text-cyan-800", defaultData: { title: "Insurance Should Be Understood — Not Just Purchased", subtitle: "", items: [] } },
+    home_process: { label: "Home Process", color: "bg-emerald-100 text-emerald-800", defaultData: { title: "Simple, Transparent & Guided Process", subtitle: "", steps: [] } },
 }
 
 // Render the right editor for a block type
@@ -100,7 +108,7 @@ function BlockEditorSwitch({ block, onChange }: { block: Block; onChange: (data:
         case "types_list": return <TypesListEditor data={d as any} onChange={onChange as any} />
         case "info_section": return <InfoSectionEditor data={d as any} onChange={onChange as any} />
         case "note_box": return <NoteBoxEditor data={d as any} onChange={onChange as any} />
-        case "pmpartners_take": return <PmPartnersTakeEditor data={d as any} onChange={onChange as any} />
+        case "policymine_take": return <PolicymineTakeEditor data={d as any} onChange={onChange as any} />
         case "numbered_cards": return <NumberedCardsEditor data={d as any} onChange={onChange as any} />
         case "final_thoughts": return <FinalThoughtsEditor data={d as any} onChange={onChange as any} />
         case "features_table": return <FeaturesTableEditor data={d as any} onChange={onChange as any} />
@@ -119,11 +127,15 @@ function BlockEditorSwitch({ block, onChange }: { block: Block; onChange: (data:
         case "stat_bar": return <StatBarEditor data={d as any} onChange={onChange as any} />
         case "home_hero": return <HomeHeroBlockEditor data={d as any} onChange={onChange as any} />
         case "product_cards": return <ProductCardsEditor data={d as any} onChange={onChange as any} />
-        case "pmpartners_experience": return <PmPartnersExperienceEditor data={d as any} onChange={onChange as any} />
+        case "policymine_experience": return <PolicymineExperienceEditor data={d as any} onChange={onChange as any} />
         case "comparison_section": return <ComparisonSectionEditor data={d as any} onChange={onChange as any} />
         case "insurance_checklist": return <p className="text-xs text-slate-500 p-2 bg-yellow-50 rounded-lg">✅ Insurance Checklist — sticky note visual + checklist links. No editable data.</p>
         case "home_faq": return <HomeFaqBlockEditor data={d as any} onChange={onChange as any} />
-        case "choose_pmpartners_cta": return <ChoosePmPartnersCtaEditor data={d as any} onChange={onChange as any} />
+        case "choose_policymine_cta": return <ChoosepolicymineCtaEditor data={d as any} onChange={onChange as any} />
+        case "home_guidance": return <HomeGuidanceEditor data={d as any} onChange={onChange as any} />
+        case "home_trust": return <HomeTrustEditor data={d as any} onChange={onChange as any} />
+        case "home_understanding": return <HomeUnderstandingEditor data={d as any} onChange={onChange as any} />
+        case "home_process": return <HomeProcessEditor data={d as any} onChange={onChange as any} />
         default: return <p className="text-xs text-slate-400">Unknown block type: {block.type}</p>
     }
 }
@@ -366,11 +378,11 @@ function SortableBlock({
 // Block groups
 const BLOCK_GROUPS: { label: string; types: BlockType[] }[] = [
     { label: "Page Basics", types: ["hero", "rich_text", "image_block", "stat_bar"] },
-    { label: "Content", types: ["how_it_works_steps", "benefits_list", "types_list", "info_section", "note_box", "pmpartners_take", "numbered_cards", "final_thoughts"] },
+    { label: "Content", types: ["how_it_works_steps", "benefits_list", "types_list", "info_section", "note_box", "policymine_take", "numbered_cards", "final_thoughts"] },
     { label: "Tables", types: ["features_table", "comparison_table", "pros_cons_table", "plans_table", "insurer_metrics", "policy_features_list", "real_example_comparison"] },
     { label: "Interactive", types: ["insurer_selector", "calculator_embed", "frequently_compared"] },
     { label: "Social & CTAs", types: ["reviews", "cta_block", "faq"] },
-    { label: "Homepage", types: ["home_hero", "product_cards", "pmpartners_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_pmpartners_cta"] },
+    { label: "Homepage", types: ["home_hero", "product_cards", "policymine_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_policymine_cta", "home_guidance", "home_trust", "home_understanding", "home_process"] },
 ]
 
 // Add block picker with outside-click close

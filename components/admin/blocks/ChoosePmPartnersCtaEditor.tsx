@@ -1,21 +1,21 @@
-"use client"
+﻿"use client"
 
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 
-interface ChoosePmPartnersCtaData {
+interface ChoosepolicymineCtaData {
     headline?: string
     subtext?: string
     ctaText?: string
     ctaHref?: string
 }
-interface Props { data: ChoosePmPartnersCtaData; onChange: (d: ChoosePmPartnersCtaData) => void }
+interface Props { data: ChoosepolicymineCtaData; onChange: (d: ChoosepolicymineCtaData) => void }
 
-export default function ChoosePmPartnersCtaEditor({ data: rawData, onChange }: Props) {
+export default function ChoosepolicymineCtaEditor({ data: rawData, onChange }: Props) {
     // Guard: existing DB records may have been saved without any fields
-    const data: ChoosePmPartnersCtaData = rawData ?? {}
+    const data: ChoosepolicymineCtaData = rawData ?? {}
 
-    function set<K extends keyof ChoosePmPartnersCtaData>(key: K, val: ChoosePmPartnersCtaData[K]) {
+    function set<K extends keyof ChoosepolicymineCtaData>(key: K, val: ChoosepolicymineCtaData[K]) {
         onChange({ ...data, [key]: val })
     }
 
@@ -29,7 +29,7 @@ export default function ChoosePmPartnersCtaEditor({ data: rawData, onChange }: P
                 <Input
                     value={data.headline || ""}
                     onChange={(e) => set("headline", e.target.value)}
-                    placeholder="Choose PM Partners. Choose Honest Insurance."
+                    placeholder="Choose Policymine. Choose Honest Insurance."
                 />
             </div>
             <div className="space-y-1.5">

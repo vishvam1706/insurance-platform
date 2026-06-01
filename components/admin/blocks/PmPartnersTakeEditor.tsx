@@ -1,19 +1,19 @@
-"use client"
+﻿"use client"
 
-import { PmPartnersTakeData } from "@/types/blocks"
+import { policymineTakeData } from "@/types/blocks"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import RichTextEditor from "../RichTextEditor"
 import ImageUploader from "../ImageUploader"
 
-interface Props { data: PmPartnersTakeData; onChange: (d: PmPartnersTakeData) => void }
+interface Props { data: policymineTakeData; onChange: (d: policymineTakeData) => void }
 
-export default function PmPartnersTakeEditor({ data, onChange }: Props) {
+export default function policymineTakeEditor({ data, onChange }: Props) {
     return (
         <div className="space-y-3">
             <div className="space-y-1">
                 <Label className="text-xs text-slate-500">Title</Label>
-                <Input value={data.title || ""} onChange={(e) => onChange({ ...data, title: e.target.value })} placeholder="PM Partners' Take on Term Insurance" />
+                <Input value={data.title || ""} onChange={(e) => onChange({ ...data, title: e.target.value })} placeholder="Policymine's Take on Term Insurance" />
             </div>
             <div>
                 <Label className="text-xs text-slate-500 mb-1 block">Body</Label>

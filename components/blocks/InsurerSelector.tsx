@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 
-export default function InsurerSelector({ data }: { data: InsurerSelectorData }) {
+export default function InsurerSelector({ data, isHome = false }: { data: InsurerSelectorData, isHome?: boolean }) {
     const router = useRouter()
     const [selected, setSelected] = useState<string[]>([])
 
@@ -25,7 +25,9 @@ export default function InsurerSelector({ data }: { data: InsurerSelectorData })
     }
 
     return (
-        <div className="my-10 rounded-2xl p-6" style={{ background: "var(--surface-muted)", border: "1px solid var(--border)" }}>
+        <div className={isHome ? "py-12 sm:py-16" : "my-10"}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full"}>
+                <div className="rounded-2xl p-6" style={{ background: "var(--surface-muted)", border: "1px solid var(--border)" }}>
             <h2 className="font-bold mb-2" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                 {data.label}
             </h2>
@@ -88,6 +90,8 @@ export default function InsurerSelector({ data }: { data: InsurerSelectorData })
                         Select at least 2 insurers to compare
                     </p>
                 )}
+            </div>
+                </div>
             </div>
         </div>
     )

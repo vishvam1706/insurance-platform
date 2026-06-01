@@ -1,4 +1,4 @@
-import { Metadata } from "next"
+﻿import { Metadata } from "next"
 import Link from "next/link"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
@@ -7,7 +7,7 @@ import { ArrowRight, Shield, Award, CheckCircle2, Phone, Sparkles, BookOpen, Clo
 export const revalidate = 1800 // Cache static page on Edge CDN, revalidate at most every 30 minutes
 
 export const metadata: Metadata = {
-    title: "Term Life Insurance — Complete Guide | PM Partners Insurance",
+    title: "Term Life Insurance — Smarter Family Protection | Policymine",
     description: "Learn how pure term life insurance protects your family at the lowest premium. Read certified guides and consult with expert planners.",
 }
 
@@ -28,7 +28,7 @@ export default async function TermLifeHubPage() {
     const regularPages = pages.slice(1)
 
     return (
-        <div className="relative min-h-screen bg-slate-50/40 pb-32 overflow-hidden">
+        <div className="relative min-h-screen bg-slate-50/40 pb-32 overflow-hidden text-left">
             {/* Background mesh gradients */}
             <div className="absolute inset-0 gold-mesh opacity-50 pointer-events-none" />
             <div className="absolute top-12 left-12 w-96 h-96 rounded-full blur-[100px] pointer-events-none opacity-[0.03]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
@@ -42,23 +42,23 @@ export default async function TermLifeHubPage() {
                         {/* Left Column: Copy & Badges */}
                         <div className="text-left space-y-7">
                             <span 
-                                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm select-none animate-fade-in"
-                                style={{ fontFamily: "var(--font-heading)" }}
+                                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest"
+                                style={{ background: "var(--brand-light)", color: "var(--brand-dark)", border: "1px solid var(--brand-100)", fontFamily: "var(--font-heading)" }}
                             >
-                                <Shield className="w-4 h-4 text-emerald-600 animate-pulse" />
+                                <Shield className="w-4 h-4 animate-pulse" style={{ color: "var(--brand)" }} />
                                 Comprehensive Protection
                             </span>
                             
                             <h1
-                                className="text-4xl sm:text-5xl lg:text-6.5xl font-extrabold leading-tight text-slate-900 tracking-tight"
+                                className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight"
                                 style={{ fontFamily: "var(--font-heading)" }}
                             >
                                 Your Ultimate Guide to<br />
-                                <span className="italic font-normal text-emerald-600 bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">Term Life Insurance.</span>
+                                <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500">Term Life Insurance.</span>
                             </h1>
                             
                             <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl font-medium" style={{ fontFamily: "var(--font-body)" }}>
-                                Pure protection for your family at the lowest possible cost. From fundamental concepts to comparing and picking the ideal coverage — explore our verified guides.
+                                Secure your family's future with pure protection term plans.
                             </p>
 
                             {/* Trust badges */}
@@ -70,7 +70,7 @@ export default async function TermLifeHubPage() {
                                     "Dedicated Claims Support",
                                 ].map((trust) => (
                                     <div key={trust} className="flex items-center gap-3 text-xs sm:text-sm font-bold text-slate-700 transition-transform duration-200 hover:translate-x-1">
-                                        <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+                                        <CheckCircle2 className="w-4.5 h-4.5 shrink-0" style={{ color: "var(--brand)" }} />
                                         {trust}
                                     </div>
                                 ))}
@@ -79,28 +79,26 @@ export default async function TermLifeHubPage() {
                             <div className="pt-6">
                                 <Link 
                                     href="/contact" 
-                                    className="inline-flex items-center gap-2.5 text-white font-black text-xs uppercase tracking-widest px-8 py-4.5 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-[0_8px_25px_rgba(0,179,134,0.25)]"
-                                    style={{
-                                        background: "linear-gradient(135deg, var(--brand) 0%, #009c74 100%)",
-                                    }}
+                                    className="btn-primary inline-flex items-center gap-2.5 rounded-2xl shadow-md"
                                 >
                                     <Phone className="w-4 h-4 shrink-0 animate-pulse" />
-                                    Book Free Consultation
+                                    Compare Term Plans
                                 </Link>
                             </div>
                         </div>
 
                         {/* Right Column: Custom Illustration Frame with slow float */}
                         <div className="relative group transition-all duration-500 hover:scale-[1.02]">
-                            <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-tr from-emerald-100 to-teal-100 opacity-20 blur-2xl group-hover:opacity-40 transition-opacity duration-300 pointer-events-none" />
-                            <div className="relative rounded-[36px] overflow-hidden border border-emerald-100 bg-white p-5 shadow-[0_32px_60px_-15px_rgba(0,179,134,0.08)]">
+                            <div className="absolute -inset-4 rounded-[40px] opacity-20 blur-2xl group-hover:opacity-40 transition-opacity duration-300 pointer-events-none" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
+                            <div className="relative rounded-[36px] overflow-hidden border bg-white p-5 shadow-[0_32px_60px_-15px_rgba(15,23,42,0.03)]" style={{ borderColor: "var(--brand-100)" }}>
                                 <img
                                     src="/uploads/term_life_hero.png"
                                     alt="Term Life Insurance Guarding Family"
-                                    className="w-full h-96 object-cover rounded-2xl border border-emerald-50 shadow-sm"
+                                    className="w-full h-96 object-cover rounded-2xl border shadow-sm"
+                                    style={{ borderColor: "var(--brand-light)" }}
                                 />
-                                <div className="absolute top-9 right-9 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-emerald-100 flex items-center gap-1.5 shadow-sm">
-                                    <Sparkles className="w-4 h-4 text-emerald-600 animate-pulse" />
+                                <div className="absolute top-9 right-9 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-1.5 shadow-sm border" style={{ borderColor: "var(--brand-100)" }}>
+                                    <Sparkles className="w-4 h-4 animate-pulse" style={{ color: "var(--brand-dark)" }} />
                                     <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest font-sans">Verified Guides</span>
                                 </div>
                             </div>
@@ -116,11 +114,11 @@ export default async function TermLifeHubPage() {
                     
                     {/* Directory title */}
                     <div className="flex items-center gap-4 mb-14 text-left">
-                        <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm">
+                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border" style={{ background: "var(--brand-light)", borderColor: "var(--brand-100)", color: "var(--brand-dark)" }}>
                             <BookOpen className="w-6 h-6" />
                         </div>
                         <div>
-                            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-600 block mb-0.5">Directory Hub</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest block mb-0.5" style={{ color: "var(--brand-dark)" }}>Directory Hub</span>
                             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900" style={{ fontFamily: "var(--font-heading)" }}>
                                 Educational Guides & Resources
                             </h2>
@@ -129,8 +127,8 @@ export default async function TermLifeHubPage() {
                     </div>
 
                     {pages.length === 0 ? (
-                        <div className="text-center py-28 border border-dashed border-emerald-100 rounded-[32px] bg-white shadow-sm">
-                            <Shield className="w-14 h-14 mx-auto mb-4 opacity-20 text-emerald-600 animate-pulse" />
+                        <div className="text-center py-28 border border-dashed rounded-[32px] bg-white shadow-sm" style={{ borderColor: "var(--brand-100)" }}>
+                            <Shield className="w-14 h-14 mx-auto mb-4 opacity-20 animate-pulse" style={{ color: "var(--brand-dark)" }} />
                             <p className="font-bold text-slate-400">No guide articles published yet.</p>
                         </div>
                     ) : (
@@ -140,19 +138,23 @@ export default async function TermLifeHubPage() {
                             {featuredPage && (
                                 <Link
                                     href={`/${featuredPage.pageKey}`}
-                                    className="group grid md:grid-cols-[1.3fr_0.7fr] gap-8 bg-white border border-emerald-100/70 hover:border-emerald-500/50 rounded-[36px] p-8 sm:p-12 shadow-[0_8px_30px_rgba(0,179,134,0.01)] hover:shadow-[0_24px_50px_rgba(0,179,134,0.07)] hover:-translate-y-1.5 transition-all duration-300 text-left relative overflow-hidden"
+                                    className="group grid md:grid-cols-[1.3fr_0.7fr] gap-8 bg-white rounded-[36px] p-8 sm:p-12 shadow-[0_8px_30px_rgba(15,23,42,0.01)] hover:shadow-[0_24px_50px_rgba(249,115,22,0.06)] hover:-translate-y-1.5 transition-all duration-300 text-left relative overflow-hidden border"
+                                    style={{ borderColor: "var(--brand-100)" }}
                                 >
                                     {/* Accent background glow */}
                                     <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-[90px] pointer-events-none opacity-[0.04]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
 
                                     <div className="flex flex-col justify-between space-y-8">
                                         <div className="space-y-4">
-                                            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm select-none">
-                                                <Award className="w-3.5 h-3.5 text-emerald-600 animate-pulse" /> Featured Article
+                                            <span 
+                                                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border shadow-xs"
+                                                style={{ background: "var(--brand-light)", color: "var(--brand-dark)", borderColor: "var(--brand-100)" }}
+                                            >
+                                                <Award className="w-3.5 h-3.5 animate-pulse" style={{ color: "var(--brand)" }} /> Featured Article
                                             </span>
                                             
                                             <h3 
-                                                className="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-snug group-hover:text-emerald-700 transition-colors"
+                                                className="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-snug group-hover:text-orange-500 transition-colors"
                                                 style={{ fontFamily: "var(--font-heading)" }}
                                             >
                                                 {featuredPage.title}
@@ -165,26 +167,26 @@ export default async function TermLifeHubPage() {
                                             )}
                                         </div>
 
-                                        <span className="inline-flex items-center gap-2 text-sm sm:text-base font-extrabold text-emerald-600 group-hover:gap-3.5 transition-all">
+                                        <span className="inline-flex items-center gap-2 text-sm sm:text-base font-extrabold group-hover:gap-3.5 transition-all" style={{ color: "var(--brand)" }}>
                                             Read Complete Guide <ArrowRight className="w-4.5 h-4.5 shrink-0" />
                                         </span>
                                     </div>
 
                                     {/* Premium featured mock container */}
                                     <div 
-                                        className="relative rounded-3xl overflow-hidden border border-emerald-500/10 flex flex-col justify-between p-8 min-h-[260px] shadow-sm select-none group-hover:scale-[1.01] transition-transform duration-300"
-                                        style={{ background: "linear-gradient(135deg, #070e20 0%, #0d1a37 100%)" }}
+                                        className="relative rounded-3xl overflow-hidden flex flex-col justify-between p-8 min-h-[260px] shadow-sm select-none group-hover:scale-[1.01] transition-transform duration-300 border"
+                                        style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", borderColor: "var(--brand-100)" }}
                                     >
                                         <div className="flex items-center justify-between">
-                                            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                                            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-orange-400 border border-slate-750" style={{ background: "rgba(249, 115, 22, 0.1)" }}>
                                                 <Shield className="w-5 h-5 animate-pulse" />
                                             </div>
                                             <span className="text-[9px] font-black uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                                                <Clock className="w-3 h-3 text-emerald-500" /> 10 Min Read
+                                                <Clock className="w-3 h-3 text-orange-500" /> 10 Min Read
                                             </span>
                                         </div>
                                         <div>
-                                            <p className="text-xs font-black uppercase tracking-widest text-emerald-400 mb-1" style={{ fontFamily: "var(--font-heading)" }}>
+                                            <p className="text-xs font-black uppercase tracking-widest text-orange-400 mb-1" style={{ fontFamily: "var(--font-heading)" }}>
                                                 Expert Core Cover
                                             </p>
                                             <p className="text-[11px] text-slate-300 font-medium leading-relaxed">
@@ -202,18 +204,19 @@ export default async function TermLifeHubPage() {
                                         <Link
                                             key={page.pageKey}
                                             href={`/${page.pageKey}`}
-                                            className="group flex flex-col h-full rounded-[32px] p-8 sm:p-9 bg-white border border-emerald-100/60 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-1.5 text-left relative overflow-hidden"
+                                            className="group flex flex-col h-full rounded-[32px] p-8 sm:p-9 bg-white border hover:border-orange-500/50 transition-all duration-300 hover:-translate-y-1.5 text-left relative overflow-hidden"
                                             style={{ 
-                                                boxShadow: "0 10px 30px rgba(0, 179, 134, 0.01)",
+                                                borderColor: "var(--brand-100)",
+                                                boxShadow: "0 10px 30px rgba(15,23,42,0.01)",
                                             }}
                                         >
-                                            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-7 border border-emerald-100 bg-slate-50 group-hover:bg-emerald-50 transition-colors duration-300 text-emerald-600 shadow-sm shadow-emerald-50">
+                                            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-7 border transition-colors duration-300 shadow-sm" style={{ background: "var(--surface-muted)", borderColor: "var(--brand-100)", color: "var(--brand-dark)" }}>
                                                 <Shield className="w-5.5 h-5.5 shrink-0" />
                                             </div>
                                             
                                             <h4
-                                                className="font-extrabold text-xl mb-3.5 leading-snug transition-colors group-hover:text-emerald-700"
-                                                style={{ fontFamily: "var(--font-heading)", color: "#111827" }}
+                                                className="font-extrabold text-xl mb-3.5 leading-snug transition-colors group-hover:text-orange-500"
+                                                style={{ fontFamily: "var(--font-heading)", color: "#0F172A" }}
                                             >
                                                 {page.title}
                                             </h4>
@@ -227,7 +230,7 @@ export default async function TermLifeHubPage() {
                                                 </p>
                                             )}
                                             
-                                            <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-emerald-600 group-hover:gap-3 transition-all mt-auto border-t border-slate-50 pt-4.5">
+                                            <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest group-hover:gap-3 transition-all mt-auto border-t border-slate-50 pt-4.5" style={{ color: "var(--brand-dark)" }}>
                                                 Read Guide <ArrowRight className="w-4 h-4 shrink-0" />
                                             </span>
                                         </Link>

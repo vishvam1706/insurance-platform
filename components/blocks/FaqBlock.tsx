@@ -4,14 +4,15 @@ import { FaqBlockData } from "@/types/blocks"
 import { useState } from "react"
 import { Plus, Minus, HelpCircle } from "lucide-react"
 
-export default function FaqBlock({ data }: { data: FaqBlockData }) {
+export default function FaqBlock({ data, isHome = false }: { data: FaqBlockData, isHome?: boolean }) {
     const [open, setOpen] = useState<number | null>(null)
 
     return (
-        <div className="-mx-6 sm:-mx-8 my-12 animate-fade-up">
-            <div
-                className="px-8 sm:px-16 py-16 bg-slate-50/20 border-t border-b border-emerald-100 relative overflow-hidden"
-            >
+        <div className={isHome ? "py-12 sm:py-16" : "-mx-6 sm:-mx-8 my-12"}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : ""}>
+                <div
+                    className={`px-8 sm:px-16 py-12 sm:py-16 bg-slate-50/20 border-t border-b border-slate-100 relative overflow-hidden ${isHome ? "rounded-[32px] border" : ""}`}
+                >
                 <div className="absolute inset-0 gold-mesh opacity-30 pointer-events-none" />
 
                 {/* Ambient glows */}
@@ -24,12 +25,12 @@ export default function FaqBlock({ data }: { data: FaqBlockData }) {
                         className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-4 shadow-sm"
                         style={{ background: "var(--brand-light)", color: "var(--brand-dark)", border: "1px solid var(--brand-100)" }}
                     >
-                        <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
+                        <HelpCircle className="w-3.5 h-3.5 text-[var(--brand)]" />
                         FAQ
                     </span>
                     <h2
-                        className="text-3.5xl md:text-4xl font-extrabold text-slate-900 tracking-tight"
-                        style={{ fontFamily: "var(--font-heading)" }}
+                        className="font-extrabold text-slate-900 tracking-tight"
+                        style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)" }}
                     >
                         Frequently Asked Questions
                     </h2>
@@ -47,13 +48,14 @@ export default function FaqBlock({ data }: { data: FaqBlockData }) {
                                 className="relative overflow-hidden rounded-2xl transition-all duration-300 border bg-white"
                                 style={{
                                     borderColor: isOpen ? "var(--brand)" : "var(--brand-100)",
-                                    boxShadow: isOpen ? "0 12px 30px rgba(0, 179, 134, 0.05)" : "0 4px 20px rgba(10, 17, 40, 0.01)",
+                                    boxShadow: isOpen ? "0 12px 30px rgba(249, 115, 22, 0.06)" : "0 4px 20px rgba(10, 17, 40, 0.01)",
                                 }}
                             >
                                 {/* Left green active highlight line */}
                                 <div 
-                                    className="absolute left-0 top-0 bottom-0 w-1 bg-[#00B386] transition-transform duration-300 origin-left"
+                                    className="absolute left-0 top-0 bottom-0 w-1 transition-transform duration-300 origin-left"
                                     style={{
+                                        background: "var(--brand)",
                                         transform: isOpen ? "scaleX(1)" : "scaleX(0)",
                                     }}
                                 />
@@ -78,8 +80,8 @@ export default function FaqBlock({ data }: { data: FaqBlockData }) {
                                         </span>
 
                                         <span
-                                            className="font-extrabold text-sm sm:text-base leading-snug text-slate-800 transition-colors group-hover:text-emerald-700"
-                                            style={{ fontFamily: "var(--font-heading)" }}
+                                            className="font-extrabold leading-snug text-slate-800 transition-colors group-hover:text-[var(--brand-dark)]"
+                                            style={{ fontSize: "var(--fs-h4)", fontFamily: "var(--font-heading)" }}
                                         >
                                             {item.question}
                                         </span>
@@ -119,8 +121,8 @@ export default function FaqBlock({ data }: { data: FaqBlockData }) {
                                             }}
                                         >
                                             <p
-                                                className="text-xs sm:text-sm leading-relaxed pt-4 text-slate-600 font-medium"
-                                                style={{ fontFamily: "var(--font-body)" }}
+                                                className="leading-relaxed pt-4 text-slate-600 font-medium"
+                                                style={{ fontSize: "var(--fs-body)", fontFamily: "var(--font-body)" }}
                                             >
                                                 {item.answer}
                                             </p>
@@ -130,6 +132,7 @@ export default function FaqBlock({ data }: { data: FaqBlockData }) {
                             </div>
                         )
                     })}
+                </div>
                 </div>
             </div>
         </div>

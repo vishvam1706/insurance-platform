@@ -1,10 +1,11 @@
 import { TypesListData } from "@/types/blocks"
 
-export default function TypesList({ data }: { data: TypesListData }) {
+export default function TypesList({ data, isHome = false }: { data: TypesListData, isHome?: boolean }) {
     return (
-        <div className="my-12">
+        <div className={isHome ? "py-12 sm:py-16" : "my-12"}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full"}>
             {data.title && (
-                <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
+                <h2 className="font-bold mb-6" style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                     {data.title}
                 </h2>
             )}
@@ -31,6 +32,7 @@ export default function TypesList({ data }: { data: TypesListData }) {
             {data.note && (
                 <p className="text-xs md:text-sm mt-4 italic" style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>* {data.note}</p>
             )}
+            </div>
         </div>
     )
 }

@@ -1,11 +1,12 @@
 import { InfoSectionData } from "@/types/blocks"
 import Image from "next/image"
 
-export default function InfoSection({ data }: { data: InfoSectionData }) {
+export default function InfoSection({ data, isHome = false }: { data: InfoSectionData, isHome?: boolean }) {
     return (
-        <div className="my-10">
-            {data.title && (
-                <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
+        <div className={isHome ? "py-16 sm:py-20" : "my-10"}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full"}>
+                {data.title && (
+                <h2 className="font-bold mb-4" style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                     {data.title}
                 </h2>
             )}
@@ -20,6 +21,7 @@ export default function InfoSection({ data }: { data: InfoSectionData }) {
                         <Image src={data.image} alt={data.title || ""} width={600} height={400} className="w-full object-cover" />
                     </div>
                 )}
+            </div>
             </div>
         </div>
     )

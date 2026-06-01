@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { Block, BlockType } from "@/types/blocks"
 import PageRenderer from "@/components/blocks/PageRenderer"
@@ -54,8 +54,8 @@ const SAMPLE_DATA: Partial<Record<BlockType, Record<string, unknown>>> = {
         label: "Take Note",
         content: "Always declare your complete medical history honestly. Non-disclosure is the #1 reason claims get rejected in India.",
     },
-    pmpartners_take: {
-        title: "PM Partners' Take",
+    policymine_take: {
+        title: "Policymine's Take",
         body: "We recommend buying term insurance as early as possible. A 25-year-old can get ₹1 Cr cover for roughly ₹600/month — the same plan at 35 would cost nearly double.",
     },
     numbered_cards: {
@@ -184,20 +184,52 @@ const SAMPLE_DATA: Partial<Record<BlockType, Record<string, unknown>>> = {
             { title: "Health Insurance", desc: "Comprehensive family coverage", href: "/health", colorClass: "blue" },
         ],
     },
-    pmpartners_experience: {},
+    policymine_experience: {},
     comparison_section: {},
     insurance_checklist: {},
     home_faq: {
         items: [
-            { question: "Is PM Partners really free?", answer: "Yes, our advisory service is completely free. We earn commissions from insurers." },
-            { question: "How is PM Partners different?", answer: "We don't push products. Our advisors help you find what's right for your situation." },
+            { question: "Is Policymine really free?", answer: "Yes, our advisory service is completely free. We earn commissions from insurers." },
+            { question: "How is Policymine different?", answer: "We don't push products. Our advisors help you find what's right for your situation." },
         ],
     },
-    choose_pmpartners_cta: {
-        headline: "Why choose PM Partners?",
+    choose_policymine_cta: {
+        headline: "Why choose Policymine?",
         subtext: "Unbiased advice from top-rated experts",
         ctaText: "Compare Plans",
         ctaHref: "/contact",
+    },
+    home_guidance: {
+        title: "Insurance Guidance, Not Just Policy Selling",
+        subtitle: "We help customers make smarter protection decisions based on their financial goals — not sales targets.",
+        quote: "Every recommendation is designed to be practical, easy to understand, and aligned with your security.",
+        items: [
+            { title: "Personalized Advice", desc: "Tailored to your specific life stage and family goals." },
+            { title: "Transparent Comparisons", desc: "Side-by-side analysis of policy coverage." }
+        ]
+    },
+    home_trust: {
+        title: "Why Customers Trust Policymine",
+        items: [
+            { heading: "Best Value Plans", body: "Compare plans from leading insurers at competitive pricing." },
+            { heading: "Transparent Advice", body: "Recommendations focused on your actual needs." }
+        ]
+    },
+    home_understanding: {
+        title: "Insurance Should Be Understood — Not Just Purchased",
+        subtitle: "Buying insurance shouldn't feel like a guessing game.",
+        items: [
+            { title: "The Knowledge Gap", desc: "Most people buy insurance without understanding what's covered." },
+            { title: "Our Mission", desc: "To simplify insurance with transparent guidance." }
+        ]
+    },
+    home_process: {
+        title: "Simple, Transparent & Guided Process",
+        subtitle: "How we help you secure the right insurance plan.",
+        steps: [
+            { title: "Analyze Needs", text: "We analyze your financial goals and coverage requirements." },
+            { title: "Compare Plans", text: "We compare top policies side-by-side." }
+        ]
     },
 }
 

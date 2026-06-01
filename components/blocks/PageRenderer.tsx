@@ -8,7 +8,7 @@ import BenefitsList from "./BenefitsList"
 import TypesList from "./TypesList"
 import InfoSection from "./InfoSection"
 import NoteBox from "./NoteBox"
-import PmPartnersTake from "./PmPartnersTake"
+import PolicymineTake from "./PmPartnersTake"
 import NumberedCards from "./NumberedCards"
 import FinalThoughts from "./FinalThoughts"
 import FeaturesTable from "./FeaturesTable"
@@ -27,15 +27,31 @@ import FaqBlock from "./FaqBlock"
 import StatBar from "./StatBar"
 import HomeHeroBlock from "./HomeHeroBlock"
 import ProductCardsBlock from "./ProductCardsBlock"
-import PmPartnersExperienceBlock from "../home/PmPartnersExperience"
+import PolicymineExperienceBlock from "../home/PmPartnersExperience"
 import ComparisonSectionBlock from "../home/ComparisonSection"
 import InsuranceChecklistBlock from "../home/InsuranceChecklist"
 import HomeFaqBlock from "../home/HomeFaq"
-import ChoosePmPartnersCtaBlock from "../home/ChoosePmPartnersCta"
+import ChoosepolicymineCtaBlock from "../home/ChoosePmPartnersCta"
+import HomeGuidance from "../home/HomeGuidance"
+import HomeTrust from "../home/HomeTrust"
+import HomeUnderstanding from "../home/HomeUnderstanding"
+import HomeProcess from "../home/HomeProcess"
 
-const HOMEPAGE_BLOCKS = new Set(["home_hero", "product_cards", "pmpartners_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_pmpartners_cta"])
+const HOMEPAGE_BLOCKS = new Set([
+    "home_hero", 
+    "product_cards", 
+    "policymine_experience", 
+    "comparison_section", 
+    "insurance_checklist", 
+    "home_faq", 
+    "choose_policymine_cta",
+    "home_guidance",
+    "home_trust",
+    "home_understanding",
+    "home_process"
+])
 
-export default function PageRenderer({ blocks }: { blocks: Block[] }) {
+export default function PageRenderer({ blocks, isHome = false }: { blocks: Block[], isHome?: boolean }) {
     if (!blocks || blocks.length === 0) return null
 
     const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210"
@@ -48,38 +64,42 @@ export default function PageRenderer({ blocks }: { blocks: Block[] }) {
                 const d = block.data as any
                 let rendered: React.ReactNode = null
                 switch (block.type) {
-                    case "hero": rendered = <HeroBlock data={d} />; break
-                    case "rich_text": rendered = <RichTextBlock data={d} />; break
-                    case "image_block": rendered = <ImageBlock data={d} />; break
-                    case "how_it_works_steps": rendered = <StepsBlock data={d} />; break
-                    case "benefits_list": rendered = <BenefitsList data={d} />; break
-                    case "types_list": rendered = <TypesList data={d} />; break
-                    case "info_section": rendered = <InfoSection data={d} />; break
-                    case "note_box": rendered = <NoteBox data={d} />; break
-                    case "pmpartners_take": rendered = <PmPartnersTake data={d} />; break
-                    case "numbered_cards": rendered = <NumberedCards data={d} />; break
-                    case "final_thoughts": rendered = <FinalThoughts data={d} />; break
-                    case "features_table": rendered = <FeaturesTable data={d} />; break
-                    case "comparison_table": rendered = <ComparisonTable data={d} />; break
-                    case "pros_cons_table": rendered = <ProsConsTable data={d} />; break
-                    case "plans_table": rendered = <PlansTable data={d} />; break
-                    case "insurer_metrics": rendered = <InsurerMetrics data={d} />; break
-                    case "policy_features_list": rendered = <PolicyFeaturesList data={d} />; break
-                    case "real_example_comparison": rendered = <RealExampleComparison data={d} />; break
-                    case "insurer_selector": rendered = <InsurerSelector data={d} />; break
-                    case "calculator_embed": rendered = <CalculatorEmbed data={d} />; break
-                    case "frequently_compared": rendered = <FrequentlyCompared data={d} />; break
-                    case "reviews": rendered = <ReviewsBlock data={d} />; break
-                    case "cta_block": rendered = <CtaBlock data={d} />; break
-                    case "faq": rendered = <FaqBlock data={d} />; break
-                    case "stat_bar": rendered = <StatBar data={d} />; break
+                    case "hero": rendered = <HeroBlock data={d} isHome={isHome} />; break
+                    case "rich_text": rendered = <RichTextBlock data={d} isHome={isHome} />; break
+                    case "image_block": rendered = <ImageBlock data={d} isHome={isHome} />; break
+                    case "how_it_works_steps": rendered = <StepsBlock data={d} isHome={isHome} />; break
+                    case "benefits_list": rendered = <BenefitsList data={d} isHome={isHome} />; break
+                    case "types_list": rendered = <TypesList data={d} isHome={isHome} />; break
+                    case "info_section": rendered = <InfoSection data={d} isHome={isHome} />; break
+                    case "note_box": rendered = <NoteBox data={d} isHome={isHome} />; break
+                    case "policymine_take": rendered = <PolicymineTake data={d} isHome={isHome} />; break
+                    case "numbered_cards": rendered = <NumberedCards data={d} isHome={isHome} />; break
+                    case "final_thoughts": rendered = <FinalThoughts data={d} isHome={isHome} />; break
+                    case "features_table": rendered = <FeaturesTable data={d} isHome={isHome} />; break
+                    case "comparison_table": rendered = <ComparisonTable data={d} isHome={isHome} />; break
+                    case "pros_cons_table": rendered = <ProsConsTable data={d} isHome={isHome} />; break
+                    case "plans_table": rendered = <PlansTable data={d} isHome={isHome} />; break
+                    case "insurer_metrics": rendered = <InsurerMetrics data={d} isHome={isHome} />; break
+                    case "policy_features_list": rendered = <PolicyFeaturesList data={d} isHome={isHome} />; break
+                    case "real_example_comparison": rendered = <RealExampleComparison data={d} isHome={isHome} />; break
+                    case "insurer_selector": rendered = <InsurerSelector data={d} isHome={isHome} />; break
+                    case "calculator_embed": rendered = <CalculatorEmbed data={d} isHome={isHome} />; break
+                    case "frequently_compared": rendered = <FrequentlyCompared data={d} isHome={isHome} />; break
+                    case "reviews": rendered = <ReviewsBlock data={d} isHome={isHome} />; break
+                    case "cta_block": rendered = <CtaBlock data={d} isHome={isHome} />; break
+                    case "faq": rendered = <FaqBlock data={d} isHome={isHome} />; break
+                    case "stat_bar": rendered = <StatBar data={d} isHome={isHome} />; break
                     case "home_hero": rendered = <HomeHeroBlock data={d} />; break
                     case "product_cards": rendered = <ProductCardsBlock data={d} />; break
-                    case "pmpartners_experience": rendered = <PmPartnersExperienceBlock data={d} waUrl={waUrl} />; break
+                    case "policymine_experience": rendered = <PolicymineExperienceBlock data={d} waUrl={waUrl} />; break
                     case "comparison_section": rendered = <ComparisonSectionBlock data={d} />; break
                     case "insurance_checklist": rendered = <InsuranceChecklistBlock waUrl={waUrl} />; break
                     case "home_faq": rendered = <HomeFaqBlock items={d?.items} />; break
-                    case "choose_pmpartners_cta": rendered = <ChoosePmPartnersCtaBlock waUrl={waUrl} />; break
+                    case "choose_policymine_cta": rendered = <ChoosepolicymineCtaBlock waUrl={waUrl} />; break
+                    case "home_guidance": rendered = <HomeGuidance data={d} />; break
+                    case "home_trust": rendered = <HomeTrust data={d} />; break
+                    case "home_understanding": rendered = <HomeUnderstanding data={d} />; break
+                    case "home_process": rendered = <HomeProcess data={d} />; break
                     default: rendered = null
                 }
 

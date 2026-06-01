@@ -1,6 +1,7 @@
-"use client"
+﻿"use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Phone, MessageCircle, Star, ArrowRight, Shield, Mail } from "lucide-react"
 import CopyrightYear from "./CopyrightYear"
 
@@ -18,10 +19,16 @@ const LINKS = {
         { label: "Best Health Plans", href: "/health/best-health-insurance-plans" },
         { label: "Family Health Insurance", href: "/health/family-health-insurance" },
     ],
-    "Company": [
+    "Wealth & Planning": [
+        { label: "Investment & Wealth", href: "/wealth" },
+        { label: "Retirement Planning", href: "/retirement" },
+        { label: "Child Future Planning", href: "/child-future" },
+        { label: "Business Insurance", href: "/business-insurance" },
+    ],
+    "Support & Company": [
         { label: "About Us", href: "/about" },
-        { label: "Articles", href: "/articles" },
-        { label: "Contact", href: "/contact" },
+        { label: "Claim Support", href: "/claims" },
+        { label: "Careers Hub", href: "/careers" },
         { label: "Book Free Call", href: "/contact" },
     ],
 }
@@ -81,7 +88,7 @@ export default function PublicFooter() {
                         width: "400px",
                         height: "400px",
                         borderRadius: "50%",
-                        background: "radial-gradient(circle, rgba(0,179,134,0.12) 0%, transparent 65%)",
+                        background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 65%)",
                         pointerEvents: "none",
                     }}
                 />
@@ -93,14 +100,14 @@ export default function PublicFooter() {
                         width: "350px",
                         height: "350px",
                         borderRadius: "50%",
-                        background: "radial-gradient(circle, rgba(0,179,134,0.08) 0%, transparent 65%)",
+                        background: "radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 65%)",
                         pointerEvents: "none",
                     }}
                 />
 
                 <div className="max-w-7xl mx-auto px-6 sm:px-8 py-16 relative z-10">
                     <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-                        <div style={{ maxWidth: "520px" }}>
+                        <div className="text-left" style={{ maxWidth: "520px" }}>
                             <div className="flex items-center gap-2 mb-3">
                                 <Shield className="w-4 h-4" style={{ color: "var(--brand)" }} />
                                 <span
@@ -141,7 +148,7 @@ export default function PublicFooter() {
                                 style={{
                                     background: "var(--brand)",
                                     color: "#FFFFFF",
-                                    boxShadow: "0 4px 20px rgba(0,179,134,0.3)",
+                                    boxShadow: "0 4px 20px rgba(249,115,22,0.3)",
                                 }}
                             >
                                 <Phone className="w-4 h-4" />
@@ -169,34 +176,29 @@ export default function PublicFooter() {
             </div>
 
             {/* ── Main Footer ───────────────────────────────────────── */}
-            <div style={{ background: "#FAFBFC", borderTop: "1px solid var(--border-light)" }}>
+            <div style={{ background: "#F8FAFC", borderTop: "1px solid var(--border-light)" }}>
                 <div className="max-w-7xl mx-auto px-6 sm:px-8 py-16">
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-10 md:gap-8">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-6 gap-10 md:gap-8 text-left">
 
                         {/* Brand column */}
-                        <div className="col-span-2 sm:col-span-2 md:col-span-2 pr-0 md:pr-8">
+                        <div className="col-span-2 pr-0 md:pr-8">
                             <Link href="/" className="inline-flex items-center gap-2 mb-5 group">
-                                <span
-                                    className="font-extrabold text-xl tracking-tight transition-colors duration-300 group-hover:text-[var(--brand-dark)]"
-                                    style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)", letterSpacing: "-0.03em" }}
-                                >
-                                    pmpartners
-                                </span>
-                                <span
-                                    className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full transition-all duration-300 group-hover:bg-[var(--brand)] group-hover:text-white group-hover:border-[var(--brand)]"
-                                    style={{ background: "var(--brand-light)", color: "var(--brand-dark)", border: "1px solid var(--brand-100)" }}
-                                >
-                                    insurance
-                                </span>
+                                <Image
+                                    src="/logo.png"
+                                    alt="Policymine Insurance"
+                                    width={130}
+                                    height={36}
+                                    className="h-8 w-auto object-contain transition-opacity duration-300 group-hover:opacity-75"
+                                />
                             </Link>
                             <p className="text-[13px] leading-relaxed mb-5" style={{ color: "var(--text-muted)", maxWidth: "300px" }}>
-                                Honest, spam-free insurance advice for Indian families. Free consultations, zero pushy selling.
+                                Our team is available to guide you with insurance planning, documentation support, and claim-related assistance.
                             </p>
 
                             {/* Contact info */}
                             <div className="space-y-2.5 mb-6">
                                 <a
-                                    href="tel:+919876543210"
+                                    href="tel:+91XXXXXXXXXX"
                                     className="flex items-center gap-2.5 text-[13px] font-medium transition-colors duration-200 hover:text-[var(--brand)]"
                                     style={{ color: "var(--text-secondary)" }}
                                 >
@@ -206,10 +208,10 @@ export default function PublicFooter() {
                                     >
                                         <Phone className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
                                     </div>
-                                    +91 98765 43210
+                                    +91-XXXXXXXXXX
                                 </a>
                                 <a
-                                    href="mailto:hello@pmpartners.in"
+                                    href="mailto:support@policymine.in"
                                     className="flex items-center gap-2.5 text-[13px] font-medium transition-colors duration-200 hover:text-[var(--brand)]"
                                     style={{ color: "var(--text-secondary)" }}
                                 >
@@ -219,7 +221,7 @@ export default function PublicFooter() {
                                     >
                                         <Mail className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
                                     </div>
-                                    hello@pmpartners.in
+                                    support@policymine.in
                                 </a>
                             </div>
 
@@ -247,8 +249,8 @@ export default function PublicFooter() {
                         {Object.entries(LINKS).map(([group, links]) => (
                             <div key={group}>
                                 <h3
-                                    className="font-extrabold text-[11px] uppercase tracking-[0.15em] mb-5"
-                                    style={{ color: "var(--text-primary)" }}
+                                    className="font-extrabold text-[11px] uppercase tracking-[0.15em] mb-5 text-slate-800"
+                                    style={{ fontFamily: "var(--font-heading)" }}
                                 >
                                     {group}
                                 </h3>
@@ -275,20 +277,31 @@ export default function PublicFooter() {
                         ))}
                     </div>
 
+                    {/* Regulatory Disclaimer Text Block */}
+                    <div className="mt-12 pt-8 border-t border-slate-200/60 text-left space-y-3.5">
+                        <p className="text-[10px] uppercase font-black tracking-widest text-slate-400">Important Disclaimer</p>
+                        <p className="text-[11px] sm:text-xs text-slate-400 font-medium leading-relaxed">
+                            Insurance is the subject matter of solicitation. Policy issuance and claim settlement are subject to insurer terms and conditions. Please read all policy documents carefully before making a purchase decision.
+                        </p>
+                        <p className="text-[11px] sm:text-xs text-slate-400 font-medium leading-relaxed">
+                            Policymine acts as an insurance assistance and advisory support platform. Final approval, underwriting, and claim settlement are governed by the respective insurer’s policies and regulatory guidelines.
+                        </p>
+                    </div>
+
                     {/* ── Bottom Bar ─────────────────────────────────── */}
                     <div
-                        className="mt-14 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+                        className="mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
                         style={{ borderTop: "1px solid var(--border)" }}
                     >
                         <p className="text-[12px]" style={{ color: "var(--text-muted)" }}>
-                            © <CopyrightYear /> PM Partners Insurance. All rights reserved.
+                            © <CopyrightYear /> Policymine Insurance. All rights reserved.
                         </p>
                         <div className="flex items-center gap-5 text-[12px]" style={{ color: "var(--text-muted)" }}>
                             <Link href="/privacy" className="hover:text-[var(--text-primary)] transition-colors duration-200">Privacy Policy</Link>
                             <span style={{ color: "var(--border)" }}>·</span>
                             <Link href="/terms" className="hover:text-[var(--text-primary)] transition-colors duration-200">Terms of Use</Link>
                             <span style={{ color: "var(--border)" }}>·</span>
-                            <Link href="/disclaimer" className="hover:text-[var(--text-primary)] transition-colors duration-200">Disclaimer</Link>
+                            <Link href="/claims" className="hover:text-[var(--text-primary)] transition-colors duration-200">Claims Assistance</Link>
                         </div>
                     </div>
                 </div>

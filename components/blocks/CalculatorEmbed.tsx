@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Calculator } from "lucide-react"
 
-export default function CalculatorEmbed({ data }: { data: CalculatorEmbedData }) {
+export default function CalculatorEmbed({ data, isHome = false }: { data: CalculatorEmbedData, isHome?: boolean }) {
     const [age, setAge] = useState("")
     const [income, setIncome] = useState("")
     const [result, setResult] = useState<string | null>(null)
@@ -22,7 +22,9 @@ export default function CalculatorEmbed({ data }: { data: CalculatorEmbedData })
     }
 
     return (
-        <div className="my-8 rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "#FFFFFF" }}>
+        <div className={isHome ? "py-12 sm:py-16" : "my-8"}>
+            <div className={isHome ? "max-w-3xl mx-auto px-6 lg:px-8" : "w-full"}>
+                <div className="rounded-2xl overflow-hidden shadow-sm" style={{ border: "1px solid var(--border)", background: "#FFFFFF" }}>
             {/* Header bar */}
             <div className="px-6 py-4 flex items-center gap-3" style={{ background: "var(--text-primary)", borderBottom: "1px solid var(--brand-200)" }}>
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)" }}>
@@ -73,11 +75,13 @@ export default function CalculatorEmbed({ data }: { data: CalculatorEmbedData })
                 {result && (
                     <div className="text-center rounded-2xl p-5" style={{ background: "var(--brand-light)", border: "1px solid var(--brand-100)" }}>
                         <p className="text-xs font-medium mb-1" style={{ color: "var(--text-secondary)", fontFamily: "var(--font-body)" }}>Recommended Cover</p>
-                        <p className="text-3xl font-extrabold" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{result}</p>
+                        <p className="font-extrabold" style={{ fontSize: "var(--fs-h1)", fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{result}</p>
                         <p className="text-xs mt-1" style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>Based on income replacement method</p>
                     </div>
                 )}
+                </div>
             </div>
+        </div>
         </div>
     )
 }

@@ -1,11 +1,12 @@
 import { ImageBlockData } from "@/types/blocks"
 import Image from "next/image"
 
-export default function ImageBlock({ data }: { data: ImageBlockData }) {
+export default function ImageBlock({ data, isHome = false }: { data: ImageBlockData, isHome?: boolean }) {
     if (!data.image) return null
     return (
-        <figure className="my-8">
-            <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)" }}>
+        <figure className={isHome ? "py-12" : "my-8"}>
+            <div className={isHome ? "max-w-6xl mx-auto px-6 lg:px-8" : "w-full"}>
+                <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border)" }}>
                 <Image
                     src={data.image}
                     alt={data.altText || data.caption || ""}
@@ -19,6 +20,7 @@ export default function ImageBlock({ data }: { data: ImageBlockData }) {
                     {data.caption}
                 </figcaption>
             )}
+            </div>
         </figure>
     )
 }

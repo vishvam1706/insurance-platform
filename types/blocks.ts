@@ -1,4 +1,4 @@
-export type BlockType =
+﻿export type BlockType =
     | "hero"
     | "rich_text"
     | "image_block"
@@ -7,7 +7,7 @@ export type BlockType =
     | "types_list"
     | "info_section"
     | "note_box"
-    | "pmpartners_take"
+    | "policymine_take"
     | "numbered_cards"
     | "final_thoughts"
     | "features_table"
@@ -26,11 +26,15 @@ export type BlockType =
     | "faq"
     | "home_hero"
     | "product_cards"
-    | "pmpartners_experience"
+    | "policymine_experience"
     | "comparison_section"
     | "insurance_checklist"
     | "home_faq"
-    | "choose_pmpartners_cta"
+    | "choose_policymine_cta"
+    | "home_guidance"
+    | "home_trust"
+    | "home_understanding"
+    | "home_process"
 
 export interface Block {
     id: string
@@ -101,8 +105,8 @@ export interface NoteBoxData {
     icon?: string
 }
 
-// PM Partners' Take
-export interface PmPartnersTakeData {
+// Policymine's Take
+export interface policymineTakeData {
     title: string
     body: string
     advisorImage?: string
@@ -152,7 +156,7 @@ export interface PlansTableData {
         riders: string
         csr: string
         rating: string
-        pmpartnersRating?: number
+        policymineRating?: number
     }[]
 }
 
@@ -274,8 +278,8 @@ export interface ProductCardsBlockData {
     }[]
 }
 
-// PM Partners Experience
-export interface PmPartnersExperienceBlockData {
+// Policymine Experience
+export interface policymineExperienceBlockData {
     heading?: string
     subheading?: string
     description?: string
@@ -290,14 +294,14 @@ export interface PmPartnersExperienceBlockData {
 export interface ComparisonSectionBlockData {
     title?: string
     subtitle?: string
-    pmpartnersAvatar1?: string
-    pmpartnersAvatar2?: string
+    policymineAvatar1?: string
+    policymineAvatar2?: string
     otherAvatar1?: string
     otherAvatar2?: string
     rows?: {
         category: string
         subtitle: string
-        pmpartnersPoints: { text: string; icon?: string; image?: string; showAvatars?: boolean }[]
+        policyminePoints: { text: string; icon?: string; image?: string; showAvatars?: boolean }[]
         otherPoints: { text: string }[]
     }[]
 }
@@ -313,7 +317,39 @@ export interface HomeFaqBlockData {
     items: { question: string; answer: string }[]
 }
 
-// Choose PM Partners CTA
-export interface ChoosePmPartnersCataBlockData {
+// Choose Policymine CTA
+export interface ChoosepolicymineCataBlockData {
     heading?: string
 }
+
+// Home Guidance
+export interface HomeGuidanceBlockData {
+    title: string
+    subtitle?: string
+    quote?: string
+    items: { title: string; desc: string }[]
+}
+
+// Home Trust
+export interface HomeTrustBlockData {
+    title: string
+    items: { heading: string; body: string }[]
+    advisorName?: string
+    advisorTitle?: string
+    advisorImage?: string
+    advisorText?: string
+}
+
+// Home Understanding
+export interface HomeUnderstandingBlockData {
+    title: string
+    subtitle?: string
+    items: { title: string; desc: string }[]
+}
+
+// Home Process
+export interface HomeProcessBlockData {
+    title: string
+    subtitle?: string
+    steps: { title: string; text: string }[]
+}

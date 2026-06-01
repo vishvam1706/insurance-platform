@@ -1,67 +1,61 @@
-import { Metadata } from "next"
-import { ShieldAlert } from "lucide-react"
+﻿import { Metadata } from "next"
+import { ShieldCheck, Calendar } from "lucide-react"
 
 export const metadata: Metadata = {
-    title: "Terms of Use — PM Partners Insurance",
-    description: "Read the Terms of Use for PM Partners Insurance to understand the rules and guidelines for using our website.",
+    title: "Terms of Use — Service Guidelines | Policymine",
+    description: "By accessing this website and using our services, users agree to the applicable terms, policies, and regulatory guidelines.",
 }
 
-export default function TermsPage() {
+export default function TermsOfUsePage() {
     return (
-        <div className="relative min-h-screen bg-slate-50/50 py-16 lg:py-24 overflow-hidden">
-            <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(0,179,134,0.06) 0%, transparent 70%)" }} />
-
-            <div className="relative max-w-4xl mx-auto px-6 sm:px-8 z-10 text-left space-y-12">
-                {/* Header */}
+        <div className="relative min-h-screen bg-slate-50/40 pb-24 overflow-hidden text-left">
+            {/* Background mesh gradients */}
+            <div className="absolute inset-0 gold-mesh opacity-50 pointer-events-none" />
+            
+            <div className="relative max-w-4xl mx-auto px-6 pt-20 lg:pt-28 z-10 space-y-10">
+                
+                {/* Hero Header */}
                 <div className="space-y-4">
-                    <span className="badge-green inline-flex">
-                        <ShieldAlert className="w-3.5 h-3.5" />
-                        Platform Terms
+                    <span 
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest"
+                        style={{ background: "var(--brand-light)", color: "var(--brand-dark)", border: "1px solid var(--brand-100)" }}
+                    >
+                        <ShieldCheck className="w-4 h-4" />
+                        Service Agreement
                     </span>
-                    <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
-                        Terms of Use
+                    
+                    <h1 className="text-3xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)" }}>
+                        Terms Of Use.
                     </h1>
-                    <p className="text-slate-400 text-xs sm:text-sm font-medium">Last updated: May 21, 2026</p>
+                    
+                    <p className="text-slate-500 text-xs sm:text-sm flex items-center gap-1.5 font-bold">
+                        <Calendar className="w-3.5 h-3.5" />
+                        Last updated: May 2026
+                    </p>
                 </div>
 
-                {/* Terms of use */}
-                <div className="bg-white border border-slate-100 rounded-[32px] p-8 sm:p-12 shadow-[0_10px_30px_rgba(10,17,40,0.01)] prose prose-slate max-w-none space-y-8" style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)" }}>
-                    <section className="space-y-3">
-                        <h2 className="text-xl font-extrabold text-slate-800" style={{ fontFamily: "var(--font-heading)" }}>1. Agreement to Terms</h2>
-                        <p className="text-sm leading-relaxed">
-                            By accessing and browsing our platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Use, as well as our Privacy Policy and Disclaimer declarations.
-                        </p>
-                    </section>
+                {/* Content Panel */}
+                <div className="bg-white border rounded-[32px] p-8 sm:p-12 shadow-[0_20px_50px_rgba(15,23,42,0.02)] space-y-6 text-slate-600 text-sm sm:text-base leading-relaxed" style={{ borderColor: "var(--brand-100)" }}>
+                    <p>
+                        By accessing this website and using our services, users agree to the applicable terms, policies, and regulatory guidelines listed herein. 
+                    </p>
+                    
+                    <h3 className="text-lg font-bold text-slate-800 pt-2" style={{ fontFamily: "var(--font-heading)" }}>1. Advisory Services Limits</h3>
+                    <p>
+                        Policymine acts as an insurance assistance and advisory support platform. We provide transparent plan comparisons, personalized guidance, and claims documentation reviews. However, final policy approval, underwriting, premium cost calculations, and claim settlements are strictly governed by the respective insurer’s policies and regulatory guidelines.
+                    </p>
 
-                    <section className="space-y-3">
-                        <h2 className="text-xl font-extrabold text-slate-800" style={{ fontFamily: "var(--font-heading)" }}>2. Scope of Advisory Services</h2>
-                        <p className="text-sm leading-relaxed">
-                            PM Partners provides professional, IRDAI certified insurance advisory and comparison services. The quotes, calculations, and features displayed on this platform are for general reference. Actual policy terms and premium rates are determined after underwriting by the partner insurance companies.
-                        </p>
-                    </section>
+                    <h3 className="text-lg font-bold text-slate-800 pt-2" style={{ fontFamily: "var(--font-heading)" }}>2. Solicitation Disclaimer</h3>
+                    <p>
+                        <strong>Insurance is the subject matter of solicitation.</strong> Policy issuance and claim settlement remain strictly subject to insurer terms and conditions. Users are strongly advised to review all original policy, exclusions, and deductible documents carefully before making any purchase decision.
+                    </p>
 
-                    <section className="space-y-3">
-                        <h2 className="text-xl font-extrabold text-slate-800" style={{ fontFamily: "var(--font-heading)" }}>3. Accurate User Information</h2>
-                        <p className="text-sm leading-relaxed">
-                            Users are required to submit accurate, complete, and truthful information when booking consultation calls or submitting inquiry forms. Submitting false info or bypassing OTP verification is strictly prohibited and will lead to service termination.
-                        </p>
-                    </section>
-
-                    <section className="space-y-3">
-                        <h2 className="text-xl font-extrabold text-slate-800" style={{ fontFamily: "var(--font-heading)" }}>4. Intellectual Property</h2>
-                        <p className="text-sm leading-relaxed">
-                            All frontend designs, logos, guide contents, illustrations, icons, custom block scripts, and data layouts are the intellectual property of PM Partners. You are prohibited from scraping, copying, reproducing, or redistributing our content without express written consent.
-                        </p>
-                    </section>
-
-                    <section className="space-y-3">
-                        <h2 className="text-xl font-extrabold text-slate-800" style={{ fontFamily: "var(--font-heading)" }}>5. Limitation of Liability</h2>
-                        <p className="text-sm leading-relaxed">
-                            PM Partners strives to keep all database plans, features, and rates up to date. However, we are not responsible for typographical errors, discrepancies in premium amounts, or claim rejections by underwriters.
-                        </p>
-                    </section>
+                    <h3 className="text-lg font-bold text-slate-800 pt-2" style={{ fontFamily: "var(--font-heading)" }}>3. Accurate Information Clause</h3>
+                    <p>
+                        Our advisory capacity is dependent on the completeness and accuracy of the age, medical history, responsibilities, and existing insurance information shared by you during consultations. Policymine is not responsible for any underwriting declines or claims rejections arising from misrepresentation or material omissions.
+                    </p>
                 </div>
+
             </div>
         </div>
     )

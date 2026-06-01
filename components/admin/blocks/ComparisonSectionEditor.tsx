@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { ComparisonSectionBlockData } from "@/types/blocks"
 import { Input } from "@/components/ui/input"
@@ -42,7 +42,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
         const next = [...rows, {
             category: "New Category",
             subtitle: "Category subtitle description...",
-            pmpartnersPoints: [{ text: "Premium point text...", showAvatars: false, icon: "" }],
+            policyminePoints: [{ text: "Premium point text...", showAvatars: false, icon: "" }],
             otherPoints: [{ text: "Negative other point text..." }]
         }]
         set("rows", next)
@@ -63,21 +63,21 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
         set("rows", next)
     }
 
-    // PM Partners Points
-    function addPmPartnersPoint(rIdx: number) {
-        const nextPoints = [...(rows[rIdx].pmpartnersPoints || []), { text: "New benefit...", showAvatars: false, icon: "" }]
-        updateRow(rIdx, { pmpartnersPoints: nextPoints })
+    // Policymine Points
+    function addpolicyminePoint(rIdx: number) {
+        const nextPoints = [...(rows[rIdx].policyminePoints || []), { text: "New benefit...", showAvatars: false, icon: "" }]
+        updateRow(rIdx, { policyminePoints: nextPoints })
     }
 
-    function updatePmPartnersPoint(rIdx: number, pIdx: number, fields: Record<string, any>) {
-        const nextPoints = [...(rows[rIdx].pmpartnersPoints || [])]
+    function updatepolicyminePoint(rIdx: number, pIdx: number, fields: Record<string, any>) {
+        const nextPoints = [...(rows[rIdx].policyminePoints || [])]
         nextPoints[pIdx] = { ...nextPoints[pIdx], ...fields }
-        updateRow(rIdx, { pmpartnersPoints: nextPoints })
+        updateRow(rIdx, { policyminePoints: nextPoints })
     }
 
-    function removePmPartnersPoint(rIdx: number, pIdx: number) {
-        const nextPoints = (rows[rIdx].pmpartnersPoints || []).filter((_, i) => i !== pIdx)
-        updateRow(rIdx, { pmpartnersPoints: nextPoints })
+    function removepolicyminePoint(rIdx: number, pIdx: number) {
+        const nextPoints = (rows[rIdx].policyminePoints || []).filter((_, i) => i !== pIdx)
+        updateRow(rIdx, { policyminePoints: nextPoints })
     }
 
     // Other Points
@@ -118,7 +118,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                     <Textarea 
                         value={data.subtitle || ""} 
                         onChange={(e) => set("subtitle", e.target.value)} 
-                        placeholder="What customers experience throughout their insurance journey with PM Partners versus other platforms. (default)" 
+                        placeholder="What customers experience throughout their insurance journey with Policymine versus other platforms. (default)" 
                         className="text-sm min-h-[60px]"
                     />
                 </div>
@@ -131,18 +131,18 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Comparison Column Avatars (Header Circles)</h3>
                 
                 <div className="grid md:grid-cols-2 gap-6 bg-slate-50 p-4 border border-slate-200 rounded-xl">
-                    {/* PM Partners Avatars */}
+                    {/* Policymine Avatars */}
                     <div className="space-y-3">
-                        <h4 className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">PM Partners Column Avatars</h4>
+                        <h4 className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Policymine Column Avatars</h4>
                         <ImageUploader
-                            label="PM Partners Advisor Avatar 1"
-                            value={data.pmpartnersAvatar1 || ""}
-                            onChange={(url) => set("pmpartnersAvatar1", url)}
+                            label="Policymine Advisor Avatar 1"
+                            value={data.policymineAvatar1 || ""}
+                            onChange={(url) => set("policymineAvatar1", url)}
                         />
                         <ImageUploader
-                            label="PM Partners Advisor Avatar 2"
-                            value={data.pmpartnersAvatar2 || ""}
-                            onChange={(url) => set("pmpartnersAvatar2", url)}
+                            label="Policymine Advisor Avatar 2"
+                            value={data.policymineAvatar2 || ""}
+                            onChange={(url) => set("policymineAvatar2", url)}
                         />
                     </div>
 
@@ -250,17 +250,17 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                 </div>
                             </div>
 
-                            {/* PM Partners Points & Other Points side by side */}
+                            {/* Policymine Points & Other Points side by side */}
                             <div className="grid md:grid-cols-2 gap-6 pt-2">
-                                {/* PM Partners Points (Green Benefits Column) */}
+                                {/* Policymine Points (Green Benefits Column) */}
                                 <div className="space-y-3 border-r border-slate-200 pr-2">
                                     <div className="flex items-center justify-between">
-                                        <h5 className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">PM Partners Advantages</h5>
+                                        <h5 className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Policymine Advantages</h5>
                                         <Button 
                                             type="button" 
                                             variant="ghost" 
                                             size="xs" 
-                                            onClick={() => addPmPartnersPoint(rIdx)} 
+                                            onClick={() => addpolicyminePoint(rIdx)} 
                                             className="text-[10px] h-6 flex items-center gap-0.5 text-emerald-700 hover:bg-emerald-50"
                                         >
                                             <Plus className="w-2.5 h-2.5" /> Add point
@@ -268,12 +268,12 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                     </div>
 
                                     <div className="space-y-3">
-                                        {(row.pmpartnersPoints || []).map((point, pIdx) => (
+                                        {(row.policyminePoints || []).map((point, pIdx) => (
                                             <div key={pIdx} className="p-3 border border-slate-200 rounded-lg bg-white space-y-2.5">
                                                 <div className="flex items-start gap-2 justify-between">
                                                     <Input 
                                                         value={point.text || ""} 
-                                                        onChange={(e) => updatePmPartnersPoint(rIdx, pIdx, { text: e.target.value })} 
+                                                        onChange={(e) => updatepolicyminePoint(rIdx, pIdx, { text: e.target.value })} 
                                                         placeholder="e.g. Expert guidance..."
                                                         className="text-xs h-7 flex-1 min-w-0"
                                                     />
@@ -281,7 +281,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                                         type="button" 
                                                         variant="ghost" 
                                                         size="icon" 
-                                                        onClick={() => removePmPartnersPoint(rIdx, pIdx)}
+                                                        onClick={() => removepolicyminePoint(rIdx, pIdx)}
                                                         className="h-7 w-7 text-red-500 hover:text-red-600 hover:bg-red-50 shrink-0"
                                                     >
                                                         <Trash2 className="w-3 h-3" />
@@ -294,7 +294,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                                         <input 
                                                             type="checkbox" 
                                                             checked={point.showAvatars || false} 
-                                                            onChange={(e) => updatePmPartnersPoint(rIdx, pIdx, { showAvatars: e.target.checked })} 
+                                                            onChange={(e) => updatepolicyminePoint(rIdx, pIdx, { showAvatars: e.target.checked })} 
                                                             className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-3 h-3"
                                                         />
                                                         <span>Show overlapping avatars</span>
@@ -304,7 +304,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                                     <div className="flex flex-col gap-0.5">
                                                         <select
                                                             value={point.icon || ""}
-                                                            onChange={(e) => updatePmPartnersPoint(rIdx, pIdx, { icon: e.target.value })}
+                                                            onChange={(e) => updatepolicyminePoint(rIdx, pIdx, { icon: e.target.value })}
                                                             className="text-[9px] h-6 px-1 rounded border border-slate-200 bg-white text-slate-800 outline-none"
                                                         >
                                                             {AVAILABLE_ICONS.map((i) => (
@@ -319,7 +319,7 @@ export default function ComparisonSectionEditor({ data = {}, onChange }: Props) 
                                                     <ImageUploader
                                                         label="Custom Point Image / Graphic (optional)"
                                                         value={point.image || ""}
-                                                        onChange={(url) => updatePmPartnersPoint(rIdx, pIdx, { image: url })}
+                                                        onChange={(url) => updatepolicyminePoint(rIdx, pIdx, { image: url })}
                                                     />
                                                 </div>
                                             </div>

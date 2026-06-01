@@ -2,13 +2,14 @@ import { RealExampleComparisonData } from "@/types/blocks"
 import { CheckCircle2, XCircle, Star } from "lucide-react"
 import Image from "next/image"
 
-export default function RealExampleComparison({ data }: { data: RealExampleComparisonData }) {
+export default function RealExampleComparison({ data, isHome = false }: { data: RealExampleComparisonData, isHome?: boolean }) {
     const p1 = data.plan1
     const p2 = data.plan2
     return (
-        <div className="my-12">
+        <div className={isHome ? "py-12 sm:py-16" : "my-12"}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full"}>
             {data.title && (
-                <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{data.title}</h2>
+                <h2 className="font-bold mb-6" style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>{data.title}</h2>
             )}
             <div className="overflow-x-auto rounded-2xl shadow-sm border border-[var(--border)] bg-white">
                 <table className="w-full border-collapse">
@@ -45,6 +46,7 @@ export default function RealExampleComparison({ data }: { data: RealExampleCompa
                         ))}
                     </tbody>
                 </table>
+            </div>
             </div>
         </div>
     )

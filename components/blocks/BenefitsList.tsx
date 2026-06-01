@@ -4,7 +4,7 @@ import { BenefitsListData } from "@/types/blocks"
 import { CheckCircle2 } from "lucide-react"
 import { motion } from "framer-motion"
 
-export default function BenefitsList({ data }: { data: BenefitsListData }) {
+export default function BenefitsList({ data, isHome = false }: { data: BenefitsListData, isHome?: boolean }) {
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -23,12 +23,12 @@ export default function BenefitsList({ data }: { data: BenefitsListData }) {
     } as const
 
     return (
-        <section className="py-10 bg-transparent">
-            <div className="max-w-7xl mx-auto">
+        <section className={isHome ? "py-16 sm:py-20 bg-transparent" : "py-8 sm:py-12 bg-transparent"}>
+            <div className={isHome ? "max-w-7xl mx-auto px-6 lg:px-8" : "w-full"}>
                 {data.title && (
                     <h2 
-                        className="text-2xl md:text-3xl font-extrabold mb-8 text-left text-slate-900 tracking-tight" 
-                        style={{ fontFamily: "var(--font-heading)" }}
+                        className="font-extrabold mb-8 text-left text-slate-900 tracking-tight" 
+                        style={{ fontSize: "var(--fs-h2)", fontFamily: "var(--font-heading)" }}
                     >
                         {data.title}
                     </h2>
@@ -43,17 +43,17 @@ export default function BenefitsList({ data }: { data: BenefitsListData }) {
                     {(data.items || []).map((item, i) => (
                         <motion.div 
                             key={i} 
-                            className="premium-card flex gap-4 p-6 rounded-2xl border border-slate-100 hover:border-emerald-500/20 bg-white"
+                            className="premium-card flex gap-4 p-6 sm:p-8 rounded-2xl border border-slate-100 hover:border-[var(--brand)]/30 bg-white"
                             variants={itemVariants}
-                            whileHover={{ y: -4, boxShadow: "0 12px 30px rgba(0, 179, 134, 0.04)" }}
+                            whileHover={{ y: -4, boxShadow: "0 12px 30px rgba(249, 115, 22, 0.06)" }}
                             transition={{ type: "spring", stiffness: 300, damping: 20 }}
                         >
-                            <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0 text-emerald-500" />
+                            <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0 text-[var(--brand)]" />
                             <div>
-                                <h3 className="font-extrabold text-base md:text-lg mb-1.5" style={{ fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
+                                <h3 className="font-extrabold mb-1.5" style={{ fontSize: "var(--fs-h3)", fontFamily: "var(--font-heading)", color: "var(--text-primary)" }}>
                                     {item.heading}
                                 </h3>
-                                <p className="text-sm md:text-base leading-relaxed text-slate-500 font-medium" style={{ fontFamily: "var(--font-body)" }}>
+                                <p className="leading-relaxed text-slate-500 font-medium" style={{ fontSize: "var(--fs-body)", fontFamily: "var(--font-body)" }}>
                                     {item.body}
                                 </p>
                             </div>

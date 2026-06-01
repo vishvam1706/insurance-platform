@@ -50,8 +50,16 @@ export default async function HealthHubPage() {
                             <span className="italic font-normal" style={{ color: "var(--brand-dark)" }}>actually makes sense.</span>
                         </h1>
                         <p className="text-xl leading-relaxed max-w-xl" style={{ color: "var(--text-secondary)" }}>
-                            Compare policy plans, understand coverage benefits, and find the perfect health insurance for you and your family.
+                            Comprehensive health insurance for you and your family.
                         </p>
+                        <div className="mt-8">
+                            <Link 
+                                href="/contact" 
+                                className="btn-primary inline-flex items-center gap-2.5 rounded-2xl shadow-md"
+                            >
+                                Compare Health Plans
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { PlansTableData } from "@/types/blocks"
 import { Input } from "@/components/ui/input"
@@ -13,7 +13,7 @@ export default function PlansTableEditor({ data, onChange }: Props) {
     const rows = data.rows || []
 
     function addRow() {
-        onChange({ ...data, rows: [...rows, { plan: "", riders: "", csr: "", rating: "", pmpartnersRating: 0 }] })
+        onChange({ ...data, rows: [...rows, { plan: "", riders: "", csr: "", rating: "", policymineRating: 0 }] })
     }
 
     function updateRow(i: number, key: string, val: string | number) {
@@ -29,7 +29,7 @@ export default function PlansTableEditor({ data, onChange }: Props) {
         <div className="space-y-3">
             <div className="space-y-1">
                 <Label className="text-xs text-slate-500">Table Title</Label>
-                <Input value={data.title || ""} onChange={(e) => onChange({ ...data, title: e.target.value })} placeholder="PM Partners's Recommended Term Plans (2026)" />
+                <Input value={data.title || ""} onChange={(e) => onChange({ ...data, title: e.target.value })} placeholder="Policymine'ss Recommended Term Plans (2026)" />
             </div>
 
             <div className="space-y-3">
@@ -54,8 +54,8 @@ export default function PlansTableEditor({ data, onChange }: Props) {
                                 <Input value={row.rating} onChange={(e) => updateRow(i, "rating", e.target.value)} placeholder="4.65/5" className="text-sm" />
                             </div>
                             <div>
-                                <Label className="text-xs text-slate-400">PM Partners Score</Label>
-                                <Input type="number" min={0} max={5} step={0.01} value={row.pmpartnersRating || ""} onChange={(e) => updateRow(i, "pmpartnersRating", parseFloat(e.target.value))} placeholder="4.65" className="text-sm" />
+                                <Label className="text-xs text-slate-400">Policymine Score</Label>
+                                <Input type="number" min={0} max={5} step={0.01} value={row.policymineRating || ""} onChange={(e) => updateRow(i, "policymineRating", parseFloat(e.target.value))} placeholder="4.65" className="text-sm" />
                             </div>
                         </div>
                     </div>

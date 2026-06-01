@@ -33,7 +33,7 @@ const PageContentSchema = new Schema<PageContentDocument>(
         title: { type: String, required: true, trim: true },
         section: {
             type: String,
-            enum: ["term-life", "health", "home", "articles", "tools", "other"],
+            enum: ["term-life", "health", "home", "articles", "tools", "support", "wealth", "corporate", "company", "other"],
             required: true,
         },
         blocks: { type: [BlockSchema], default: [] },

@@ -2,19 +2,24 @@ import { Metadata } from "next"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
 import PageRenderer from "@/components/blocks/PageRenderer"
+import Testimonial from "@/lib/models/Testimonial"
 import HomeHero from "@/components/home/HomeHero"
-import PmPartnersExperience from "@/components/home/PmPartnersExperience"
+import PolicymineExperience from "@/components/home/PmPartnersExperience"
 import ComparisonSection from "@/components/home/ComparisonSection"
 import InsuranceChecklist from "@/components/home/InsuranceChecklist"
 import HomeFaq from "@/components/home/HomeFaq"
-import ChoosePmPartnersCta from "@/components/home/ChoosePmPartnersCta"
-import { Shield, Heart, ArrowRight, Star, CheckCircle2, Users, Phone, Sparkles } from "lucide-react"
+import ChoosepolicymineCta from "@/components/home/ChoosePmPartnersCta"
+import TrustSection from "@/components/home/TrustSection"
+import BrandPositioning from "@/components/home/BrandPositioning"
+import AboutSummary from "@/components/home/AboutSummary"
+import HomeHighlights from "@/components/home/HomeHighlights"
+import { Shield, Heart, ArrowRight, Star, Sparkles, TrendingUp, PiggyBank, GraduationCap, Briefcase } from "lucide-react"
 import Link from "next/link"
 
 export const revalidate = 1800 // Cache static page on Edge CDN, revalidate at most every 30 minutes
 
 export const metadata: Metadata = {
-    title: "PM Partners Insurance — Expert Advice, Free Consultation",
+    title: "Policymine Insurance — Expert Advice, Free Consultation",
     description:
         "Get expert advice on term life and health insurance. Get a free consultation with our expert advisors. No spam, no pressure.",
 }
@@ -28,6 +33,17 @@ async function getHomePage() {
 export default async function HomePage() {
     const page = await getHomePage()
 
+    await connectDB()
+    const dbTestimonials = await Testimonial.find({ active: true }).sort({ createdAt: -1 }).lean()
+    const testimonialsToRender = dbTestimonials.length > 0 
+        ? JSON.parse(JSON.stringify(dbTestimonials)) 
+        : [
+            { name: "Rahul Shah", role: "Ahmedabad", initials: "RS", body: "The entire process was smooth and professionally handled. Everything was explained clearly before purchase." },
+            { name: "Neha Mehta", role: "Surat", initials: "NM", body: "I finally understood the actual difference between plans because of their simple guidance." },
+            { name: "Amit Verma", role: "Mumbai", initials: "AV", body: "Very supportive team during medical requirements and policy issuance process." },
+            { name: "Priya Sharma", role: "Delhi", initials: "PS", body: "They genuinely focused on what was right for my family instead of pushing expensive plans." },
+          ]
+
     const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210"
     const waMsg = encodeURIComponent("Hi! I'd like to learn more about insurance options.")
     const waUrl = `https://wa.me/${waNumber}?text=${waMsg}`
@@ -36,183 +52,212 @@ export default async function HomePage() {
     if (page && (page as any).blocks?.length > 0) {
         return (
             <div className="max-w-none">
-                <PageRenderer blocks={(page as any).blocks} />
+                <PageRenderer blocks={(page as any).blocks} isHome={true} />
             </div>
         )
     }
 
-    // Otherwise render the hardcoded PM Partners-style homepage
+    // Otherwise render the hardcoded Policymine-style homepage
     return (
         <>
             {/* 1. HERO */}
             <HomeHero waUrl={waUrl} />
 
-            {/* 3. THE PM PARTNERS EXPERIENCE */}
-            <PmPartnersExperience waUrl={waUrl} />
+            {/* 2. TRUST / ACHIEVEMENT SECTION */}
+            <TrustSection />
 
-            {/* 4. COMPARISON — PM Partners vs Other Platforms */}
+            {/* 3. BRAND POSITIONING */}
+            <BrandPositioning />
+
+            {/* 4. WHY CHOOSE Policymine (Checklist / Comparison) */}
             <ComparisonSection />
 
+            {/* 5. ABOUT US SUMMARY */}
+            <AboutSummary />
+
+            {/* 6. HOW WE WORK (The Experience) */}
+            <PolicymineExperience waUrl={waUrl} />
+
             {/* 5. PRODUCTS — Term Life & Health */}
-            <section className="py-14 relative overflow-hidden border-b border-[var(--brand-100)] bg-[var(--brand-light)]/45">
-                <div className="absolute inset-0 gold-mesh opacity-40 pointer-events-none" />
+            <section className="py-20 sm:py-28 relative overflow-hidden" style={{ background: "linear-gradient(to bottom, #FFFFFF 0%, #F8FAFC 100%)" }}>
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-                        <div className="text-left">
-                            <span
-                                className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3 shadow-xs"
-                                style={{ background: "var(--brand-light)", color: "var(--brand-dark)", border: "1px solid var(--brand-100)" }}
-                            >
-                                What we cover
-                            </span>
-                            <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
-                                PM Partners Offers Two Products.<br />
-                                <span className="italic font-normal text-emerald-600 bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">Expert guidance on both.</span>
-                            </h2>
-                        </div>
+                    <div className="text-left mb-10">
+                        <span
+                            className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-4 select-none"
+                            style={{ background: "#FFF7ED", color: "#EA580C", border: "1px solid #FFEDD5" }}
+                        >
+                            What we cover
+                        </span>
+                        <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
+                            Policymine Offers Two Products.<br />
+                            <span style={{ color: "#F97316" }}>Expert guidance on both.</span>
+                        </h2>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                         {[
                             {
                                 href: "/term-life",
-                                icon: <Shield className="w-6 h-6 text-emerald-600" />,
-                                title: "Term Life Insurance",
-                                body: "Pure protection for your family at the lowest possible premium. We help you find the right cover amount and the right insurer.",
-                                tags: ["₹1 Cr+ cover", "Low premiums", "Claim support"],
-                                badge: "Best for Family Protection",
-                                cta: "Explore Term Insurance",
+                                icon: <Shield className="w-6 h-6 text-orange-500" />,
+                                title: "Term Insurance",
+                                body: "Secure your family’s financial future with high life coverage at affordable premiums.",
+                                badge: "Family Protection",
+                                cta: "Explore Term Plans",
                                 imageUrl: "/uploads/term_life_hero.png",
                             },
                             {
                                 href: "/health",
-                                icon: <Heart className="w-6 h-6 text-emerald-600" />,
+                                icon: <Heart className="w-6 h-6 text-orange-500" />,
                                 title: "Health Insurance",
-                                body: "Comprehensive coverage for you and your family. We compare plans across every major insurer so you don't have to.",
-                                tags: ["Family floater", "Cashless hospitals", "No sub-limits"],
-                                badge: "Best for Medical Protection",
-                                cta: "Explore Health Insurance",
+                                body: "Protect yourself against rising medical expenses, hospitalization, and critical illnesses.",
+                                badge: "Medical Protection",
+                                cta: "Explore Health Plans",
                                 imageUrl: "/uploads/1778580730304-wqg8vkb869c.jpg",
                             },
-                        ].map((p) => {
-                            const isHealth = p.href.includes("health")
-                            const isPhotoCard = !!p.imageUrl
-
-                            return (
-                                <Link
-                                    key={p.href}
-                                    href={p.href}
-                                    className="group relative rounded-[24px] overflow-hidden border border-slate-100 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.01)] hover:border-[var(--brand)]/30 hover:shadow-[0_16px_32px_rgba(0,179,134,0.03)] transition-all duration-300 hover:-translate-y-0.5 grid grid-cols-1 sm:grid-cols-[1.35fr_0.65fr] h-full min-h-[220px]"
-                                >
-                                    {/* Left Content Column */}
-                                    <div className="p-5 sm:p-6 flex flex-col justify-between h-full order-last sm:order-first space-y-4">
-                                        <div className="space-y-2.5 text-left">
-                                            {/* Dynamic Badges */}
-                                            <div className="flex flex-wrap gap-1.5">
-                                                <span 
-                                                    className="text-[9px] font-bold px-2 py-0.5 rounded-full border flex items-center gap-1 select-none"
-                                                    style={{ 
-                                                        background: "var(--brand-light)", 
-                                                        color: "var(--brand-dark)", 
-                                                        borderColor: "var(--brand-100)" 
-                                                    }}
-                                                >
-                                                    <Sparkles className="w-2.5 h-2.5 text-[var(--brand)] animate-pulse" />
-                                                    {p.badge}
-                                                </span>
-                                                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-50 text-slate-400 border border-slate-100 select-none">
-                                                    Expert Guidance
-                                                </span>
-                                            </div>
-
-                                            {/* Title */}
-                                            <h3
-                                                className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight transition-colors duration-300 group-hover:text-[var(--brand-dark)] mt-3"
-                                                style={{ fontFamily: "var(--font-heading)" }}
-                                            >
-                                                {p.title}
-                                            </h3>
-
-                                            {/* Description */}
-                                            <p
-                                                className="text-xs text-slate-500 leading-relaxed line-clamp-2 sm:line-clamp-3"
-                                                style={{ fontFamily: "var(--font-body)" }}
-                                            >
-                                                {p.body}
-                                            </p>
+                            {
+                                href: "/wealth",
+                                icon: <TrendingUp className="w-6 h-6 text-orange-500" />,
+                                title: "Investment & Wealth Plans",
+                                body: "Build long-term financial growth through market-linked and guaranteed return solutions.",
+                                badge: "Wealth Creation",
+                                cta: "Explore Wealth Plans",
+                                imageUrl: null,
+                            },
+                            {
+                                href: "/retirement",
+                                icon: <PiggyBank className="w-6 h-6 text-orange-500" />,
+                                title: "Retirement Planning",
+                                body: "Create a financially secure retirement with structured income and wealth protection strategies.",
+                                badge: "Future Security",
+                                cta: "Plan Retirement",
+                                imageUrl: null,
+                            },
+                            {
+                                href: "/child-future",
+                                icon: <GraduationCap className="w-6 h-6 text-orange-500" />,
+                                title: "Child Future Planning",
+                                body: "Plan confidently for your child’s education, marriage, and future aspirations.",
+                                badge: "Child Security",
+                                cta: "Start Planning",
+                                imageUrl: null,
+                            },
+                            {
+                                href: "/business-insurance",
+                                icon: <Briefcase className="w-6 h-6 text-orange-500" />,
+                                title: "Business & Keyman",
+                                body: "Protect businesses against financial uncertainties and operational risks.",
+                                badge: "Business Protection",
+                                cta: "Explore Business Plans",
+                                imageUrl: null,
+                            },
+                        ].map((p) => (
+                            <Link
+                                key={p.href}
+                                href={p.href}
+                                className="group relative rounded-[24px] overflow-hidden bg-white transition-all duration-500 hover:-translate-y-2 grid grid-cols-1 sm:grid-cols-[1.3fr_0.7fr] h-full min-h-[240px]"
+                                style={{ border: "1.5px solid #F1F5F9", boxShadow: "0 10px 30px rgba(15,23,42,0.02)" }}
+                                onMouseEnter={e => {
+                                    const el = e.currentTarget as HTMLElement
+                                    el.style.borderColor = "#F97316"
+                                    el.style.boxShadow = "0 20px 40px rgba(249,115,22,0.08)"
+                                }}
+                                onMouseLeave={e => {
+                                    const el = e.currentTarget as HTMLElement
+                                    el.style.borderColor = "#F1F5F9"
+                                    el.style.boxShadow = "0 10px 30px rgba(15,23,42,0.02)"
+                                }}
+                            >
+                                {/* Left Content */}
+                                <div className="p-6 sm:p-7 flex flex-col justify-between h-full order-last sm:order-first space-y-4">
+                                    <div className="space-y-3.5 text-left">
+                                        <div className="flex flex-wrap gap-1.5">
+                                            <span className="text-[9px] font-black px-2.5 py-0.5 rounded-full flex items-center gap-1 select-none" style={{ background: "#FFF7ED", color: "#EA580C", border: "1px solid #FFEDD5" }}>
+                                                <Sparkles className="w-2.5 h-2.5 text-orange-400" />
+                                                {p.badge}
+                                            </span>
+                                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full select-none" style={{ background: "#F8FAFC", color: "#94A3B8", border: "1px solid #F1F5F9" }}>
+                                                Expert Guidance
+                                            </span>
                                         </div>
-
-                                        {/* Action link */}
-                                        <div className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-[var(--brand-dark)] group-hover:text-[var(--brand)] transition-colors pt-2 border-t border-slate-50 w-full justify-between">
-                                            <span className="group-hover:translate-x-0.5 transition-transform duration-200">{p.cta}</span>
-                                            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1 text-[var(--brand)]" />
-                                        </div>
+                                        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight group-hover:text-orange-600 transition-colors" style={{ fontFamily: "var(--font-heading)" }}>
+                                            {p.title}
+                                        </h3>
+                                        <p className="text-sm font-medium text-slate-500 leading-relaxed line-clamp-3">{p.body}</p>
                                     </div>
-
-                                    {/* Right Visual Media Column */}
-                                    <div className="order-first sm:order-last relative w-full min-h-[140px] sm:min-h-full overflow-hidden bg-slate-50 border-b sm:border-b-0 sm:border-l border-slate-100">
-                                        {isPhotoCard ? (
-                                            <>
-                                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img
-                                                    src={p.imageUrl}
-                                                    alt={p.title}
-                                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                                />
-                                                {/* Modern overlay glow */}
-                                                <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-white/10 to-transparent pointer-events-none" />
-                                            </>
-                                        ) : (
-                                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--brand-light)]/40 to-emerald-50/10">
-                                                <div className="absolute -right-6 -bottom-6 w-20 h-20 rounded-full bg-[var(--brand)]/5 blur-md pointer-events-none" />
-                                                <div className="absolute -left-6 -top-6 w-20 h-20 rounded-full bg-[var(--brand)]/5 blur-md pointer-events-none" />
-                                                <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-white border border-[var(--brand-100)] shadow-xs transition-transform duration-500 group-hover:scale-110 relative z-10">
-                                                    {p.icon}
-                                                </div>
+                                    <div className="inline-flex items-center justify-between text-[10px] font-black uppercase tracking-widest pt-3 w-full" style={{ color: "#EA580C", borderTop: "1px solid #F1F5F9" }}>
+                                        <span className="group-hover:translate-x-1 transition-transform duration-200">{p.cta}</span>
+                                        <ArrowRight className="w-4 h-4 text-orange-500 transition-transform duration-200 group-hover:translate-x-1" />
+                                    </div>
+                                </div>
+                                {/* Right Image */}
+                                <div className="order-first sm:order-last relative w-full min-h-[160px] sm:min-h-full overflow-hidden bg-slate-50" style={{ borderLeft: "1px solid #F1F5F9" }}>
+                                    {p.imageUrl ? (
+                                        <>
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img src={p.imageUrl} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-750 group-hover:scale-105" />
+                                            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-white/10 to-transparent pointer-events-none" />
+                                        </>
+                                    ) : (
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-white shadow-sm" style={{ border: "1px solid #FFEDD5" }}>
+                                                {p.icon}
                                             </div>
-                                        )}
-                                    </div>
-                                </Link>
-                            )
-                        })}
+                                        </div>
+                                    )}
+                                </div>
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </section>
+            <div className="w-full h-px" style={{ background: "linear-gradient(90deg, transparent, #E2E8F0 50%, transparent)" }} />
 
-            {/* 6. INSURANCE CHECKLIST */}
-            <InsuranceChecklist waUrl={waUrl} />
+            {/* 7. HOMEPAGE HIGHLIGHTS */}
+            <HomeHighlights />
 
-            {/* 7. TESTIMONIALS */}
-            <section className="py-20 bg-white">
+            {/* 8. TESTIMONIALS */}
+            <section className="py-20 sm:py-28 relative overflow-hidden" style={{ background: "linear-gradient(to bottom, #FFFFFF 0%, #F8FAFC 100%)" }}>
                 <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-12">
+                    <div className="text-left mb-12">
                         <span
-                            className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4"
-                            style={{ background: "var(--brand-light)", color: "var(--brand)", border: "1px solid var(--brand-100)" }}
+                            className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-4 select-none"
+                            style={{ background: "#FFF7ED", color: "#EA580C", border: "1px solid #FFEDD5" }}
                         >
                             Customer Feedback
                         </span>
-                        <h2 className="text-3xl font-extrabold" style={{ fontFamily: "var(--font-heading)", color: "#111827" }}>
-                            People trust us with their families.
+                        <h2 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
+                            People trust us with their families<span style={{ color: "#F97316" }}>.</span>
                         </h2>
                     </div>
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {[
-                            { name: "Arjun Mehta", role: "Software Engineer, Bengaluru", initials: "AM", body: "I had been putting off insurance for years because it felt overwhelming. One call changed that. They explained everything clearly and helped me get a ₹1 Cr term plan within a week." },
-                            { name: "Priya Nair", role: "Teacher, Kerala", initials: "PN", body: "No pushy sales pitch at all. They actually told me which plan NOT to buy. That kind of honesty is rare. I now have a family floater I understand completely." },
-                            { name: "Rohit Sharma", role: "Business Owner, Delhi", initials: "RS", body: "Best decision I made for my family's security. The advisor was incredibly patient and answered every question. Highly recommend to anyone confused about insurance." },
-                        ].map((r) => (
-                            <div key={r.name} className="rounded-3xl p-7" style={{ background: "#F8FAFC", border: "1px solid #E5E7EB" }}>
-                                <div className="flex gap-0.5 mb-4">
-                                    {[1, 2, 3, 4, 5].map((s) => <Star key={s} className="w-4 h-4" style={{ color: "#F59E0B", fill: "#F59E0B" }} />)}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                        {testimonialsToRender.map((r: any) => (
+                            <div
+                                key={r.name}
+                                className="rounded-[24px] p-6 sm:p-7 bg-white flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5"
+                                style={{ border: "1.5px solid #F1F5F9", boxShadow: "0 10px 30px rgba(15,23,42,0.02)" }}
+                                onMouseEnter={e => {
+                                    const el = e.currentTarget as HTMLElement
+                                    el.style.borderColor = "#FFEDD5"
+                                    el.style.boxShadow = "0 15px 35px rgba(249,115,22,0.06)"
+                                }}
+                                onMouseLeave={e => {
+                                    const el = e.currentTarget as HTMLElement
+                                    el.style.borderColor = "#F1F5F9"
+                                    el.style.boxShadow = "0 10px 30px rgba(15,23,42,0.02)"
+                                }}
+                            >
+                                <div>
+                                    <div className="flex gap-0.5 mb-4">
+                                        {[1, 2, 3, 4, 5].map((s) => <Star key={s} className="w-4 h-4 text-amber-400 fill-amber-400" />)}
+                                    </div>
+                                    <p className="text-sm font-medium leading-relaxed mb-6 text-slate-600 italic">&ldquo;{r.body}&rdquo;</p>
                                 </div>
-                                <p className="text-sm leading-relaxed mb-5" style={{ color: "#374151" }}>"{r.body}"</p>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: "var(--brand-light)", color: "var(--brand)" }}>
+                                <div className="flex items-center gap-3 pt-4.5" style={{ borderTop: "1px solid #F1F5F9" }}>
+                                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shrink-0 relative select-none" style={{ background: "linear-gradient(135deg, #FFF7ED, #FFEDD5)", color: "#EA580C", border: "1.5px solid #FFDBB5", boxShadow: "0 2px 8px rgba(234,88,12,0.15)" }}>
                                         {r.initials}
                                     </div>
                                     <div>
-                                        <p className="text-sm font-bold" style={{ color: "#111827" }}>{r.name}</p>
-                                        <p className="text-xs" style={{ color: "#9CA3AF" }}>{r.role}</p>
+                                        <p className="text-sm font-bold text-slate-800 leading-none">{r.name}</p>
+                                        <p className="text-[11px] font-semibold text-slate-400 mt-1">{r.role}</p>
                                     </div>
                                 </div>
                             </div>
@@ -220,12 +265,13 @@ export default async function HomePage() {
                     </div>
                 </div>
             </section>
+            <div className="w-full h-px" style={{ background: "linear-gradient(90deg, transparent, #E2E8F0 50%, transparent)" }} />
 
             {/* 8. FAQ */}
             <HomeFaq />
 
-            {/* 9. CHOOSE PM PARTNERS CTA */}
-            <ChoosePmPartnersCta waUrl={waUrl} />
+            {/* 9. CHOOSE Policymine CTA */}
+            <ChoosepolicymineCta waUrl={waUrl} />
         </>
     )
 }

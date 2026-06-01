@@ -1,95 +1,85 @@
-import { Metadata } from "next"
+﻿import { Metadata } from "next"
 import Link from "next/link"
-import { ShieldCheck, Phone, CheckCircle, FileText, ArrowRight, MessageSquare } from "lucide-react"
+import { Shield, Sparkles, AlertCircle, Award, Clock, CheckCircle2 } from "lucide-react"
 
 export const metadata: Metadata = {
-    title: "Claims Support — PM Partners Insurance",
-    description: "Get dedicated, end-to-end claims support from PM Partners IRDAI certified advisors. Learn how to file claims and download documents.",
+    title: "Dedicated Claim Support Assistance — Policymine",
+    description: "Claim situations can feel stressful and overwhelming. Our team assists customers throughout the coordination and documentation process.",
 }
 
-export default function ClaimsPage() {
+export default function ClaimSupportPage() {
     return (
-        <div className="relative min-h-screen bg-slate-50/50 py-16 lg:py-24 overflow-hidden">
+        <div className="relative min-h-screen bg-slate-50/40 pb-24 overflow-hidden text-left">
             {/* Background mesh gradients */}
-            <div className="absolute inset-0 gold-mesh opacity-60 pointer-events-none" />
-            <div className="absolute top-12 left-12 w-96 h-96 rounded-full blur-[100px] pointer-events-none opacity-[0.04]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
-            <div className="absolute bottom-12 right-12 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none opacity-[0.04]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
-
-            <div className="relative max-w-7xl mx-auto px-6 sm:px-8 z-10 space-y-16">
+            <div className="absolute inset-0 gold-mesh opacity-50 pointer-events-none" />
+            
+            <div className="relative max-w-7xl mx-auto px-6 pt-20 lg:pt-28 z-10 space-y-16">
                 
-                {/* Hero Header Section */}
-                <div className="max-w-3xl text-left space-y-6">
-                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-widest bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm shadow-emerald-50">
-                        <ShieldCheck className="w-3.5 h-3.5" />
-                        Dedicated Claims Desk
-                    </span>
-                    <h1 className="text-4xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)" }}>
-                        We stand by you when you<br />
-                        <span className="italic font-normal text-emerald-600 bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">need us the most.</span>
-                    </h1>
-                    <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-medium" style={{ fontFamily: "var(--font-body)" }}>
-                        Buying a policy is just the beginning. Our dedicated claims assistance program ensures that your family receives complete, worry-free support during the claim settlement process.
-                    </p>
-                </div>
-
-                {/* Step-by-Step Claim Journey */}
-                <div className="space-y-8">
-                    <div className="text-left">
-                        <h2 className="text-2xl font-extrabold text-slate-900" style={{ fontFamily: "var(--font-heading)" }}>How Claim Assistance Works</h2>
-                        <p className="text-slate-400 text-xs sm:text-sm mt-0.5 font-medium">Simple 3-step process to file and track your claims hassle-free.</p>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {[
-                            {
-                                step: "01",
-                                title: "Instant Notification",
-                                desc: "Call or WhatsApp our dedicated claims desk immediately when an emergency arises. We will guide you through the initial steps.",
-                            },
-                            {
-                                step: "02",
-                                title: "Document Review",
-                                desc: "Submit your medical bills, discharge sheets, or death certificates. Our in-house audit team reviews all papers to prevent rejection.",
-                            },
-                            {
-                                step: "03",
-                                title: "Direct Insurer Coordination",
-                                desc: "We handle the follow-ups with the insurance company's TPA on your behalf to ensure rapid cashless approval or reimbursement payout.",
-                            },
-                        ].map((item, i) => (
-                            <div 
-                                key={i}
-                                className="bg-white border border-slate-100 rounded-[28px] p-8 shadow-[0_4px_20px_rgba(10,17,40,0.01)] space-y-4 hover:border-emerald-100 transition-all duration-300 hover:scale-[1.01]"
-                            >
-                                <span className="text-3xl font-black text-emerald-600/10 block font-sans" style={{ letterSpacing: "-0.05em" }}>
-                                    {item.step}
-                                </span>
-                                <h3 className="font-extrabold text-slate-800 text-base" style={{ fontFamily: "var(--font-heading)" }}>{item.title}</h3>
-                                <p className="text-slate-500 text-xs leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Support Block */}
-                <div className="bg-white border border-emerald-100 rounded-[32px] p-8 sm:p-12 shadow-[0_20px_50px_rgba(10,17,40,0.03)] grid lg:grid-cols-2 gap-8 items-center">
-                    <div className="space-y-4 text-left">
-                        <h3 className="text-2xl font-extrabold text-slate-900" style={{ fontFamily: "var(--font-heading)" }}>
-                            Talk to our Claims Manager
-                        </h3>
-                        <p className="text-slate-500 text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
-                            Facing issues with an ongoing claim? Or need pre-authorization for a planned surgery? Get connected with our claims managers for direct resolution.
-                        </p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-end">
-                        <Link 
-                            href="/contact" 
-                            className="inline-flex items-center justify-center gap-2 text-white font-black text-xs uppercase tracking-widest px-6 py-3.5 rounded-[18px] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-[0_4px_20px_rgba(0,179,134,0.2)]"
-                            style={{ background: "linear-gradient(135deg, #059669 0%, #0d9488 100%)" }}
+                {/* Hero section */}
+                <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
+                    <div className="space-y-6">
+                        <span 
+                            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest"
+                            style={{ background: "var(--brand-light)", color: "var(--brand-dark)", border: "1px solid var(--brand-100)" }}
                         >
-                            <Phone className="w-3.5 h-3.5" />
-                            Book Free Call
-                        </Link>
+                            <Shield className="w-4 h-4 animate-pulse" />
+                            Claim Settlement
+                        </span>
+                        
+                        <h1 className="text-4xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight" style={{ fontFamily: "var(--font-heading)" }}>
+                            Dedicated Support <br />
+                            <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500">During Claims.</span>
+                        </h1>
+                        
+                        <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl font-medium" style={{ fontFamily: "var(--font-body)" }}>
+                            Claim situations can feel stressful and overwhelming. Our team stands firmly with your family throughout the coordination, documentation, and filing process to ensure smooth settlement.
+                        </p>
+
+                        <div className="pt-4 flex flex-col sm:flex-row gap-3">
+                            <Link href="/contact" className="btn-primary inline-flex items-center justify-center gap-2 rounded-full font-black text-xs uppercase tracking-wider">
+                                Get Claim Assistance
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Right Card Panel */}
+                    <div className="relative group">
+                        <div className="absolute -inset-4 rounded-[40px] opacity-15 blur-2xl pointer-events-none" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
+                        <div className="relative bg-white border rounded-[36px] p-8 shadow-[0_20px_50px_rgba(15,23,42,0.02)]" style={{ borderColor: "var(--brand-100)" }}>
+                            <h3 className="text-lg font-extrabold text-slate-800 mb-6 flex items-center gap-2" style={{ fontFamily: "var(--font-heading)" }}>
+                                <Award className="w-5 h-5 text-orange-500" />
+                                Our Support Includes
+                            </h3>
+                            <div className="space-y-4">
+                                {[
+                                    { title: "Claim Guidance Support", desc: "Understand filing timelines, terms, and eligibility rules immediately." },
+                                    { title: "Documentation Assistance", desc: "Complete paper works, medical proofs, and certificates without errors." },
+                                    { title: "Coordination with Insurer Teams", desc: "We act as your interface with major insurance providers directly." },
+                                    { title: "Process Updates & Follow-ups", desc: "Get real-time tracking updates regarding approval stages." }
+                                ].map((item, idx) => (
+                                    <div key={idx} className="flex gap-3 text-left">
+                                        <CheckCircle2 className="w-5 h-5 shrink-0 text-orange-500 stroke-[2.5]" />
+                                        <div>
+                                            <p className="text-sm font-extrabold text-slate-800">{item.title}</p>
+                                            <p className="text-xs text-slate-500 font-medium mt-0.5">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Important Disclaimer Notice */}
+                <div className="rounded-3xl border border-slate-200 bg-white p-8 max-w-4xl mx-auto flex items-start gap-4 shadow-sm text-left">
+                    <div className="p-3 bg-rose-50 border border-rose-100 rounded-2xl text-rose-500 shrink-0">
+                        <AlertCircle className="w-6 h-6 animate-pulse" />
+                    </div>
+                    <div className="space-y-2">
+                        <h4 className="font-extrabold text-slate-800 text-sm sm:text-base">Important Regulatory Disclaimer</h4>
+                        <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-medium">
+                            Final claim approval and settlement remain subject to insurer policies, terms, and underwriting conditions. Policymine acts as an insurance assistance and advisory support platform. Final approval, underwriting, and claim settlement are governed by the respective insurer’s policies and regulatory guidelines.
+                        </p>
                     </div>
                 </div>
 

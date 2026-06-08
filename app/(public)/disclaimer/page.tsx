@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next"
+import { Metadata } from "next"
 import { ShieldAlert } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -37,7 +37,7 @@ export default function DisclaimerPage() {
                     <section className="space-y-3">
                         <h2 className="text-xl font-extrabold text-slate-800" style={{ fontFamily: "var(--font-heading)" }}>2. Partner Insurers & Underwriting</h2>
                         <p className="text-sm leading-relaxed">
-                            Policymine acts as a certified insurance referral and digital advisory facilitator. All insurance products (Term Life and Health) are underwritten by respective partner insurance companies registered with the IRDAI. Policymine does not guarantee, represent, or warrant policy issuance or claim payouts, which are at the sole discretion of the underwriter.
+                            Policymine acts as a certified insurance referral and digital advisory facilitator. All insurance products (Term Life and Health) are underwritten by respective partner insurance companies registered with regulatory authorities. Policymine does not guarantee, represent, or warrant policy issuance or claim payouts, which are at the sole discretion of the underwriter.
                         </p>
                     </section>
 

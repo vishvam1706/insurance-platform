@@ -5,7 +5,7 @@ export const InquirySchema = z.object({
     phone: z
         .string()
         .regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
-    email: z.string().email("Enter a valid email address"),
+    email: z.string().email("Enter a valid email address").optional().or(z.literal("")),
     insuranceType: z.enum(["term", "health"], {
         message: "Please select insurance type",
     }),

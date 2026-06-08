@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useEffect, useState } from "react"
 import { Mail, Phone, Languages, CheckCircle, Star, Shield, Users, Award } from "lucide-react"
@@ -12,7 +12,7 @@ interface LangEntry {
 const TRUST_STATS = [
     { icon: Users, value: "1L+", label: "Clients Served" },
     { icon: Star,  value: "4.9★", label: "Avg Rating" },
-    { icon: Shield, value: "IRDAI", label: "Certified" },
+    { icon: Shield, value: "Expert", label: "Certified" },
     { icon: Award,  value: "₹400Cr+", label: "Premium Managed" },
 ]
 
@@ -76,7 +76,7 @@ export default function ContactSidebar() {
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
                     <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest bg-white/95 text-slate-700 px-3 py-1.5 rounded-full border border-white/60 shadow backdrop-blur-sm">
                         <CheckCircle className="w-3 h-3 text-emerald-500" />
-                        IRDAI Certified Advisors
+                        Certified Advisors
                     </span>
                     <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-emerald-500/90 px-3 py-1.5 rounded-full backdrop-blur-sm">
                         <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
@@ -106,22 +106,27 @@ export default function ContactSidebar() {
             {/* ── Contact details ──────────────────────────────────── */}
             <div className="space-y-3 border-t border-slate-100 pt-5">
                 <a
-                    href="mailto:support@policymine.in"
+                    href="mailto:support@policymine.com"
                     className="flex items-center gap-3 group"
                 >
                     <div className="w-8 h-8 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0 group-hover:bg-orange-100 transition-colors">
                         <Mail className="w-3.5 h-3.5 text-orange-500" />
                     </div>
                     <span className="text-sm text-slate-600 group-hover:text-orange-600 font-medium transition-colors">
-                        support@policymine.in
+                        support@policymine.com
                     </span>
                 </a>
-                <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
-                        <Phone className="w-3.5 h-3.5 text-slate-400" />
+                <a
+                    href="tel:+919824923606"
+                    className="flex items-center gap-3 group"
+                >
+                    <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 group-hover:bg-slate-100 transition-colors">
+                        <Phone className="w-3.5 h-3.5 text-slate-400 group-hover:text-orange-500" />
                     </div>
-                    <span className="text-sm text-slate-600 font-medium">+91-XXXXXXXXXX</span>
-                </div>
+                    <span className="text-sm text-slate-600 group-hover:text-orange-600 font-medium transition-colors">
+                        +91 98249 23606
+                    </span>
+                </a>
             </div>
 
             {/* ── Languages ───────────────────────────────────────── */}

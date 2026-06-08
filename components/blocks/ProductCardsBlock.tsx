@@ -178,14 +178,14 @@ export default function ProductCardsBlock({ data }: { data: ProductCardsBlockDat
                             <motion.div key={i} variants={cardVariants}>
                                 <Link
                                     href={card.href || "#"}
-                                    className="group relative rounded-[24px] overflow-hidden border border-slate-200 bg-white flex flex-col min-h-[390px] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-slate-200/80 hover:border-slate-300 block"
+                                    className="group relative rounded-[24px] overflow-hidden border border-slate-200 bg-white flex flex-col min-h-[390px] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-slate-200/80 hover:border-slate-300 block animate-border-card"
                                 >
                                     {/* Coloured top bar */}
-                                    <div className={`h-1 w-full ${theme.topBar} shrink-0`} />
+                                    <div className={`h-1 w-full ${theme.topBar} rounded-t-[23px] shrink-0`} />
 
                                     {/* Image or Icon header */}
                                     {isPhoto ? (
-                                        <div className="relative w-full h-[145px] overflow-hidden bg-slate-100 shrink-0">
+                                        <div className="relative w-full h-[145px] overflow-hidden bg-slate-100 rounded-t-[23px] shrink-0">
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
                                                 src={card.imageUrl}
@@ -202,7 +202,7 @@ export default function ProductCardsBlock({ data }: { data: ProductCardsBlockDat
                                         </div>
                                     ) : (
                                         <div className="px-6 pt-6 pb-2 flex items-start justify-between shrink-0">
-                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 group-hover:scale-110 group-hover:shadow-md ${theme.icon}`}>
+                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 group-hover:scale-110 group-hover:shadow-md icon-box ${theme.icon}`}>
                                                 {icon}
                                             </div>
                                             <span className={`inline-flex items-center gap-1 text-[9px] font-black px-2.5 py-1 rounded-full border uppercase tracking-wider mt-1 ${theme.badgeCls}`}>

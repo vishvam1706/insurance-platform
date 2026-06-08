@@ -1,4 +1,4 @@
-﻿import mongoose from "mongoose"
+import mongoose from "mongoose"
 import bcrypt from "bcryptjs"
 import * as dotenv from "dotenv"
 import path from "path"
@@ -155,7 +155,7 @@ async function seed() {
     // ── SYSTEM SETTINGS ────────────────────────────────────
     await SystemSettings.deleteMany({})
     console.log("🗑  Cleared system settings")
-    
+
     await SystemSettings.create({
         key: "global_settings",
         languages: [
@@ -248,7 +248,7 @@ async function seed() {
                     title: "What is Term Insurance?",
                     publishedDate: "20 Feb, 2026",
                     author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -379,7 +379,7 @@ async function seed() {
                 data: {
                     title: "Term Insurance vs Life Insurance",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -654,7 +654,7 @@ async function seed() {
                     title: "Best Term Insurance Plans 2026",
                     subtitle: "Compare top-rated pure risk protection plans side-by-side. View claim settlement ratios, features, and expert Policymine ratings.",
                     author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -725,7 +725,7 @@ async function seed() {
                     title: "1 Crore Term Insurance Plan",
                     subtitle: "The gold standard of life protection. Understand why it is the perfect coverage amount and how to get it at the lowest premium.",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -791,7 +791,7 @@ async function seed() {
                     title: "NRI Term Insurance in India",
                     subtitle: "Comprehensive guide for Non-Resident Indians seeking term life cover. Save up to 50% on premiums compared to foreign policies.",
                     author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -857,7 +857,7 @@ async function seed() {
                     title: "What is Health Insurance?",
                     subtitle: "A simple guide to healthcare cover. Understand how medical policies shield you from soaring hospital bills and protect your savings.",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -919,7 +919,7 @@ async function seed() {
                     title: "Best Health Insurance Plans 2026",
                     subtitle: "Handpicked medical policies with high claim ratios, extensive hospital networks, and zero room-rent limits.",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -974,7 +974,7 @@ async function seed() {
                     title: "Family Floater Health Insurance",
                     subtitle: "One policy to protect your whole family. Save up to 35% on premiums compared to buying separate individual policies.",
                     author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "Insurance Expert at Policymine" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
                 },
             },
             {
@@ -1075,7 +1075,7 @@ async function seed() {
                         { heading: "Transparent Advice", body: "Recommendations focused on your actual needs and long-term goals." },
                         { heading: "Dedicated Claim Assistance", body: "Support from experienced advisors during the claim process." },
                         { heading: "Personalized Customer Support", body: "Quick guidance and assistance whenever required." },
-                        { heading: "IRDAI-Compliant Process", body: "Professional and ethical practices aligned with industry standards." },
+                        { heading: "Compliant Process", body: "Professional and ethical practices aligned with industry standards." },
                         { heading: "Multi-Language Support", body: "Guidance available in multiple languages based on advisor availability." }
                     ]
                 }
@@ -1179,7 +1179,7 @@ async function seed() {
         seo: { metaTitle: "Contact Us - Policymine", metaDescription: "Get In Touch With Our Insurance Experts" },
         blocks: [
             { id: "c1", type: "hero", data: { title: "Get In Touch With Our Insurance Experts", subtitle: "Whether you need help understanding plans, comparing policies, or getting claim support — our team is here to guide you." } },
-            { id: "c2", type: "rich_text", data: { content: "<h3>Contact Information</h3><ul><li>support@policymine.in</li><li>+91-XXXXXXXXXX</li><li>Consultation Hours Available based on advisor availability and active support timings.</li></ul>" } }
+            { id: "c2", type: "rich_text", data: { content: "<h3>Contact Information</h3><ul><li>support@policymine.com</li><li>+91 98249 23606</li><li>Consultation Hours Available based on advisor availability and active support timings.</li></ul>" } }
         ]
     });
 

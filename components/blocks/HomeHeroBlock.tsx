@@ -142,7 +142,7 @@ export default function HomeHeroBlock({ data, isHome = false }: { data: HomeHero
                             variants={itemVariants}
                             className="flex flex-wrap items-center gap-3 mb-2 select-none"
                         >
-                            {/* Google Rating Badge */}
+                            {/* Rating Badge */}
                             <div className="flex items-center gap-2.5 bg-white border border-slate-100 shadow-sm rounded-2xl px-4 py-2.5">
                                 {/* Laurel Left */}
                                 <svg viewBox="0 0 24 48" className="w-4 h-8 text-amber-300 fill-none stroke-current shrink-0" strokeWidth="2">
@@ -162,7 +162,7 @@ export default function HomeHeroBlock({ data, isHome = false }: { data: HomeHero
                                         </div>
                                     </div>
                                     <p className="text-[9.5px] font-bold text-slate-400 leading-tight mt-0.5 uppercase tracking-widest whitespace-nowrap">
-                                        22,000+ Google Reviews
+                                        22,000+ Reviews
                                     </p>
                                 </div>
 

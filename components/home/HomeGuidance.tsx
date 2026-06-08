@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { HomeGuidanceBlockData } from "@/types/blocks"
 import { motion } from "framer-motion"
@@ -143,11 +143,11 @@ export default function HomeGuidance({ data }: { data: HomeGuidanceBlockData }) 
 
                                     <div className="flex items-center gap-3">
                                         <div className="w-9 h-9 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 select-none bg-gradient-to-br from-orange-500 to-orange-400 text-white shadow-md">
-                                            GB
+                                            MB
                                         </div>
                                         <div>
                                             <p className="text-sm font-bold leading-none text-slate-900">
-                                                Gaurav Bhat
+                                                MS Bhati
                                             </p>
                                             <p className="text-[11px] font-medium mt-1 text-slate-500">
                                                 Lead Advisor, Policymine

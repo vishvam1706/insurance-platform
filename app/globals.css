@@ -293,13 +293,91 @@
   background: #FFFFFF;
   border: 1px solid #E2E8F0;
   box-shadow: 0 1px 4px rgba(15,23,42,0.04);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 0;
+  border-radius: 1rem;
+}
+
+.public-theme .premium-card::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: transparent;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: all 0.3s ease;
 }
 
 .public-theme .premium-card:hover {
-  border-color: #FFEDD5;
-  box-shadow: 0 8px 24px rgba(249,115,22,0.08);
   transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.public-theme .premium-card:hover::before {
+  background: linear-gradient(90deg, #f97316, rgba(249, 115, 22, 0.2), #f97316);
+  background-size: 200% auto;
+  animation: border-wave 2s linear infinite;
+}
+
+/* Global children styles for cards on hover */
+.public-theme .premium-card:hover h3,
+.animate-border-card:hover h2,
+.animate-border-card:hover h3,
+.animate-border-card:hover h4 {
+  color: #ea580c !important;
+}
+
+.public-theme .premium-card:hover .icon-box,
+.animate-border-card:hover .icon-box {
+  background-color: #f97316 !important;
+  border-color: #ea580c !important;
+  color: #ffffff !important;
+}
+
+/* ── animate-border-card — animated orange-only border wave for dark cards or custom cards */
+.animate-border-card {
+  position: relative;
+  z-index: 0;
+  transition: all 0.3s ease;
+}
+
+.animate-border-card::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: transparent;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.animate-border-card:hover::before {
+  background: linear-gradient(90deg, #f97316, rgba(249, 115, 22, 0.2), #f97316);
+  background-size: 200% auto;
+  animation: border-wave 2s linear infinite;
+}
+
+@keyframes border-wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 

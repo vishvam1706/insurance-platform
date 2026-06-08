@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next"
+import { Metadata } from "next"
 import Link from "next/link"
 import { Shield, Users, BadgeCheck, Phone, Heart } from "lucide-react"
 
@@ -107,7 +107,7 @@ export default function AboutPage() {
                         Ready to Protect What Matters?
                     </h3>
                     <p className="text-slate-500 text-sm leading-relaxed max-w-2xl mx-auto" style={{ fontFamily: "var(--font-body)" }}>
-                        Connect with our IRDAI-certified experts now to build your tailored insurance protection portfolio without any marketing pressure.
+                        Connect with our certified experts now to build your tailored insurance protection portfolio without any marketing pressure.
                     </p>
                     <div className="flex justify-center">
                         <Link 

@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState } from "react"
 import { HomeUnderstandingBlockData } from "@/types/blocks"
@@ -47,80 +47,85 @@ export default function HomeUnderstanding({ data }: { data: HomeUnderstandingBlo
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.35fr] gap-6 lg:gap-10 items-stretch">
 
                     {/* ── Left: Tab Selectors (Timeline Stepper) ── */}
-                    <div className="relative pl-8 sm:pl-10 space-y-6 flex flex-col justify-center">
-                        {/* The vertical timeline line */}
-                        <div className="absolute left-[15px] sm:left-[17px] top-4 bottom-4 w-0.5 bg-white/20 pointer-events-none" />
+                    <div className="pl-8 sm:pl-10 flex flex-col justify-center">
+                        <div className="relative space-y-6">
+                            {/* The vertical timeline line */}
+                            <div 
+                                className="absolute left-[-16px] sm:left-[-22px] w-0.5 bg-white/20 pointer-events-none" 
+                                style={{ top: "18px", bottom: "18px" }} 
+                            />
 
-                        {items.map((item, idx) => {
-                            const icon = UNDERSTANDING_ICONS[idx % UNDERSTANDING_ICONS.length]
-                            const isActive = activeTab === idx
+                            {items.map((item, idx) => {
+                                const icon = UNDERSTANDING_ICONS[idx % UNDERSTANDING_ICONS.length]
+                                const isActive = activeTab === idx
 
-                            return (
-                                <div key={idx} className="relative w-full flex items-start">
-                                    {/* Timeline dot badge */}
-                                    <button
-                                        onClick={() => setActiveTab(idx)}
-                                        className={`absolute -left-8 sm:-left-10 top-1 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-black text-[11px] sm:text-xs transition-all duration-300 cursor-pointer border-2 z-10
-                                            ${isActive
-                                                ? "bg-white text-orange-500 border-white shadow-lg shadow-black/10 scale-110"
-                                                : "bg-orange-600/40 border-white/20 text-orange-100 hover:border-white/50 hover:bg-orange-600/80 hover:text-white"
-                                            }`}
-                                    >
-                                        0{idx + 1}
-                                    </button>
+                                return (
+                                    <div key={idx} className="relative w-full flex items-start">
+                                        {/* Timeline dot badge */}
+                                        <button
+                                            onClick={() => setActiveTab(idx)}
+                                            className={`absolute -left-8 sm:-left-10 top-1 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-black text-[11px] sm:text-xs transition-all duration-300 cursor-pointer border-2 z-10
+                                                ${isActive
+                                                    ? "bg-white text-orange-500 border-white shadow-lg shadow-black/10 scale-110"
+                                                    : "bg-orange-600/40 border-white/20 text-orange-100 hover:border-white/50 hover:bg-orange-600/80 hover:text-white"
+                                                }`}
+                                        >
+                                            0{idx + 1}
+                                        </button>
 
-                                    {/* Content Card / Title */}
-                                    <button
-                                        onClick={() => setActiveTab(idx)}
-                                        className={`w-full group text-left transition-all duration-500 rounded-2xl cursor-pointer flex gap-4 items-start overflow-hidden
-                                            ${isActive 
-                                                ? "bg-white p-5 sm:p-6 border border-white shadow-2xl shadow-black/20" 
-                                                : "pl-2 py-2 hover:translate-x-1"
-                                            }`}
-                                    >
-                                        {/* Icon shown inside active card */}
-                                        <AnimatePresence>
-                                            {isActive && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, scale: 0.8 }}
-                                                    animate={{ opacity: 1, scale: 1 }}
-                                                    exit={{ opacity: 0, scale: 0.8 }}
-                                                    className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center bg-orange-50 border border-orange-100 text-orange-500"
-                                                >
-                                                    {icon}
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-
-                                        <div className="flex-1 space-y-1 min-w-0">
-                                            <div className="flex items-center justify-between gap-2">
-                                                <h3 className={`text-[15px] sm:text-base font-extrabold tracking-tight leading-tight transition-colors duration-300
-                                                    ${isActive ? "!text-slate-900" : "!text-orange-100 group-hover:!text-white"}`}>
-                                                    {item.title}
-                                                </h3>
-                                                {isActive && (
-                                                    <ArrowRight className="w-4 h-4 shrink-0 text-orange-500" />
-                                                )}
-                                            </div>
-                                            
+                                        {/* Content Card / Title */}
+                                        <button
+                                            onClick={() => setActiveTab(idx)}
+                                            className={`w-full group text-left transition-all duration-500 rounded-2xl cursor-pointer flex gap-4 items-start overflow-hidden
+                                                ${isActive 
+                                                    ? "bg-white p-5 sm:p-6 border border-white shadow-2xl shadow-black/20" 
+                                                    : "pl-2 py-2 hover:translate-x-1"
+                                                }`}
+                                        >
+                                            {/* Icon shown inside active card */}
                                             <AnimatePresence>
                                                 {isActive && (
-                                                    <motion.p
-                                                        initial={{ opacity: 0, height: 0 }}
-                                                        animate={{ opacity: 1, height: "auto" }}
-                                                        exit={{ opacity: 0, height: 0 }}
-                                                        transition={{ duration: 0.25 }}
-                                                        className="text-[12.5px] leading-relaxed font-semibold text-slate-500 mt-2 overflow-hidden"
+                                                    <motion.div
+                                                        initial={{ opacity: 0, scale: 0.8 }}
+                                                        animate={{ opacity: 1, scale: 1 }}
+                                                        exit={{ opacity: 0, scale: 0.8 }}
+                                                        className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center bg-orange-50 border border-orange-100 text-orange-500"
                                                     >
-                                                        {item.desc}
-                                                    </motion.p>
+                                                        {icon}
+                                                    </motion.div>
                                                 )}
                                             </AnimatePresence>
-                                        </div>
-                                    </button>
-                                </div>
-                            )
-                        })}
+
+                                            <div className="flex-1 space-y-1 min-w-0">
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <h3 className={`text-[15px] sm:text-base font-extrabold tracking-tight leading-tight transition-colors duration-300
+                                                        ${isActive ? "!text-slate-900" : "!text-orange-100 group-hover:!text-white"}`}>
+                                                        {item.title}
+                                                    </h3>
+                                                    {isActive && (
+                                                        <ArrowRight className="w-4 h-4 shrink-0 text-orange-500" />
+                                                    )}
+                                                </div>
+                                                
+                                                <AnimatePresence>
+                                                    {isActive && (
+                                                        <motion.p
+                                                            initial={{ opacity: 0, height: 0 }}
+                                                            animate={{ opacity: 1, height: "auto" }}
+                                                            exit={{ opacity: 0, height: 0 }}
+                                                            transition={{ duration: 0.25 }}
+                                                            className="text-[12.5px] leading-relaxed font-semibold text-slate-500 mt-2 overflow-hidden"
+                                                        >
+                                                            {item.desc}
+                                                        </motion.p>
+                                                    )}
+                                                </AnimatePresence>
+                                            </div>
+                                        </button>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
 
                     {/* ── Right: Visual Sandbox ── */}

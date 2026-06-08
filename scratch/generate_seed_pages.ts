@@ -1,4 +1,4 @@
-﻿import fs from "fs";
+import fs from "fs";
 
 const pages = [
     {
@@ -68,7 +68,7 @@ const pages = [
                         { heading: "Transparent Advice", body: "Recommendations focused on your actual needs and long-term goals." },
                         { heading: "Dedicated Claim Assistance", body: "Support from experienced advisors during the claim process." },
                         { heading: "Personalized Customer Support", body: "Quick guidance and assistance whenever required." },
-                        { heading: "IRDAI-Compliant Process", body: "Professional and ethical practices aligned with industry standards." },
+                        { heading: "Compliant Process", body: "Professional and ethical practices aligned with industry standards." },
                         { heading: "Multi-Language Support", body: "Guidance available in multiple languages based on advisor availability." }
                     ]
                 }
@@ -182,7 +182,7 @@ const pages = [
                 id: "c2",
                 type: "rich_text",
                 data: {
-                    content: "<h3>Contact Information</h3><ul><li>support@policymine.in</li><li>+91-XXXXXXXXXX</li><li>Consultation Hours Available based on advisor availability and active support timings.</li></ul>"
+                    content: "<h3>Contact Information</h3><ul><li>support@policymine.com</li><li>+91 98249 23606</li><li>Consultation Hours Available based on advisor availability and active support timings.</li></ul>"
                 }
             }
         ]

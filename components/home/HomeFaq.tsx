@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState } from "react"
 import Image from "next/image"
@@ -53,7 +53,7 @@ export default function HomeFaq({ items }: Props = {}) {
     function goToPage(p: number) { setPage(p); setOpenIndex(0) }
 
     const TRUST_ITEMS = [
-        { icon: <Star className="w-3.5 h-3.5 text-amber-500" />, iconBg: "bg-amber-50 border-amber-200", label: "Highly Rated", sub: "22,000+ Google reviews" },
+        { icon: <Star className="w-3.5 h-3.5 text-amber-500" />, iconBg: "bg-amber-50 border-amber-200", label: "Highly Rated", sub: "22,000+ reviews" },
         { icon: <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />, iconBg: "bg-emerald-50 border-emerald-200", label: "100% Free", sub: "No consultation fees" },
         { icon: <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />, iconBg: "bg-blue-50 border-blue-200", label: "Safe & Secure", sub: "Encrypted & protected" },
     ]

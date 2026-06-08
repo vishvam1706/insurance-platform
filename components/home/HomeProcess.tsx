@@ -89,7 +89,7 @@ export default function HomeProcess({ data }: { data: HomeProcessBlockData }) {
                         return (
                             <motion.div
                                 key={idx}
-                                className={`flex flex-col justify-between group relative bg-slate-900/50 border border-slate-800/60 rounded-[28px] p-6 min-h-[380px] transition-all duration-300 hover:border-orange-500/30 hover:shadow-2xl hover:shadow-black/50
+                                className={`flex flex-col justify-between group relative bg-slate-900/50 border border-slate-800/60 rounded-[28px] overflow-hidden p-6 min-h-[380px] transition-all duration-300 hover:border-orange-500/30 hover:shadow-2xl hover:shadow-black/50 animate-border-card
                                     ${isEven ? "lg:translate-y-8" : "lg:-translate-y-4"}`}
                                 variants={itemVariants}
                             >

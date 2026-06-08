@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { HomeTrustBlockData } from "@/types/blocks"
 import { Input } from "@/components/ui/input"
@@ -62,7 +62,7 @@ export default function HomeTrustEditor({ data, onChange }: Props) {
                     <Input 
                         value={data.advisorText || ""} 
                         onChange={(e) => onChange({ ...data, advisorText: e.target.value })} 
-                        placeholder="e.g. Talk to Gaurav or any certified advisor for free." 
+                        placeholder="e.g. Talk to MS Bhati or any certified advisor for free." 
                         className="bg-white h-9 text-xs" 
                     />
                 </div>

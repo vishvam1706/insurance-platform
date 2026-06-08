@@ -78,14 +78,14 @@ export default async function HealthHubPage() {
                                 <Link
                                     key={page.pageKey}
                                     href={`/${page.pageKey}`}
-                                    className="group flex flex-col h-full rounded-[28px] p-8 bg-white border border-[var(--brand-100)] transition-all duration-300 hover:border-[var(--brand)] hover:-translate-y-1 animate-fade-up"
+                                    className="group flex flex-col h-full rounded-[28px] overflow-hidden p-8 bg-white border border-[var(--brand-100)] transition-all duration-300 hover:border-[var(--brand)] hover:-translate-y-1 animate-fade-up animate-border-card"
                                     style={{ 
                                         boxShadow: "0 10px 30px rgba(10, 17, 40, 0.01)",
                                         animationDelay: `${i * 80}ms` 
                                     }}
                                 >
                                     <div
-                                        className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 border border-[var(--brand-100)] group-hover:bg-[var(--brand-light)] transition-colors duration-300"
+                                        className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 border border-[var(--brand-100)] group-hover:bg-[var(--brand-light)] transition-colors duration-300 icon-box"
                                         style={{ background: "var(--surface-muted)" }}
                                     >
                                         <Heart className="w-5 h-5" style={{ color: "var(--brand-dark)" }} />

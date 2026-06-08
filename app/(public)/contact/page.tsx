@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next"
+import { Metadata } from "next"
 import InquiryForm from "@/components/public/InquiryForm"
 import ContactSidebar from "@/components/public/ContactSidebar"
 import { connectDB } from "@/lib/mongodb"
@@ -69,10 +69,10 @@ export default async function ContactPage() {
                                         </p>
                                     </div>
                                     <a
-                                        href="mailto:support@policymine.in"
+                                        href="mailto:support@policymine.com"
                                         className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-slate-700 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all shadow-sm"
                                     >
-                                        support@policymine.in
+                                        support@policymine.com
                                     </a>
                                     <p className="text-[11px] text-slate-400 font-medium pt-1">
                                         We'll be back soon. Thank you for your patience.
@@ -88,7 +88,7 @@ export default async function ContactPage() {
                                     </svg>
                                     <p className="text-[11px] text-slate-400 leading-relaxed font-normal">
                                         Your data is encrypted and never shared with third parties. Policymine is registered
-                                        under IRDAI guidelines. Final policy terms are governed by the respective insurer.
+                                        under standard regulatory guidelines. Final policy terms are governed by the respective insurer.
                                     </p>
                                 </div>
                             )}

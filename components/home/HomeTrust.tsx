@@ -48,10 +48,10 @@ export default function HomeTrust({ data }: { data: HomeTrustBlockData }) {
                             </div>
                             <div className="text-left">
                                 <p className="text-xs font-black uppercase tracking-widest text-orange-600 font-heading">
-                                    IRDAI Certified Broker
+                                    Certified Advisors
                                 </p>
                                 <p className="text-xs text-slate-600 font-semibold mt-1 leading-relaxed font-body">
-                                    Operating with complete compliance under direct government regulatory framework.
+                                    Operating with complete compliance under direct regulatory frameworks.
                                 </p>
                             </div>
                         </div>
@@ -69,7 +69,7 @@ export default function HomeTrust({ data }: { data: HomeTrustBlockData }) {
                                     {data.advisorTitle || "Confused about coverage?"}
                                 </p>
                                 <p className="text-[11px] text-slate-600 font-semibold leading-normal mt-0.5 font-body">
-                                    {data.advisorText || "Talk to Gaurav or any certified advisor for free. No spam, ever."}
+                                    {data.advisorText || "Talk to MS Bhati or any certified advisor for free. No spam, ever."}
                                 </p>
                             </div>
                         </div>

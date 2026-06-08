@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
@@ -25,7 +25,6 @@ const TOP_NAV = [
     { label: "Life Insurance", href: "/term-life", section: "term-life" },
     { label: "Health Insurance", href: "/health", section: "health" },
     { label: "Claims", href: "/claims", section: null },
-    { label: "Articles", href: "/articles", section: null },
 ]
 
 interface NavChild { label: string; href: string }
@@ -210,8 +209,8 @@ export default function PublicHeader() {
                                 {children.length > 0 && isActive && (
                                     <div
                                         className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[350px] rounded-[24px] p-3.5 z-50 animate-fade-in shadow-[0_20px_50px_rgba(0,179,134,0.08)] border"
-                                        style={{ 
-                                            background: "rgba(255, 255, 255, 0.98)", 
+                                        style={{
+                                            background: "rgba(255, 255, 255, 0.98)",
                                             borderColor: "rgba(0, 179, 134, 0.08)",
                                             backdropFilter: "blur(20px)"
                                         }}
@@ -261,8 +260,8 @@ export default function PublicHeader() {
 
                 {/* Desktop Primary CTA with pulsing hover effects */}
                 <div className="hidden md:flex items-center gap-3">
-                    <Link 
-                        href="/contact" 
+                    <Link
+                        href="/contact"
                         className="inline-flex items-center gap-2 text-white font-black text-xs uppercase tracking-widest px-6 py-3.5 rounded-[18px] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-[0_6px_20px_-5px_rgba(0,179,134,0.3)] hover:shadow-[0_12px_30px_-5px_rgba(0,179,134,0.5)] shrink-0 select-none"
                         style={{
                             background: "linear-gradient(135deg, #059669 0%, #0d9488 100%)",
@@ -285,10 +284,10 @@ export default function PublicHeader() {
 
             {/* Mobile Nav overlay panel */}
             {mobileOpen && (
-                <div 
-                    className="md:hidden border-t px-6 py-5 space-y-2 animate-fade-in shadow-xl rounded-b-[24px]" 
-                    style={{ 
-                        backgroundColor: "rgba(255, 255, 255, 0.98)", 
+                <div
+                    className="md:hidden border-t px-6 py-5 space-y-2 animate-fade-in shadow-xl rounded-b-[24px]"
+                    style={{
+                        backgroundColor: "rgba(255, 255, 255, 0.98)",
                         borderColor: "rgba(0, 179, 134, 0.08)",
                         backdropFilter: "blur(20px)"
                     }}
@@ -324,8 +323,8 @@ export default function PublicHeader() {
                         )
                     })}
                     <div className="pt-4 pb-1" style={{ borderTop: "1px solid #F1F5F9" }}>
-                        <Link 
-                            href="/contact" 
+                        <Link
+                            href="/contact"
                             className="inline-flex items-center justify-center gap-2 text-white font-black text-xs uppercase tracking-widest px-6 py-3.5 rounded-[18px] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-[0_4px_20px_rgba(0,179,134,0.2)] select-none w-full"
                             style={{
                                 background: "linear-gradient(135deg, #059669 0%, #0d9488 100%)",

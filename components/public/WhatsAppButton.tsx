@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 export default function WhatsAppButton() {
@@ -9,6 +9,18 @@ export default function WhatsAppButton() {
     const href = `https://wa.me/${number}?text=${message}`
 
     const [hovered, setHovered] = useState(false)
+    const [hiddenByAdvisorBar, setHiddenByAdvisorBar] = useState(false)
+
+    useEffect(() => {
+        const checkState = () => {
+            setHiddenByAdvisorBar(document.body.classList.contains("advisor-bar-active"))
+        }
+        checkState()
+        window.addEventListener("advisor-bar-toggle", checkState)
+        return () => window.removeEventListener("advisor-bar-toggle", checkState)
+    }, [])
+
+    if (hiddenByAdvisorBar) return null
 
     return (
         <motion.div

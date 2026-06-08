@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next"
+import { Metadata } from "next"
 import Link from "next/link"
 import { Shield, Sparkles, Briefcase, Award, Target, CheckCircle2 } from "lucide-react"
 
@@ -53,7 +53,7 @@ export default function CareersPage() {
                             <div className="space-y-4">
                                 {[
                                     { title: "Growth-Oriented Environment", desc: "Acquire new operational skills and build rapid leadership tracks." },
-                                    { title: "Learning & Development Support", desc: "Gain fully sponsored IRDAI certifications and advisory skills." },
+                                    { title: "Learning & Development Support", desc: "Gain fully sponsored industry certifications and advisory skills." },
                                     { title: "Professional Work Culture", desc: "Work in a supportive, collaborative, and human-centric workspace." },
                                     { title: "Meaningful Direct Impact", desc: "Help millions of families protect their futures with honest, zero-spam advice." }
                                 ].map((item, idx) => (

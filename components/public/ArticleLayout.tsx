@@ -1,8 +1,9 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { Phone } from "lucide-react"
+import { Phone, X, MessageCircle } from "lucide-react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 interface TocItem { id: string; text: string; level: number }
 interface Props { children: React.ReactNode; defaultType?: "term" | "health"; showSidebar?: boolean }
@@ -11,6 +12,31 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
     const [toc, setToc] = useState<TocItem[]>([])
     const [activeId, setActiveId] = useState<string>("")
     const articleRef = useRef<HTMLDivElement>(null)
+    
+    const pathname = usePathname()
+    const [isDismissed, setIsDismissed] = useState(false)
+
+    const showStickyAdvisorBar = 
+        (pathname && pathname.startsWith("/term-life/") && pathname !== "/term-life") || 
+        (pathname === "/health/family-health-insurance")
+
+    const waNumber = "919824923606"
+    const waMsg = encodeURIComponent("Hello Policymine, I need assistance with insurance.")
+    const waUrl = `https://wa.me/${waNumber}?text=${waMsg}`
+
+    useEffect(() => {
+        if (showStickyAdvisorBar && !isDismissed) {
+            document.body.classList.add("advisor-bar-active")
+        } else {
+            document.body.classList.remove("advisor-bar-active")
+        }
+        window.dispatchEvent(new Event("advisor-bar-toggle"))
+
+        return () => {
+            document.body.classList.remove("advisor-bar-active")
+            window.dispatchEvent(new Event("advisor-bar-toggle"))
+        }
+    }, [showStickyAdvisorBar, isDismissed])
 
     useEffect(() => {
         if (!articleRef.current) return
@@ -45,7 +71,7 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
     const hasToc = toc.length > 0
 
     return (
-        <div className="min-h-screen" style={{ background: "#F7F8FA" }}>
+        <div className={`min-h-screen transition-all ${showStickyAdvisorBar && !isDismissed ? "pb-36 sm:pb-28 md:pb-24" : ""}`} style={{ background: "#F7F8FA" }}>
             <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8">
                 <div
                     className={`grid gap-6 items-start ${
@@ -156,6 +182,69 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                     )}
                 </div>
             </div>
+
+            {/* Sticky Advisor Promo Bar */}
+            {showStickyAdvisorBar && !isDismissed && (
+                <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0F172A] text-white shadow-[0_-12px_40px_rgba(15,23,42,0.25)] border-t border-slate-800">
+                    {/* Top Brand Accent Line */}
+                    <div className="h-[3px] w-full absolute top-0 left-0" style={{ background: "linear-gradient(90deg, #F97316, #FBBF24, #F97316)" }} />
+                    
+                    <div className="max-w-7xl mx-auto px-6 py-4 sm:py-5 relative flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        
+                        {/* Overlapping advisor image - visible from sm screens up */}
+                        <div className="hidden sm:block absolute bottom-0 left-4 md:left-8 w-[100px] md:w-[130px] h-[110%] select-none pointer-events-none z-10">
+                            <img 
+                                src="/images/person2.png" 
+                                alt="MS Bhati - Advisor" 
+                                className="w-full h-full object-contain object-bottom" 
+                            />
+                        </div>
+
+                        {/* Title & description */}
+                        <div className="flex flex-col text-left sm:pl-28 md:pl-32 max-w-xl">
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#F97316] mb-1">
+                                Need a Human Touch?
+                            </span>
+                            <h4 className="text-sm sm:text-base md:text-lg font-bold leading-tight text-white font-heading">
+                                Our advisors are here to help you pick the right plan.
+                            </h4>
+                        </div>
+
+                        {/* CTAs */}
+                        <div className="flex flex-wrap items-center gap-2.5 z-20 mr-6 md:mr-8 sm:pl-28 md:pl-0">
+                            <Link 
+                                href="/contact" 
+                                className="inline-flex items-center gap-2 text-white font-black text-xs uppercase tracking-widest px-5 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-[0_6px_20px_-5px_rgba(249,115,22,0.3)] hover:shadow-[0_12px_30px_-5px_rgba(249,115,22,0.5)] shrink-0 select-none"
+                                style={{
+                                    background: "linear-gradient(135deg, #F97316 0%, #EA580C 100%)",
+                                }}
+                            >
+                                <Phone className="w-3.5 h-3.5" />
+                                Book a Free Call
+                            </Link>
+                            <a 
+                                href={waUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 border-[#25D366] hover:bg-[#25D366]/10 text-[#25D366] font-extrabold text-xs uppercase tracking-wider px-5 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shrink-0"
+                                style={{ borderWidth: "1.5px" }}
+                            >
+                                <MessageCircle className="w-3.5 h-3.5" />
+                                WhatsApp Us
+                            </a>
+                        </div>
+
+                        {/* Close button */}
+                        <button 
+                            onClick={() => setIsDismissed(true)} 
+                            className="absolute top-2.5 right-4 md:top-1/2 md:-translate-y-1/2 p-1.5 rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-colors"
+                            aria-label="Close"
+                        >
+                            <X className="w-4 h-4" />
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

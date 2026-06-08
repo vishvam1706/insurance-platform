@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import Link from "next/link"
 import { CalendarDays, MessageCircle, ArrowRight, Shield, Heart, Users, Award } from "lucide-react"
@@ -168,14 +168,13 @@ export default function ChoosepolicymineCta({ waUrl }: Props) {
                     </div>
                 </motion.div>
 
-                {/* IRDAI Disclaimer */}
+                {/* Regulatory Disclaimer */}
                 <p
                     className="mt-14 text-xs text-center max-w-2xl mx-auto leading-relaxed"
                     style={{ color: "rgba(148,163,184,0.6)", fontFamily: "var(--font-body)" }}
                 >
                     Insurance is the subject matter of solicitation. Policy issuance and claim
-                    settlement are subject to insurer terms and conditions. IRDAI is not involved
-                    in activities like insurance policy selling, premium collection, or claim settlement.
+                    settlement are subject to insurer terms and conditions.
                 </p>
             </div>
         </section>

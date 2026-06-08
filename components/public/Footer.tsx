@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import Link from "next/link"
 import Image from "next/image"
@@ -125,7 +125,7 @@ export default function PublicFooter() {
                                 <span style={{ color: "var(--brand)" }}>fits you best?</span>
                             </h2>
                             <p className="text-sm mt-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
-                                Our IRDAI-certified advisors will guide you to the perfect plan in under 20 minutes — completely free, zero spam.
+                                Our certified advisors will guide you to the perfect plan in under 20 minutes — completely free, zero spam.
                             </p>
 
                             {/* Trust stars */}
@@ -198,7 +198,7 @@ export default function PublicFooter() {
                             {/* Contact info */}
                             <div className="space-y-2.5 mb-6">
                                 <a
-                                    href="tel:+91XXXXXXXXXX"
+                                    href="tel:+919824923606"
                                     className="flex items-center gap-2.5 text-[13px] font-medium transition-colors duration-200 hover:text-[var(--brand)]"
                                     style={{ color: "var(--text-secondary)" }}
                                 >
@@ -208,10 +208,10 @@ export default function PublicFooter() {
                                     >
                                         <Phone className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
                                     </div>
-                                    +91-XXXXXXXXXX
+                                    +91 98249 23606
                                 </a>
                                 <a
-                                    href="mailto:support@policymine.in"
+                                    href="mailto:support@policymine.com"
                                     className="flex items-center gap-2.5 text-[13px] font-medium transition-colors duration-200 hover:text-[var(--brand)]"
                                     style={{ color: "var(--text-secondary)" }}
                                 >
@@ -221,7 +221,7 @@ export default function PublicFooter() {
                                     >
                                         <Mail className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
                                     </div>
-                                    support@policymine.in
+                                    support@policymine.com
                                 </a>
                             </div>
 

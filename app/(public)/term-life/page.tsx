@@ -1,4 +1,4 @@
-﻿import { Metadata } from "next"
+import { Metadata } from "next"
 import Link from "next/link"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
@@ -64,7 +64,7 @@ export default async function TermLifeHubPage() {
                             {/* Trust badges */}
                             <div className="grid sm:grid-cols-2 gap-4 pt-2">
                                 {[
-                                    "IRDAI Certified Advice",
+                                    "Certified Expert Advice",
                                     "Zero Spam Guaranteed",
                                     "100% Free Consultation",
                                     "Dedicated Claims Support",
@@ -138,7 +138,7 @@ export default async function TermLifeHubPage() {
                             {featuredPage && (
                                 <Link
                                     href={`/${featuredPage.pageKey}`}
-                                    className="group grid md:grid-cols-[1.3fr_0.7fr] gap-8 bg-white rounded-[36px] p-8 sm:p-12 shadow-[0_8px_30px_rgba(15,23,42,0.01)] hover:shadow-[0_24px_50px_rgba(249,115,22,0.06)] hover:-translate-y-1.5 transition-all duration-300 text-left relative overflow-hidden border"
+                                    className="group grid md:grid-cols-[1.3fr_0.7fr] gap-8 bg-white rounded-[36px] p-8 sm:p-12 shadow-[0_8px_30px_rgba(15,23,42,0.01)] hover:shadow-[0_24px_50px_rgba(249,115,22,0.06)] hover:-translate-y-1.5 transition-all duration-300 text-left relative overflow-hidden border animate-border-card"
                                     style={{ borderColor: "var(--brand-100)" }}
                                 >
                                     {/* Accent background glow */}
@@ -204,13 +204,13 @@ export default async function TermLifeHubPage() {
                                         <Link
                                             key={page.pageKey}
                                             href={`/${page.pageKey}`}
-                                            className="group flex flex-col h-full rounded-[32px] p-8 sm:p-9 bg-white border hover:border-orange-500/50 transition-all duration-300 hover:-translate-y-1.5 text-left relative overflow-hidden"
+                                            className="group flex flex-col h-full rounded-[32px] p-8 sm:p-9 bg-white border hover:border-orange-500/50 transition-all duration-300 hover:-translate-y-1.5 text-left relative overflow-hidden animate-border-card"
                                             style={{ 
                                                 borderColor: "var(--brand-100)",
                                                 boxShadow: "0 10px 30px rgba(15,23,42,0.01)",
                                             }}
                                         >
-                                            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-7 border transition-colors duration-300 shadow-sm" style={{ background: "var(--surface-muted)", borderColor: "var(--brand-100)", color: "var(--brand-dark)" }}>
+                                            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-7 border transition-colors duration-300 shadow-sm icon-box" style={{ background: "var(--surface-muted)", borderColor: "var(--brand-100)", color: "var(--brand-dark)" }}>
                                                 <Shield className="w-5.5 h-5.5 shrink-0" />
                                             </div>
                                             

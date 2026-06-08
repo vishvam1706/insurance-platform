@@ -105,7 +105,7 @@ export default function CtaBlock({ data, isHome = false }: { data: CtaBlockData,
                         </motion.div>
 
                         <motion.div className="flex flex-wrap gap-4 pt-4 border-t border-slate-50" variants={itemVariants}>
-                            {["Free Consultation", "No Sales Pressure", "IRDAI-Compliant Advice"].map((r) => (
+                            {["Free Consultation", "No Sales Pressure", "Compliant Advice"].map((r) => (
                                 <motion.div 
                                     key={r} 
                                     className="flex items-center gap-2 text-xs font-semibold cursor-default text-slate-500" 

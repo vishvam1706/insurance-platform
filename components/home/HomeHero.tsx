@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import Link from "next/link"
 import { CheckCircle, MessageCircle, CalendarDays, Star, Users, ShieldCheck, Globe } from "lucide-react"
@@ -52,7 +52,7 @@ export default function HomeHero({ waUrl }: Props) {
                                 }}
                             >
                                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                                IRDAI Licensed · Zero Spam · No Pressure
+                                Certified Advice · Zero Spam · No Pressure
                             </span>
                         </motion.div>
 
@@ -220,7 +220,7 @@ export default function HomeHero({ waUrl }: Props) {
                                 <ShieldCheck className="w-4 h-4 text-orange-500" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: "#EA580C" }}>IRDAI Licensed</p>
+                                <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: "#EA580C" }}>100% Certified</p>
                                 <p className="text-[10px] text-slate-500 font-medium">Certified Advisory</p>
                             </div>
                         </motion.div>

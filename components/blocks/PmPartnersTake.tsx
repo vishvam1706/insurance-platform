@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { policymineTakeData } from "@/types/blocks"
 import { Sparkles, Check, ShieldCheck, Quote } from "lucide-react"
@@ -115,7 +115,7 @@ export default function policymineTake({ data, isHome = false }: { data: policym
                                     <Check className="w-2 h-2 text-white stroke-[3.5]" />
                                 </span>
                             </div>
-                            <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mt-0.5">IRDAI Certified Advisors</p>
+                            <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mt-0.5">Certified Advisors</p>
                         </div>
                     </div>
 

@@ -85,10 +85,9 @@ export default async function HealthHubPage() {
                                     }}
                                 >
                                     <div
-                                        className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 border border-[var(--brand-100)] group-hover:bg-[var(--brand-light)] transition-colors duration-300 icon-box"
-                                        style={{ background: "var(--surface-muted)" }}
+                                        className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 border border-[var(--brand-100)] transition-colors duration-300 bg-[var(--surface-muted)] text-[var(--brand-dark)] group-hover:bg-[var(--brand)] group-hover:text-white group-hover:border-[var(--brand-dark)] icon-box"
                                     >
-                                        <Heart className="w-5 h-5" style={{ color: "var(--brand-dark)" }} />
+                                        <Heart className="w-5 h-5" />
                                     </div>
                                     
                                     <h2

@@ -16,11 +16,12 @@ export interface IInquiry {
     insuranceType: InsuranceType
     state: string
     language: string
+    pincode: string
     preferredSlot?: string
     message?: string
     status: InquiryStatus
     notes?: string
-    assignedTo?: string
+    assignedTo?: { _id: string; name: string; email: string } | string
     statusHistory?: StatusHistoryEntry[]
     createdAt: Date
     updatedAt: Date

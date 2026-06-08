@@ -12,6 +12,9 @@ export const CreateUserSchema = z.object({
     role: z.enum(["super_admin", "admin", "employee"]),
     state: z.string().optional(),
     language: z.string().optional(),
+    states: z.array(z.string()).optional(),
+    languages: z.array(z.string()).optional(),
+    pincodes: z.array(z.string()).optional(),
 })
 
 // Form-level schema: state & language are managed via useState, not register()
@@ -44,6 +47,9 @@ export const UpdateUserSchema = z.object({
     role: z.enum(["super_admin", "admin", "employee"]).optional(),
     state: z.string().optional(),
     language: z.string().optional(),
+    states: z.array(z.string()).optional(),
+    languages: z.array(z.string()).optional(),
+    pincodes: z.array(z.string()).optional(),
 })
 
 export type LoginInput = z.infer<typeof LoginSchema>

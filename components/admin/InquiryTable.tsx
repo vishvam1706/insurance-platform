@@ -27,6 +27,26 @@ import {
 import { useAuth } from "@/hooks/useAuth"
 import { cn } from "@/lib/utils"
 
+interface SimpleEmployee {
+    _id: string
+    name: string
+    email: string
+}
+
+/** Extract employee name from populated assignedTo (object or string) */
+function getAssignedName(assignedTo?: IInquiry["assignedTo"]): string {
+    if (!assignedTo) return "—"
+    if (typeof assignedTo === "object" && "name" in assignedTo) return assignedTo.name
+    return String(assignedTo)
+}
+
+/** Extract employee ID from populated assignedTo */
+function getAssignedId(assignedTo?: IInquiry["assignedTo"]): string {
+    if (!assignedTo) return ""
+    if (typeof assignedTo === "object" && "_id" in assignedTo) return assignedTo._id
+    return String(assignedTo)
+}
+
 interface InquiryTableProps {
     inquiries: IInquiry[]
     pagination: { page: number; pages: number; total: number }
@@ -140,6 +160,18 @@ export default function InquiryTable({ inquiries, pagination, loading, onPageCha
     const [quickSavingId, setQuickSavingId] = useState<string | null>(null)
     const [editStatus, setEditStatus] = useState<InquiryStatus>("new")
     const [editNotes, setEditNotes] = useState("")
+    const [editAssignedTo, setEditAssignedTo] = useState("")
+    const [employees, setEmployees] = useState<SimpleEmployee[]>([])
+
+    const isAdmin = user?.role === "admin" || user?.role === "super_admin"
+
+    // Fetch employees list for assignment dropdown (admins only)
+    useEffect(() => {
+        if (!isAdmin) return
+        axios.get("/api/users", { params: { role: "employee", status: "active", limit: 200 } })
+            .then(res => setEmployees(res.data.users?.map((u: any) => ({ _id: u._id, name: u.name, email: u.email })) || []))
+            .catch(() => { /* ignore */ })
+    }, [isAdmin])
 
     function openSheet(inq: IInquiry) {
         console.log("🔍 OPEN SHEET — statusHistory:", JSON.stringify(inq.statusHistory))
@@ -147,6 +179,7 @@ export default function InquiryTable({ inquiries, pagination, loading, onPageCha
         // Employees default to not_reachable (most common first action)
         setEditStatus(user?.role === "employee" && inq.status === "new" ? "not_reachable" : inq.status)
         setEditNotes(inq.notes || "")
+        setEditAssignedTo(getAssignedId(inq.assignedTo))
         setSheetOpen(true)
     }
 
@@ -154,7 +187,9 @@ export default function InquiryTable({ inquiries, pagination, loading, onPageCha
         if (!selected) return
         setSaving(true)
         try {
-            const res = await axios.patch(`/api/inquiries/${selected._id}`, { status: editStatus, notes: editNotes })
+            const payload: Record<string, string | undefined> = { status: editStatus, notes: editNotes }
+            if (isAdmin) payload.assignedTo = editAssignedTo || undefined
+            const res = await axios.patch(`/api/inquiries/${selected._id}`, payload)
             console.log("🔍 SAVE RESPONSE — full inquiry:", JSON.stringify(res.data.inquiry))
             console.log("🔍 SAVE RESPONSE — statusHistory:", JSON.stringify(res.data.inquiry?.statusHistory))
             // ✅ Update selected immediately so history shows without reopening
@@ -226,7 +261,8 @@ export default function InquiryTable({ inquiries, pagination, loading, onPageCha
                             <TableHead className="font-semibold text-slate-600 text-xs uppercase tracking-wide py-3.5">Name</TableHead>
                             <TableHead className="font-semibold text-slate-600 text-xs uppercase tracking-wide">Contact</TableHead>
                             <TableHead className="font-semibold text-slate-600 text-xs uppercase tracking-wide">Type</TableHead>
-                            <TableHead className="font-semibold text-slate-600 text-xs uppercase tracking-wide">State</TableHead>
+                            <TableHead className="font-semibold text-slate-600 text-xs uppercase tracking-wide">State &amp; Pincode</TableHead>
+                            <TableHead className="font-semibold text-slate-600 text-xs uppercase tracking-wide">Assigned To</TableHead>
                             <TableHead className="font-semibold text-slate-600 text-xs uppercase tracking-wide">Status</TableHead>
                             <TableHead className="font-semibold text-slate-600 text-xs uppercase tracking-wide">Submitted</TableHead>
                             <TableHead className="font-semibold text-slate-600 text-xs uppercase tracking-wide text-right">Actions</TableHead>
@@ -272,7 +308,21 @@ export default function InquiryTable({ inquiries, pagination, loading, onPageCha
                                 </TableCell>
 
                                 <TableCell>
-                                    <span className="text-sm text-slate-600">{inq.state}</span>
+                                    <div className="space-y-0.5">
+                                        <p className="text-sm text-slate-700 font-medium">{inq.state}</p>
+                                        <p className="text-xs text-slate-400 font-mono">{inq.pincode}</p>
+                                    </div>
+                                </TableCell>
+
+                                <TableCell>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                                            <UserCircle2 className="w-3.5 h-3.5 text-slate-400" />
+                                        </div>
+                                        <span className="text-xs font-medium text-slate-600 truncate max-w-[120px]">
+                                            {getAssignedName(inq.assignedTo)}
+                                        </span>
+                                    </div>
                                 </TableCell>
 
                                 <TableCell>
@@ -394,7 +444,7 @@ export default function InquiryTable({ inquiries, pagination, loading, onPageCha
                                     )}>
                                         {inq.insuranceType === "term" ? "Term Life" : "Health"}
                                     </span>
-                                    <span className="text-[10px] text-slate-400">{inq.state}</span>
+                                    <span className="text-[10px] text-slate-400">{inq.state} ({inq.pincode})</span>
                                     <span className="text-[10px] text-slate-300">·</span>
                                     <span className="text-[10px] text-slate-400">{formatDateTime(inq.createdAt)}</span>
                                 </div>
@@ -470,9 +520,10 @@ export default function InquiryTable({ inquiries, pagination, loading, onPageCha
                                     <div className="grid grid-cols-1 gap-3">
                                         <InfoCard icon={<Phone className="w-4 h-4 text-emerald-600" />} label="Mobile" value={selected.phone} bg="bg-emerald-50" />
                                         <InfoCard icon={<Mail className="w-4 h-4 text-blue-600" />} label="Email" value={selected.email} bg="bg-blue-50" />
-                                        <div className="grid grid-cols-2 gap-3">
+                                        <div className="grid grid-cols-3 gap-2">
                                             <InfoCard icon={<MapPin className="w-4 h-4 text-purple-600" />} label="State" value={selected.state} bg="bg-purple-50" />
                                             <InfoCard icon={<Languages className="w-4 h-4 text-orange-600" />} label="Language" value={selected.language} bg="bg-orange-50" />
+                                            <InfoCard icon={<MapPin className="w-4 h-4 text-blue-600" />} label="Pincode" value={selected.pincode} bg="bg-blue-50" />
                                         </div>
                                     </div>
                                 </div>
@@ -530,6 +581,27 @@ export default function InquiryTable({ inquiries, pagination, loading, onPageCha
                                 {/* Divider */}
                                 <div className="mx-6 border-t border-slate-100" />
 
+                                {/* Assigned To info (visible for all) */}
+                                <div className="px-6 pb-5">
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Assigned To</p>
+                                    <div className="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-100">
+                                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center shrink-0 shadow-sm">
+                                            <UserCircle2 className="w-4 h-4 text-white" />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="text-sm font-semibold text-slate-800">
+                                                {getAssignedName(selected.assignedTo)}
+                                            </p>
+                                            {selected.assignedTo && typeof selected.assignedTo === "object" && "email" in selected.assignedTo && (
+                                                <p className="text-xs text-slate-400 truncate">{selected.assignedTo.email}</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Divider */}
+                                <div className="mx-6 border-t border-slate-100" />
+
                                 {/* Update status */}
                                 <div className="px-6 py-5 space-y-4">
                                     <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Update Inquiry</p>
@@ -552,6 +624,32 @@ export default function InquiryTable({ inquiries, pagination, loading, onPageCha
                                             </SelectContent>
                                         </Select>
                                     </div>
+
+                                    {/* Assign To dropdown (admin/super_admin only) */}
+                                    {isAdmin && (
+                                        <div>
+                                            <label className="text-xs font-semibold text-slate-600 block mb-2">Assign To Employee</label>
+                                            <Select value={editAssignedTo} onValueChange={setEditAssignedTo}>
+                                                <SelectTrigger className="h-10 rounded-xl border-slate-200 bg-slate-50 text-sm font-medium focus:ring-emerald-500 focus:border-emerald-400">
+                                                    <SelectValue placeholder="Select employee…" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="unassigned">
+                                                        <span className="text-slate-400">— Unassigned —</span>
+                                                    </SelectItem>
+                                                    {employees.map((emp) => (
+                                                        <SelectItem key={emp._id} value={emp._id}>
+                                                            <div className="flex items-center gap-2">
+                                                                <UserCircle2 className="w-3.5 h-3.5 text-slate-400" />
+                                                                <span>{emp.name}</span>
+                                                                <span className="text-[10px] text-slate-400 ml-1">({emp.email})</span>
+                                                            </div>
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    )}
 
                                     <div>
                                         <label className="text-xs font-semibold text-slate-600 block mb-2">Notes</label>

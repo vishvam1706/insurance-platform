@@ -1,25 +1,35 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import axios from "axios"
 import { useInquiries } from "@/hooks/useInquiries"
 import { useAuth } from "@/hooks/useAuth"
 import InquiryFilters from "@/components/admin/InquiryFilters"
 import InquiryTable from "@/components/admin/InquiryTable"
 import CsvExportButton from "@/components/admin/CsvExportButton"
-import { MessageSquare, RadioTower, Clock, Calendar, AlarmClock, AlertTriangle } from "lucide-react"
+import {
+    MessageSquare, RadioTower, Clock, Calendar, AlarmClock, AlertTriangle,
+    UserCircle2, ChevronDown, ChevronUp,
+} from "lucide-react"
 import { toast } from "sonner"
 import { IInquiry } from "@/types/inquiry"
+import { cn } from "@/lib/utils"
 
 // ── Live clock ─────────────────────────────────────────────────────────────────
 function LiveClock() {
-    const [now, setNow] = useState(new Date())
+    const [now, setNow] = useState<Date | null>(null)
     useEffect(() => {
+        setNow(new Date())
         const t = setInterval(() => setNow(new Date()), 1000)
         return () => clearInterval(t)
     }, [])
 
-    const timeStr = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true })
-    const dateStr = now.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" })
+    const timeStr = now
+        ? now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true })
+        : "--:--:-- --"
+    const dateStr = now
+        ? now.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" })
+        : ""
 
     return (
         <div className="flex items-center gap-3 bg-slate-900 rounded-2xl px-5 py-3 shadow-lg">
@@ -40,11 +50,26 @@ function parseSlot(raw: string): Date | null {
 }
 
 function NextCallCountdown({ inquiries }: { inquiries: IInquiry[] }) {
-    const [now, setNow] = useState(new Date())
+    const [now, setNow] = useState<Date | null>(null)
     useEffect(() => {
+        setNow(new Date())
         const t = setInterval(() => setNow(new Date()), 1000)
         return () => clearInterval(t)
     }, [])
+
+    if (!now) {
+        return (
+            <div className="flex items-center gap-3 rounded-2xl px-5 py-3 shadow-sm flex-1 border bg-slate-900 border-slate-700">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-slate-800">
+                    <AlarmClock className="w-4 h-4 text-slate-400" />
+                </div>
+                <div className="min-w-0 flex-1">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Next Scheduled Call</p>
+                    <p className="text-sm font-bold text-slate-300 mt-0.5">Loading…</p>
+                </div>
+            </div>
+        )
+    }
 
     // Upcoming: future slots on non-resolved inquiries, sorted soonest first
     const upcoming = inquiries
@@ -54,7 +79,6 @@ function NextCallCountdown({ inquiries }: { inquiries: IInquiry[] }) {
         .sort((a, b) => a.slot!.getTime() - b.slot!.getTime())
 
     // Missed Slots: past slots where NO attempt was made (status still "new")
-    // If status is contacted/not_reachable, employee already tried — not a missed slot
     const overdue = inquiries
         .filter(i => i.preferredSlot && i.status === "new")
         .map(i => ({ inq: i, slot: parseSlot(i.preferredSlot!) }))
@@ -66,7 +90,7 @@ function NextCallCountdown({ inquiries }: { inquiries: IInquiry[] }) {
     const next = upcoming[0]
 
     function formatCountdown(slot: Date): string {
-        const diff = Math.max(0, slot.getTime() - now.getTime())
+        const diff = Math.max(0, slot.getTime() - now!.getTime())
         const h = Math.floor(diff / 3600000)
         const m = Math.floor((diff % 3600000) / 60000)
         const s = Math.floor((diff % 60000) / 1000)
@@ -152,6 +176,155 @@ function NextCallCountdown({ inquiries }: { inquiries: IInquiry[] }) {
     )
 }
 
+// ── Employee Workload Cards (Admin/Super Admin only) ────────────────────────
+interface EmployeeStat {
+    _id: string
+    name: string
+    email: string
+    total: number
+    new: number
+    contacted: number
+    resolved: number
+    not_reachable: number
+}
+
+function EmployeeWorkload({ onFilterByEmployee }: { onFilterByEmployee: (id: string) => void }) {
+    const [stats, setStats] = useState<{ employees: EmployeeStat[]; unassigned: number } | null>(null)
+    const [expanded, setExpanded] = useState(true)
+
+    useEffect(() => {
+        axios.get("/api/inquiries/stats")
+            .then(res => setStats(res.data))
+            .catch(() => { /* ignore */ })
+    }, [])
+
+    if (!stats) return null
+
+    const totalInquiries = stats.employees.reduce((sum, e) => sum + e.total, 0) + stats.unassigned
+    // Sort by active load (new + contacted) descending
+    const sorted = [...stats.employees].sort((a, b) => (b.new + b.contacted) - (a.new + a.contacted))
+
+    return (
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            {/* Header */}
+            <button
+                onClick={() => setExpanded(!expanded)}
+                className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-slate-50 transition-colors"
+            >
+                <div className="flex items-center gap-2">
+                    <UserCircle2 className="w-4 h-4 text-indigo-500" />
+                    <span className="text-sm font-semibold text-slate-800">Employee Workload</span>
+                    <span className="text-[10px] font-medium bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full border border-indigo-100">
+                        {stats.employees.length} employees · {totalInquiries} inquiries
+                    </span>
+                    {stats.unassigned > 0 && (
+                        <span className="text-[10px] font-bold bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full border border-amber-200 animate-pulse">
+                            {stats.unassigned} unassigned
+                        </span>
+                    )}
+                </div>
+                {expanded ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+            </button>
+
+            {expanded && (
+                <div className="px-5 pb-4">
+                    {/* Unassigned card */}
+                    {stats.unassigned > 0 && (
+                        <button
+                            onClick={() => onFilterByEmployee("unassigned")}
+                            className="w-full mb-3 flex items-center justify-between bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl px-4 py-3 transition-all group"
+                        >
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                                    <span className="text-amber-600 text-sm font-bold">⊘</span>
+                                </div>
+                                <div className="text-left">
+                                    <p className="text-sm font-semibold text-amber-800">Unassigned</p>
+                                    <p className="text-[10px] text-amber-600">No employee assigned yet</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className="text-right">
+                                    <p className="text-xl font-bold text-amber-700 font-mono">{stats.unassigned}</p>
+                                    <p className="text-[9px] text-amber-500 uppercase tracking-wide">leads</p>
+                                </div>
+                                <span className="text-[10px] text-amber-500 group-hover:text-amber-700 transition-colors">View →</span>
+                            </div>
+                        </button>
+                    )}
+
+                    {/* Employee grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+                        {sorted.map(emp => {
+                            const activeLoad = emp.new + emp.contacted
+                            const maxActive = Math.max(...sorted.map(e => e.new + e.contacted), 1)
+                            const loadPercent = Math.round((activeLoad / maxActive) * 100)
+                            const loadColor = loadPercent > 80 ? "bg-red-500" : loadPercent > 50 ? "bg-amber-500" : "bg-emerald-500"
+
+                            return (
+                                <button
+                                    key={emp._id}
+                                    onClick={() => onFilterByEmployee(emp._id)}
+                                    className="flex items-center gap-3 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 rounded-xl px-3 py-2.5 transition-all group text-left"
+                                >
+                                    {/* Avatar */}
+                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center shrink-0 shadow-sm">
+                                        <span className="text-xs font-bold text-white">
+                                            {emp.name.charAt(0).toUpperCase()}
+                                        </span>
+                                    </div>
+
+                                    {/* Info */}
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-xs font-semibold text-slate-800 group-hover:text-indigo-700 truncate transition-colors">
+                                            {emp.name}
+                                        </p>
+                                        {/* Mini load bar */}
+                                        <div className="flex items-center gap-2 mt-1">
+                                            <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                                                <div
+                                                    className={cn("h-full rounded-full transition-all", loadColor)}
+                                                    style={{ width: `${Math.max(loadPercent, 4)}%` }}
+                                                />
+                                            </div>
+                                            <span className="text-[9px] font-mono text-slate-400 shrink-0">{activeLoad}</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Stats mini badges */}
+                                    <div className="flex flex-col items-end gap-0.5 shrink-0">
+                                        <div className="flex items-center gap-1">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                            <span className="text-[9px] font-mono text-slate-500">{emp.new}</span>
+                                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 ml-1" />
+                                            <span className="text-[9px] font-mono text-slate-500">{emp.contacted}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                            <span className="text-[9px] font-mono text-slate-500">{emp.resolved}</span>
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-400 ml-1" />
+                                            <span className="text-[9px] font-mono text-slate-500">{emp.not_reachable}</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            )
+                        })}
+                    </div>
+
+                    {/* Legend */}
+                    <div className="flex items-center gap-4 mt-3 text-[10px] text-slate-400">
+                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> New</span>
+                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> Contacted</span>
+                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Resolved</span>
+                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-red-400" /> Not Reachable</span>
+                        <span className="ml-auto font-medium">Click employee to filter</span>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
+
 
 // ── Page ───────────────────────────────────────────────────────────────────────
 export default function InquiriesPage() {
@@ -160,6 +333,7 @@ export default function InquiriesPage() {
         filters, updateFilter, resetFilters,
         refetch, liveCount, clearLiveCount } = useInquiries()
 
+    const isAdmin = user?.role === "admin" || user?.role === "super_admin"
     const activeFilterCount = Object.values(filters).filter(Boolean).length
 
     useEffect(() => {
@@ -170,6 +344,10 @@ export default function InquiriesPage() {
             })
         }
     }, [liveCount])
+
+    function handleFilterByEmployee(empId: string) {
+        updateFilter("assignedTo", empId)
+    }
 
     return (
         <div className="space-y-4 pt-3 sm:pt-5 lg:pt-6">
@@ -196,13 +374,13 @@ export default function InquiriesPage() {
                     </h1>
                     <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
                         {user?.role === "employee"
-                            ? `Showing leads for ${user.state}`
+                            ? "Showing leads assigned to you"
                             : `All submitted inquiries — ${pagination.total} total`}
                     </p>
                 </div>
 
                 <div className="flex items-center gap-2 flex-wrap justify-end">
-                    {user?.role !== "employee" && (
+                    {isAdmin && (
                         <CsvExportButton
                             filters={{ status: filters.status, type: filters.type, state: filters.state }}
                         />
@@ -215,6 +393,27 @@ export default function InquiriesPage() {
                 <LiveClock />
                 <NextCallCountdown inquiries={inquiries} />
             </div>
+
+            {/* ── Employee Workload (Admin/Super Admin only) ── */}
+            {isAdmin && (
+                <EmployeeWorkload onFilterByEmployee={handleFilterByEmployee} />
+            )}
+
+            {/* Active filter badge for assignedTo */}
+            {filters.assignedTo && (
+                <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        <UserCircle2 className="w-3.5 h-3.5" />
+                        Filtered by: {filters.assignedTo === "unassigned" ? "Unassigned" : "Employee"}
+                    </span>
+                    <button
+                        onClick={() => updateFilter("assignedTo", "")}
+                        className="text-xs text-indigo-500 hover:text-indigo-700 font-medium transition-colors"
+                    >
+                        ✕ Clear
+                    </button>
+                </div>
+            )}
 
             {/* Filters */}
             <InquiryFilters

@@ -39,6 +39,8 @@ export async function POST(req: NextRequest) {
             role: "employee",
             state: parsed.data.state,
             language: parsed.data.language,
+            states: [parsed.data.state],
+            languages: [parsed.data.language],
             status: "pending",   // ← pending until admin approves
         })
 

@@ -9,6 +9,9 @@ export interface IUser {
     role: UserRole
     state?: string
     language?: string
+    states?: string[]
+    languages?: string[]
+    pincodes?: string[]
     status: UserStatus
     createdBy?: string
     createdAt: Date
@@ -22,6 +25,9 @@ export interface JWTPayload {
     name: string
     state?: string
     language?: string
+    states?: string[]
+    languages?: string[]
+    pincodes?: string[]
 }
 
 export interface SafeUser {
@@ -31,6 +37,9 @@ export interface SafeUser {
     role: UserRole
     state?: string
     language?: string
+    states?: string[]
+    languages?: string[]
+    pincodes?: string[]
     status: UserStatus
     createdAt: Date
 }

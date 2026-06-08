@@ -8,6 +8,9 @@ export interface UserDocument extends Document {
     role: UserRole
     state?: string
     language?: string
+    states?: string[]
+    languages?: string[]
+    pincodes?: string[]
     status: UserStatus
     createdBy?: mongoose.Types.ObjectId
     createdAt: Date
@@ -26,6 +29,9 @@ const UserSchema = new Schema<UserDocument>(
         },
         state: { type: String, trim: true },
         language: { type: String, trim: true },
+        states: { type: [String], default: [] },
+        languages: { type: [String], default: [] },
+        pincodes: { type: [String], default: [] },
         status: {
             type: String,
             enum: ["active", "pending", "inactive"],

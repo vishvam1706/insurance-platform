@@ -15,6 +15,7 @@ export interface InquiryDocument extends Document {
     insuranceType: InsuranceType
     state: string
     language: string
+    pincode: string
     preferredSlot?: string
     message?: string
     status: InquiryStatus
@@ -37,6 +38,7 @@ const InquirySchema = new Schema<InquiryDocument>(
         },
         state: { type: String, required: true, trim: true },
         language: { type: String, required: true, trim: true },
+        pincode: { type: String, required: true, trim: true },
         preferredSlot: { type: String },
         message: { type: String, trim: true },
         status: {
@@ -59,6 +61,7 @@ const InquirySchema = new Schema<InquiryDocument>(
 )
 
 InquirySchema.index({ state: 1, status: 1 })
+InquirySchema.index({ pincode: 1 })
 InquirySchema.index({ insuranceType: 1 })
 InquirySchema.index({ createdAt: -1 })
 InquirySchema.index({ assignedTo: 1 })

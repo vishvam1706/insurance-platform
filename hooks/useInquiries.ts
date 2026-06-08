@@ -9,6 +9,7 @@ interface Filters {
     status: string
     type: string
     state: string
+    assignedTo: string
     search: string
     dateFrom: string
     dateTo: string
@@ -26,7 +27,7 @@ export function useInquiries() {
     const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 20, total: 0, pages: 0 })
     const [loading, setLoading] = useState(true)
     const [filters, setFilters] = useState<Filters>({
-        status: "", type: "", state: "", search: "", dateFrom: "", dateTo: "",
+        status: "", type: "", state: "", assignedTo: "", search: "", dateFrom: "", dateTo: "",
     })
     const [liveCount, setLiveCount] = useState(0) // count of new live arrivals not yet seen
     const esRef = useRef<EventSource | null>(null)
@@ -41,6 +42,7 @@ export function useInquiries() {
                 if (filters.status) params.status = filters.status
                 if (filters.type) params.type = filters.type
                 if (filters.state) params.state = filters.state
+                if (filters.assignedTo) params.assignedTo = filters.assignedTo
                 if (debouncedSearch) params.search = debouncedSearch
                 if (filters.dateFrom) params.dateFrom = filters.dateFrom
                 if (filters.dateTo) params.dateTo = filters.dateTo
@@ -55,7 +57,7 @@ export function useInquiries() {
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [filters.status, filters.type, filters.state, debouncedSearch, filters.dateFrom, filters.dateTo]
+        [filters.status, filters.type, filters.state, filters.assignedTo, debouncedSearch, filters.dateFrom, filters.dateTo]
     )
 
     useEffect(() => { fetch(1) }, [fetch])
@@ -98,7 +100,7 @@ export function useInquiries() {
     }
 
     function resetFilters() {
-        setFilters({ status: "", type: "", state: "", search: "", dateFrom: "", dateTo: "" })
+        setFilters({ status: "", type: "", state: "", assignedTo: "", search: "", dateFrom: "", dateTo: "" })
     }
 
     function clearLiveCount() { setLiveCount(0) }

@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -38,8 +39,10 @@ export default function AddUserDialog({ onSuccess }: AddUserDialogProps) {
   const { user: authUser } = useAuth();
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState("employee");
-  const [state, setState] = useState("");
-  const [language, setLanguage] = useState("");
+  const [states, setStates] = useState<string[]>([]);
+  const [languages, setLanguages] = useState<string[]>([]);
+  const [pincodes, setPincodes] = useState<string[]>([]);
+  const [pincodeInput, setPincodeInput] = useState("");
 
   const {
     register,
@@ -52,12 +55,22 @@ export default function AddUserDialog({ onSuccess }: AddUserDialogProps) {
 
   async function onSubmit(data: CreateUserInput) {
     try {
-      await axios.post("/api/users", { ...data, role, state, language });
+      await axios.post("/api/users", {
+        ...data,
+        role,
+        state: states[0] || "",
+        language: languages[0] || "",
+        states,
+        languages,
+        pincodes,
+      });
       toast.success("User created successfully");
       reset();
       setRole("employee");
-      setState("");
-      setLanguage("");
+      setStates([]);
+      setLanguages([]);
+      setPincodes([]);
+      setPincodeInput("");
       setOpen(false);
       onSuccess();
     } catch (err) {
@@ -81,6 +94,9 @@ export default function AddUserDialog({ onSuccess }: AddUserDialogProps) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Add New User</DialogTitle>
+          <DialogDescription className="sr-only">
+            Create a new administrator or employee account.
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2">
@@ -138,45 +154,126 @@ export default function AddUserDialog({ onSuccess }: AddUserDialogProps) {
             </Select>
           </div>
 
-          {/* State */}
-          <div className="space-y-1.5">
-            <Label>
-              State{" "}
-              <span className="text-slate-400 text-xs">(for employees)</span>
-            </Label>
-            <Select value={state} onValueChange={setState}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select state" />
-              </SelectTrigger>
-              <SelectContent>
-                {INDIAN_STATES.map((s) => (
-                  <SelectItem key={s} value={s}>
-                    {s}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          {role === "employee" && (
+            <>
+              {/* States */}
+              <div className="space-y-1.5">
+                <Label>
+                  States <span className="text-slate-400 text-xs">(Select multiple)</span>
+                </Label>
+                <div className="h-36 overflow-y-auto border border-slate-200 rounded-xl p-2.5 space-y-1 bg-slate-50/30 scrollbar-thin">
+                  {INDIAN_STATES.map((s) => (
+                    <label key={s} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100/60 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-150">
+                      <input
+                        type="checkbox"
+                        checked={states.includes(s)}
+                        onChange={(e) => {
+                          if (e.target.checked) setStates([...states, s]);
+                          else setStates(states.filter((x) => x !== s));
+                        }}
+                        className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5"
+                      />
+                      <span>{s}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
 
-          {/* Language */}
-          <div className="space-y-1.5">
-            <Label>
-              Language{" "}
-              <span className="text-slate-400 text-xs">(for employees)</span>
-            </Label>
-            <Select value={language} onValueChange={setLanguage}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select language" />
-              </SelectTrigger>
-              <SelectContent>
-                {LANGUAGES.map((l) => (
-                  <SelectItem key={l} value={l}>
-                    {l}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              {/* Languages */}
+              <div className="space-y-1.5">
+                <Label>
+                  Languages <span className="text-slate-400 text-xs">(Select multiple)</span>
+                </Label>
+                <div className="h-36 overflow-y-auto border border-slate-200 rounded-xl p-2.5 space-y-1 bg-slate-50/30 scrollbar-thin">
+                  {LANGUAGES.map((l) => (
+                    <label key={l} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100/60 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-150">
+                      <input
+                        type="checkbox"
+                        checked={languages.includes(l)}
+                        onChange={(e) => {
+                          if (e.target.checked) setLanguages([...languages, l]);
+                          else setLanguages(languages.filter((x) => x !== l));
+                        }}
+                        className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5"
+                      />
+                      <span>{l}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Pincodes */}
+              <div className="space-y-1.5">
+                <Label>Pincodes</Label>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Type pincode & press Enter or comma"
+                    value={pincodeInput}
+                    onChange={(e) => setPincodeInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === "," || e.key === " ") {
+                        e.preventDefault();
+                        const val = pincodeInput.trim().replace(/[^0-9]/g, "");
+                        if (/^\d{6}$/.test(val)) {
+                          if (!pincodes.includes(val)) {
+                            setPincodes([...pincodes, val]);
+                          }
+                          setPincodeInput("");
+                        } else if (val) {
+                          toast.error("Pincode must be exactly 6 digits");
+                        }
+                      }
+                    }}
+                    onBlur={() => {
+                      const val = pincodeInput.trim().replace(/[^0-9]/g, "");
+                      if (/^\d{6}$/.test(val)) {
+                        if (!pincodes.includes(val)) {
+                          setPincodes([...pincodes, val]);
+                        }
+                        setPincodeInput("");
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      const val = pincodeInput.trim().replace(/[^0-9]/g, "");
+                      if (/^\d{6}$/.test(val)) {
+                        if (!pincodes.includes(val)) {
+                          setPincodes([...pincodes, val]);
+                        }
+                        setPincodeInput("");
+                      } else {
+                        toast.error("Pincode must be exactly 6 digits");
+                      }
+                    }}
+                  >
+                    Add
+                  </Button>
+                </div>
+                {pincodes.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 p-2 border border-slate-100 rounded-xl bg-slate-50/50 max-h-24 overflow-y-auto mt-2">
+                    {pincodes.map((p) => (
+                      <span
+                        key={p}
+                        className="inline-flex items-center gap-1 text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      >
+                        {p}
+                        <button
+                          type="button"
+                          onClick={() => setPincodes(pincodes.filter((x) => x !== p))}
+                          className="hover:text-red-500 font-bold ml-1 text-xs"
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
 
           <div className="flex gap-3 pt-2">
             <Button

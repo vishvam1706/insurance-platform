@@ -5,6 +5,7 @@ import { getAuthUser } from "@/lib/auth"
 import { connectDB } from "@/lib/mongodb"
 import Inquiry from "@/lib/models/Inquiry"
 import User from "@/lib/models/User"
+import mongoose from "mongoose"
 import {
     MessageSquare, Users, CheckCircle2, Clock,
     TrendingUp, CalendarDays, Plus, FileEdit,
@@ -17,10 +18,12 @@ import Link from "next/link"
 
 export const metadata: Metadata = { title: "Dashboard" }
 
-async function getDashboardData(role: string, state?: string) {
+async function getDashboardData(role: string, userId?: string) {
     noStore()
     await connectDB()
-    const inquiryFilter = role === "employee" && state ? { state } : {}
+    const inquiryFilter = role === "employee" && userId
+        ? { assignedTo: new mongoose.Types.ObjectId(userId) }
+        : {}
     const [
         totalInquiries, newInquiries, contactedInquiries,
         resolvedInquiries, totalUsers, pendingUsers, recentInquiries,
@@ -54,8 +57,8 @@ function getGreeting() {
     return "Good evening"
 }
 
-async function DashboardContent({ role, state, name }: { role: string; state?: string; name: string }) {
-    const data = await getDashboardData(role, state)
+async function DashboardContent({ role, userId, name }: { role: string; userId?: string; name: string }) {
+    const data = await getDashboardData(role, userId)
 
     const primaryStats = [
         { label: "Total Inquiries", value: data.totalInquiries, icon: MessageSquare, color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-100", href: "/admin/inquiries" },
@@ -261,7 +264,7 @@ export default async function DashboardPage() {
                     </h1>
                     <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
                         {user.role === "employee"
-                            ? `Showing inquiries${user.state ? ` for ${user.state}` : ""}`
+                            ? "Showing inquiries assigned to you"
                             : "Here's what's happening on your platform today"
                         }
                     </p>
@@ -269,7 +272,7 @@ export default async function DashboardPage() {
             </div>
 
             <Suspense fallback={<DashboardSkeleton />}>
-                <DashboardContent role={user.role} state={user.state} name={user.name} />
+                <DashboardContent role={user.role} userId={user.userId} name={user.name} />
             </Suspense>
         </div>
     )

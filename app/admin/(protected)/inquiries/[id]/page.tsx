@@ -32,7 +32,33 @@ export default async function InquiryDetailPage({
     const inq = JSON.parse(JSON.stringify(inquiry)) as any
 
     // Employee guard
-    if (user.role === "employee" && inq.state !== user.state) notFound()
+    if (user.role === "employee") {
+        const User = await import("@/lib/models/User").then(m => m.default)
+        const dbUser = await User.findById(user.userId).lean()
+        if (dbUser) {
+            let hasAccess = false
+            if (dbUser.pincodes && dbUser.pincodes.length > 0) {
+                if (dbUser.pincodes.includes(inq.pincode)) {
+                    hasAccess = true
+                }
+            }
+            
+            const stateFilter = dbUser.states && dbUser.states.length > 0 ? dbUser.states : (dbUser.state ? [dbUser.state] : [])
+            const langFilter = dbUser.languages && dbUser.languages.length > 0 ? dbUser.languages : (dbUser.language ? [dbUser.language] : [])
+            
+            if (!hasAccess && (stateFilter.length > 0 || langFilter.length > 0)) {
+                const stateMatch = stateFilter.length > 0 ? stateFilter.includes(inq.state) : true
+                const langMatch = langFilter.length > 0 ? langFilter.includes(inq.language) : true
+                if (stateMatch && langMatch) {
+                    hasAccess = true
+                }
+            }
+
+            if (!hasAccess) notFound()
+        } else {
+            notFound()
+        }
+    }
 
     return (
         <div className="space-y-6 max-w-2xl pt-3 sm:pt-5 lg:pt-6">
@@ -65,7 +91,7 @@ export default async function InquiryDetailPage({
                 <CardContent className="space-y-4">
                     <Row icon={<Phone className="w-4 h-4" />} label="Phone" value={inq.phone} />
                     <Row icon={<Mail className="w-4 h-4" />} label="Email" value={inq.email} />
-                    <Row icon={<MapPin className="w-4 h-4" />} label="State & Language" value={`${inq.state} · ${inq.language}`} />
+                    <Row icon={<MapPin className="w-4 h-4" />} label="State, Language & Pincode" value={`${inq.state} · ${inq.language} · ${inq.pincode}`} />
                     <Row icon={<Calendar className="w-4 h-4" />} label="Insurance Type" value={inq.insuranceType === "term" ? "Term Life" : "Health"} />
                     {inq.preferredSlot && (
                         <Row icon={<Calendar className="w-4 h-4" />} label="Preferred Slot" value={inq.preferredSlot} />

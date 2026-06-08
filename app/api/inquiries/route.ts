@@ -27,15 +27,35 @@ export async function GET(req: NextRequest) {
         const dateFrom = searchParams.get("dateFrom")
         const dateTo = searchParams.get("dateTo")
 
-        // Employees only see their state
+        // Employees only see inquiries assigned to them
         const filter: Record<string, unknown> = {}
-        if (user.role === "employee" && user.state) {
-            filter.state = user.state
+        if (user.role === "employee") {
+            const { ObjectId } = await import("mongodb")
+            try {
+                filter.assignedTo = new ObjectId(user.userId)
+            } catch {
+                filter.assignedTo = user.userId
+            }
         }
 
         if (status) filter.status = status
         if (type) filter.insuranceType = type
         if (state && user.role !== "employee") filter.state = state
+
+        // Admin/Super Admin can filter by assignedTo employee
+        const assignedTo = searchParams.get("assignedTo")
+        if (assignedTo && user.role !== "employee") {
+            if (assignedTo === "unassigned") {
+                filter.assignedTo = null
+            } else {
+                const { ObjectId } = await import("mongodb")
+                try {
+                    filter.assignedTo = new ObjectId(assignedTo)
+                } catch {
+                    filter.assignedTo = assignedTo
+                }
+            }
+        }
 
         if (search) {
             filter.$or = [
@@ -94,9 +114,8 @@ export async function POST(req: NextRequest) {
 
         await connectDB()
 
-        const { phone, email } = parsed.data
+        const { phone } = parsed.data
         const isPhoneVerified = await hasActiveOtp(`verified:phone:${phone}`)
-        const isEmailVerified = await hasActiveOtp(`verified:email:${email}`)
 
         if (!isPhoneVerified) {
             return NextResponse.json(
@@ -105,14 +124,48 @@ export async function POST(req: NextRequest) {
             )
         }
 
-        if (!isEmailVerified) {
-            return NextResponse.json(
-                { error: "Email verification required or expired. Please verify your email." },
-                { status: 400 }
-            )
+        // Automatic distribution logic: Match active employees with the pincode, fallback to state/language, then pick least-loaded
+        const User = await import("@/lib/models/User").then(m => m.default)
+        const activeEmployees = await User.find({ role: "employee", status: "active" }).lean()
+        let assignedEmployeeId: any = undefined
+
+        if (activeEmployees.length > 0) {
+            // Match by pincode first
+            let candidates = activeEmployees.filter(emp => emp.pincodes && emp.pincodes.includes(parsed.data.pincode))
+
+            // Fallback: match by state AND language
+            if (candidates.length === 0) {
+                candidates = activeEmployees.filter(emp => {
+                    const empStates = emp.states && emp.states.length > 0 ? emp.states : (emp.state ? [emp.state] : [])
+                    const empLangs = emp.languages && emp.languages.length > 0 ? emp.languages : (emp.language ? [emp.language] : [])
+                    return empStates.includes(parsed.data.state) && empLangs.includes(parsed.data.language)
+                })
+            }
+
+            // Distribute based on least workload (new and contacted inquiries)
+            if (candidates.length > 0) {
+                const candidateIds = candidates.map(c => c._id)
+                const counts = await Inquiry.aggregate([
+                    { $match: { assignedTo: { $in: candidateIds }, status: { $in: ["new", "contacted"] } } },
+                    { $group: { _id: "$assignedTo", count: { $sum: 1 } } }
+                ])
+
+                const countMap = new Map(counts.map(item => [item._id.toString(), item.count]))
+
+                candidates.sort((a, b) => {
+                    const countA = countMap.get(a._id.toString()) || 0
+                    const countB = countMap.get(b._id.toString()) || 0
+                    return countA - countB
+                })
+
+                assignedEmployeeId = candidates[0]._id
+            }
         }
 
-        const inquiry = await Inquiry.create(parsed.data)
+        const inquiry = await Inquiry.create({
+            ...parsed.data,
+            assignedTo: assignedEmployeeId
+        })
 
         // Push real-time update to admin panel via SSE
         inquiryEmitter.emit("new_inquiry", inquiry.toObject())

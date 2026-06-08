@@ -363,7 +363,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
 
     const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<InquiryInput>({
         resolver: zodResolver(InquirySchema),
-        defaultValues: { insuranceType: defaultType, state: "", language: "" },
+        defaultValues: { insuranceType: defaultType, state: "", language: "", pincode: "" },
     })
     const watchedPhone = watch("phone", "")
     const watchedEmail = watch("email", "")
@@ -442,7 +442,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
         setEmailOtpPhase("verifying"); setEmailOtpError("")
         try {
             await axios.put("/api/inquiries/verify?type=email", { email: watchedEmail, code: emailOtpCode })
-            setEmailOtpPhase("verified"); setVerifiedEmail(watchedEmail)
+            setEmailOtpPhase("verified"); setVerifiedEmail(watchedEmail || "")
             toast.success("Email verified!")
         } catch (err) {
             setEmailOtpPhase("sent")
@@ -467,6 +467,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                 insuranceType,
                 state,
                 language,
+                pincode: data.pincode,
                 preferredSlot: slotIso || undefined,
             })
             setDone(true)
@@ -690,6 +691,18 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                         </Select>
                         <FieldError msg={langErr} />
                     </div>
+                </div>
+
+                {/* Pincode */}
+                <div>
+                    <label style={labelCls}>Pincode</label>
+                    <Input
+                        placeholder="110001"
+                        maxLength={6}
+                        {...register("pincode")}
+                        className={fieldCls}
+                    />
+                    <FieldError msg={errors.pincode?.message} />
                 </div>
             </div>
 

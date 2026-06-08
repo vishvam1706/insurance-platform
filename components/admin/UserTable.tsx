@@ -13,7 +13,7 @@ import {
     TableHead, TableHeader, TableRow,
 } from "@/components/ui/table"
 import {
-    Sheet, SheetContent, SheetHeader, SheetTitle,
+    Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription,
 } from "@/components/ui/sheet"
 import {
     Select, SelectContent, SelectItem,
@@ -51,16 +51,20 @@ export default function UserTable({
     const [editName, setEditName] = useState("")
     const [editRole, setEditRole] = useState<UserRole>("employee")
     const [editStatus, setEditStatus] = useState<UserStatus>("active")
-    const [editState, setEditState] = useState("")
-    const [editLanguage, setEditLanguage] = useState("")
+    const [editStates, setEditStates] = useState<string[]>([])
+    const [editLanguages, setEditLanguages] = useState<string[]>([])
+    const [editPincodes, setEditPincodes] = useState<string[]>([])
+    const [editPincodeInput, setEditPincodeInput] = useState("")
 
-    function openSheet(u: SafeUser) {
+    function openSheet(u: any) {
         setSelected(u)
         setEditName(u.name)
         setEditRole(u.role)
         setEditStatus(u.status)
-        setEditState(u.state || "")
-        setEditLanguage(u.language || "")
+        setEditStates(u.states || (u.state ? [u.state] : []))
+        setEditLanguages(u.languages || (u.language ? [u.language] : []))
+        setEditPincodes(u.pincodes || [])
+        setEditPincodeInput("")
         setSheetOpen(true)
     }
 
@@ -91,8 +95,11 @@ export default function UserTable({
             const payload: Record<string, unknown> = {
                 name: editName,
                 status: editStatus,
-                state: editState,
-                language: editLanguage,
+                state: editStates[0] || "",
+                language: editLanguages[0] || "",
+                states: editStates,
+                languages: editLanguages,
+                pincodes: editPincodes,
             }
             if (authUser?.role === "super_admin") payload.role = editRole
 
@@ -211,8 +218,9 @@ export default function UserTable({
                             <TableHead className="font-semibold text-slate-700">User</TableHead>
                             <TableHead className="font-semibold text-slate-700">Role</TableHead>
                             <TableHead className="font-semibold text-slate-700">Status</TableHead>
-                            <TableHead className="font-semibold text-slate-700">State</TableHead>
-                            <TableHead className="font-semibold text-slate-700">Language</TableHead>
+                            <TableHead className="font-semibold text-slate-700">States</TableHead>
+                            <TableHead className="font-semibold text-slate-700">Languages</TableHead>
+                            <TableHead className="font-semibold text-slate-700">Pincodes</TableHead>
                             <TableHead className="font-semibold text-slate-700">Joined</TableHead>
                             <TableHead className="font-semibold text-slate-700 text-right">Actions</TableHead>
                         </TableRow>
@@ -246,8 +254,69 @@ export default function UserTable({
 
                                     <TableCell><UserRoleBadge role={u.role} /></TableCell>
                                     <TableCell><UserStatusBadge status={u.status} /></TableCell>
-                                    <TableCell><span className="text-sm text-slate-600">{u.state || "—"}</span></TableCell>
-                                    <TableCell><span className="text-sm text-slate-600">{u.language || "—"}</span></TableCell>
+                                    <TableCell>
+                                        <div className="flex flex-wrap gap-1 max-w-[150px]">
+                                            {u.states && u.states.length > 0 ? (
+                                                <>
+                                                    {u.states.slice(0, 2).map(s => (
+                                                        <span key={s} className="text-xs bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">{s}</span>
+                                                    ))}
+                                                    {u.states.length > 2 && (
+                                                        <span 
+                                                            className="text-xs bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-medium cursor-help"
+                                                            title={u.states.slice(2).join(", ")}
+                                                        >
+                                                            +{u.states.length - 2} more
+                                                        </span>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                <span className="text-sm text-slate-600">{u.state || "—"}</span>
+                                            )}
+                                        </div>
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex flex-wrap gap-1 max-w-[150px]">
+                                            {u.languages && u.languages.length > 0 ? (
+                                                <>
+                                                    {u.languages.slice(0, 2).map(l => (
+                                                        <span key={l} className="text-xs bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">{l}</span>
+                                                    ))}
+                                                    {u.languages.length > 2 && (
+                                                        <span 
+                                                            className="text-xs bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-medium cursor-help"
+                                                            title={u.languages.slice(2).join(", ")}
+                                                        >
+                                                            +{u.languages.length - 2} more
+                                                        </span>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                <span className="text-sm text-slate-600">{u.language || "—"}</span>
+                                            )}
+                                        </div>
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex flex-wrap gap-1 max-w-[180px]">
+                                            {u.pincodes && u.pincodes.length > 0 ? (
+                                                <>
+                                                    {u.pincodes.slice(0, 3).map(p => (
+                                                        <span key={p} className="text-xs bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-mono font-medium">{p}</span>
+                                                    ))}
+                                                    {u.pincodes.length > 3 && (
+                                                        <span 
+                                                            className="text-xs bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-medium cursor-help"
+                                                            title={u.pincodes.slice(3).join(", ")}
+                                                        >
+                                                            +{u.pincodes.length - 3} more
+                                                        </span>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                <span className="text-xs text-slate-400">—</span>
+                                            )}
+                                        </div>
+                                    </TableCell>
                                     <TableCell><span className="text-xs text-slate-400">{formatDateTime(u.createdAt)}</span></TableCell>
 
                                     <TableCell className="text-right">
@@ -313,10 +382,10 @@ export default function UserTable({
 
             {/* Edit Sheet */}
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-                <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+                <SheetContent className="w-full sm:max-w-md overflow-y-auto p-0">
                     {selected && (
                         <>
-                            <SheetHeader className="mb-6">
+                            <SheetHeader className="mb-2 p-6 pb-0">
                                 <SheetTitle className="flex items-center gap-3">
                                     <Avatar className="w-10 h-10">
                                         <AvatarFallback className="bg-emerald-100 text-emerald-700 font-bold">
@@ -328,9 +397,12 @@ export default function UserTable({
                                         <p className="text-xs text-slate-400 font-normal">{selected.email}</p>
                                     </div>
                                 </SheetTitle>
+                                <SheetDescription className="sr-only">
+                                    Edit user roles, status, and lead assignments.
+                                </SheetDescription>
                             </SheetHeader>
 
-                            <div className="space-y-5">
+                            <div className="space-y-5 px-6 pb-6">
                                 {/* Name */}
                                 <div className="space-y-1.5">
                                     <Label>Full Name</Label>
@@ -372,39 +444,129 @@ export default function UserTable({
                                     </Select>
                                 </div>
 
-                                {/* State */}
-                                <div className="space-y-1.5">
-                                    <Label className="flex items-center gap-1">
-                                        <MapPin className="w-3 h-3" /> State
-                                    </Label>
-                                    <Select value={editState} onValueChange={setEditState}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select state" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {INDIAN_STATES.map((s) => (
-                                                <SelectItem key={s} value={s}>{s}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
+                                {editRole === "employee" && (
+                                    <>
+                                        {/* States */}
+                                        <div className="space-y-1.5">
+                                            <Label className="flex items-center gap-1">
+                                                <MapPin className="w-3 h-3 text-slate-400" /> States <span className="text-slate-400 text-xs">(Select multiple)</span>
+                                            </Label>
+                                            <div className="h-36 overflow-y-auto border border-slate-200 rounded-xl p-2.5 space-y-1 bg-slate-50/30 scrollbar-thin">
+                                                {INDIAN_STATES.map((s) => (
+                                                    <label key={s} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100/60 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-150">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={editStates.includes(s)}
+                                                            onChange={(e) => {
+                                                                if (e.target.checked) setEditStates([...editStates, s]);
+                                                                else setEditStates(editStates.filter((x) => x !== s));
+                                                            }}
+                                                            className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5"
+                                                        />
+                                                        <span>{s}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </div>
 
-                                {/* Language */}
-                                <div className="space-y-1.5">
-                                    <Label className="flex items-center gap-1">
-                                        <Globe className="w-3 h-3" /> Language
-                                    </Label>
-                                    <Select value={editLanguage} onValueChange={setEditLanguage}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select language" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {LANGUAGES.map((l) => (
-                                                <SelectItem key={l} value={l}>{l}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
+                                        {/* Languages */}
+                                        <div className="space-y-1.5">
+                                            <Label className="flex items-center gap-1">
+                                                <Globe className="w-3 h-3 text-slate-400" /> Languages <span className="text-slate-400 text-xs">(Select multiple)</span>
+                                            </Label>
+                                            <div className="h-36 overflow-y-auto border border-slate-200 rounded-xl p-2.5 space-y-1 bg-slate-50/30 scrollbar-thin">
+                                                {LANGUAGES.map((l) => (
+                                                    <label key={l} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100/60 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-150">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={editLanguages.includes(l)}
+                                                            onChange={(e) => {
+                                                                if (e.target.checked) setEditLanguages([...editLanguages, l]);
+                                                                else setEditLanguages(editLanguages.filter((x) => x !== l));
+                                                            }}
+                                                            className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5"
+                                                        />
+                                                        <span>{l}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Pincodes */}
+                                        <div className="space-y-1.5">
+                                            <Label className="flex items-center gap-1">
+                                                <MapPin className="w-3 h-3 text-slate-400" /> Pincodes
+                                            </Label>
+                                            <div className="flex gap-2">
+                                                <Input
+                                                    placeholder="Type pincode & press Enter or comma"
+                                                    value={editPincodeInput}
+                                                    onChange={(e) => setEditPincodeInput(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === "Enter" || e.key === "," || e.key === " ") {
+                                                            e.preventDefault();
+                                                            const val = editPincodeInput.trim().replace(/[^0-9]/g, "");
+                                                            if (/^\d{6}$/.test(val)) {
+                                                                if (!editPincodes.includes(val)) {
+                                                                    setEditPincodes([...editPincodes, val]);
+                                                                }
+                                                                setEditPincodeInput("");
+                                                            } else if (val) {
+                                                                toast.error("Pincode must be exactly 6 digits");
+                                                            }
+                                                        }
+                                                    }}
+                                                    onBlur={() => {
+                                                        const val = editPincodeInput.trim().replace(/[^0-9]/g, "");
+                                                        if (/^\d{6}$/.test(val)) {
+                                                            if (!editPincodes.includes(val)) {
+                                                                    setEditPincodes([...editPincodes, val]);
+                                                            }
+                                                            setEditPincodeInput("");
+                                                        }
+                                                    }}
+                                                    className="rounded-xl"
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    onClick={() => {
+                                                        const val = editPincodeInput.trim().replace(/[^0-9]/g, "");
+                                                        if (/^\d{6}$/.test(val)) {
+                                                            if (!editPincodes.includes(val)) {
+                                                                setEditPincodes([...editPincodes, val]);
+                                                            }
+                                                            setEditPincodeInput("");
+                                                        } else {
+                                                            toast.error("Pincode must be exactly 6 digits");
+                                                        }
+                                                    }}
+                                                >
+                                                    Add
+                                                </Button>
+                                            </div>
+                                            {editPincodes.length > 0 && (
+                                                <div className="flex flex-wrap gap-1.5 p-2 border border-slate-200 rounded-xl bg-slate-50/30 max-h-24 overflow-y-auto mt-2">
+                                                    {editPincodes.map((p) => (
+                                                        <span
+                                                            key={p}
+                                                            className="inline-flex items-center gap-1 text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                                        >
+                                                            {p}
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setEditPincodes(editPincodes.filter((x) => x !== p))}
+                                                                className="hover:text-red-500 font-bold ml-1 text-xs"
+                                                            >
+                                                                &times;
+                                                            </button>
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </>
+                                )}
 
                                 <Button
                                     className="w-full bg-emerald-600 hover:bg-emerald-700"

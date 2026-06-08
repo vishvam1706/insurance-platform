@@ -85,6 +85,9 @@ export async function POST(req: NextRequest) {
             role: parsed.data.role,
             state: parsed.data.state,
             language: parsed.data.language,
+            states: parsed.data.states || [],
+            languages: parsed.data.languages || [],
+            pincodes: parsed.data.pincodes || [],
             status: "active",
             createdBy: user?.userId,
         })

@@ -1,0 +1,29 @@
+# Implementation Plan: Distributed Real-Time Events (MongoDB Change Streams / Hybrid Fallback)
+
+To support scaling the platform to 600+ concurrent employees and multiple PM2 cluster processes, we must ensure real-time events (like new inquiries arriving) are propagated across all processes. 
+
+We will transition the SSE system to a **Hybrid MongoDB Change Streams** implementation with an **in-memory EventEmitter fallback**.
+
+## Proposed Changes
+
+### Real-Time Infrastructure
+
+#### [NEW] [inquiry-events-dist.ts](file:///c:/TV/insurance-platform/lib/inquiry-events-dist.ts)
+- Implement a distributed event manager that listens to MongoDB Change Streams (`Inquiry.watch()`) for new documents.
+- If MongoDB is running in standalone mode (no Replica Set configured), capture the error and fallback gracefully to the in-memory `EventEmitter`.
+
+#### [MODIFY] [route.ts](file:///c:/TV/insurance-platform/app/api/inquiries/stream/route.ts)
+- Update the GET endpoint to subscribe to the new distributed event manager.
+
+#### [MODIFY] [route.ts](file:///c:/TV/insurance-platform/app/api/inquiries/route.ts)
+- Ensure all created inquiries publish to the distributed event manager so fallback clients receive them.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- Run `npx tsc --noEmit` to verify type safety.
+
+### Manual Verification
+- Verify that real-time notifications still arrive instantly on the admin inquiries page.

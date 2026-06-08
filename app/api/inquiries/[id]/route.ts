@@ -25,9 +25,13 @@ export async function GET(
             return NextResponse.json({ error: "Inquiry not found" }, { status: 404 })
         }
 
-        // Employee can only view their state's inquiries
-        if (user.role === "employee" && (inquiry as any).state !== user.state) {
-            return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+        // Employee can only view inquiries assigned to them
+        if (user.role === "employee") {
+            const inq = inquiry as any
+            const assignedId = inq.assignedTo?._id?.toString() || inq.assignedTo?.toString()
+            if (assignedId !== user.userId) {
+                return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+            }
         }
 
         return NextResponse.json({ inquiry })
@@ -78,7 +82,18 @@ export async function PATCH(
         const $set: Record<string, any> = { updatedAt: new Date() }
         if (newStatus) $set.status = newStatus
         if (parsed.data.notes !== undefined) $set.notes = parsed.data.notes
-        if (parsed.data.assignedTo) $set.assignedTo = parsed.data.assignedTo
+        
+        if (parsed.data.assignedTo !== undefined) {
+            if (!parsed.data.assignedTo) {
+                $set.assignedTo = null
+            } else {
+                try {
+                    $set.assignedTo = new ObjectId(parsed.data.assignedTo)
+                } catch {
+                    $set.assignedTo = parsed.data.assignedTo
+                }
+            }
+        }
 
         const update: Record<string, any> = { $set }
 
@@ -96,8 +111,10 @@ export async function PATCH(
 
         await collection.updateOne({ _id: oid }, update)
 
-        // Fetch updated document directly from MongoDB
-        const inquiry = await collection.findOne({ _id: oid })
+        // Fetch updated document with populated assignedTo via Mongoose
+        const inquiry = await Inquiry.findById(id)
+            .populate("assignedTo", "name email")
+            .lean()
         console.log("📤 RESPONSE statusHistory:", JSON.stringify(inquiry?.statusHistory))
 
         return NextResponse.json({ success: true, inquiry })

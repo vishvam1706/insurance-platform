@@ -12,12 +12,12 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
     const [toc, setToc] = useState<TocItem[]>([])
     const [activeId, setActiveId] = useState<string>("")
     const articleRef = useRef<HTMLDivElement>(null)
-    
+
     const pathname = usePathname()
     const [isDismissed, setIsDismissed] = useState(false)
 
-    const showStickyAdvisorBar = 
-        (pathname && pathname.startsWith("/term-life/") && pathname !== "/term-life") || 
+    const showStickyAdvisorBar =
+        (pathname && pathname.startsWith("/term-life/") && pathname !== "/term-life") ||
         (pathname === "/health/family-health-insurance")
 
     const waNumber = "919824923606"
@@ -74,11 +74,10 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
         <div className={`min-h-screen transition-all ${showStickyAdvisorBar && !isDismissed ? "pb-36 sm:pb-28 md:pb-24" : ""}`} style={{ background: "#F7F8FA" }}>
             <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8">
                 <div
-                    className={`grid gap-6 items-start ${
-                        hasToc && showSidebar
-                            ? "lg:grid-cols-[1fr_240px]"
-                            : "lg:grid-cols-1 max-w-3xl mx-auto"
-                    }`}
+                    className={`grid gap-6 items-start ${hasToc && showSidebar
+                        ? "lg:grid-cols-[1fr_240px]"
+                        : "lg:grid-cols-1 max-w-3xl mx-auto"
+                        }`}
                 >
                     {/* LEFT: Article Content */}
                     <article
@@ -188,15 +187,15 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                 <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#0F172A] text-white shadow-[0_-12px_40px_rgba(15,23,42,0.25)] border-t border-slate-800">
                     {/* Top Brand Accent Line */}
                     <div className="h-[3px] w-full absolute top-0 left-0" style={{ background: "linear-gradient(90deg, #F97316, #FBBF24, #F97316)" }} />
-                    
+
                     <div className="max-w-7xl mx-auto px-6 py-4 sm:py-5 relative flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        
+
                         {/* Overlapping advisor image - visible from sm screens up */}
                         <div className="hidden sm:block absolute bottom-0 left-4 md:left-8 w-[100px] md:w-[130px] h-[110%] select-none pointer-events-none z-10">
-                            <img 
-                                src="/images/person2.png" 
-                                alt="MS Bhati - Advisor" 
-                                className="w-full h-full object-contain object-bottom" 
+                            <img
+                                src="/images/person2.png"
+                                alt="MS Bhati - Advisor"
+                                className="w-full h-full object-contain object-bottom"
                             />
                         </div>
 
@@ -212,8 +211,8 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
 
                         {/* CTAs */}
                         <div className="flex flex-wrap items-center gap-2.5 z-20 mr-6 md:mr-8 sm:pl-28 md:pl-0">
-                            <Link 
-                                href="/contact" 
+                            <Link
+                                href="/contact"
                                 className="inline-flex items-center gap-2 text-white font-black text-xs uppercase tracking-widest px-5 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-[0_6px_20px_-5px_rgba(249,115,22,0.3)] hover:shadow-[0_12px_30px_-5px_rgba(249,115,22,0.5)] shrink-0 select-none"
                                 style={{
                                     background: "linear-gradient(135deg, #F97316 0%, #EA580C 100%)",
@@ -222,7 +221,7 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                                 <Phone className="w-3.5 h-3.5" />
                                 Book a Free Call
                             </Link>
-                            <a 
+                            <a
                                 href={waUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -235,8 +234,8 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                         </div>
 
                         {/* Close button */}
-                        <button 
-                            onClick={() => setIsDismissed(true)} 
+                        <button
+                            onClick={() => setIsDismissed(true)}
                             className="absolute top-2.5 right-4 md:top-1/2 md:-translate-y-1/2 p-1.5 rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-colors"
                             aria-label="Close"
                         >

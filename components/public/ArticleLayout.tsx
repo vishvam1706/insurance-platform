@@ -193,7 +193,7 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                         {/* Overlapping advisor image - visible from sm screens up */}
                         <div className="hidden sm:block absolute bottom-0 left-4 md:left-8 w-[100px] md:w-[130px] h-[110%] select-none pointer-events-none z-10">
                             <img
-                                src="/images/woman.png"
+                                src="/images/w.png"
                                 alt="MS Bhati - Advisor"
                                 className="w-full h-full object-contain object-bottom"
                             />

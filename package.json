@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "npx tsx lib/seeds/seed.ts"
+    "seed": "npx tsx lib/seeds/seed.ts",
+    "seed:pages": "npx tsx lib/seeds/seed-pages.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -193,18 +193,18 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                         {/* Overlapping advisor image - visible from sm screens up */}
                         <div className="hidden sm:block absolute bottom-0 left-4 md:left-8 w-[100px] md:w-[130px] h-[110%] select-none pointer-events-none z-10">
                             <img
-                                src="/images/person2.png"
+                                src="/images/woman.png"
                                 alt="MS Bhati - Advisor"
                                 className="w-full h-full object-contain object-bottom"
                             />
                         </div>
 
                         {/* Title & description */}
-                        <div className="flex flex-col text-left sm:pl-28 md:pl-32 max-w-xl">
+                        <div className="ml-4 flex flex-col text-left sm:pl-28 md:pl-32 max-w-xl">
                             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#F97316] mb-1">
                                 Need a Human Touch?
                             </span>
-                            <h4 className="text-sm sm:text-base md:text-lg font-bold leading-tight text-white font-heading">
+                            <h4 className="text-sm sm:text-base md:text-lg font-bold leading-tight text-white! font-heading">
                                 Our advisors are here to help you pick the right plan.
                             </h4>
                         </div>

@@ -4,6 +4,7 @@ import PageContent from "@/lib/models/PageContent"
 import PageRenderer from "@/components/blocks/PageRenderer"
 import Testimonial from "@/lib/models/Testimonial"
 import HomeHero from "@/components/home/HomeHero"
+import HeroContent from "@/lib/models/HeroContent"
 import PolicymineExperience from "@/components/home/PmPartnersExperience"
 import ComparisonSection from "@/components/home/ComparisonSection"
 import InsuranceChecklist from "@/components/home/InsuranceChecklist"
@@ -30,8 +31,15 @@ async function getHomePage() {
     return doc ? JSON.parse(JSON.stringify(doc)) : null
 }
 
+async function getHeroContent() {
+    await connectDB()
+    const doc = await HeroContent.findOne({ key: "home_hero" }).lean()
+    return doc ? JSON.parse(JSON.stringify(doc)) : null
+}
+
 export default async function HomePage() {
     const page = await getHomePage()
+    const heroData = await getHeroContent()
 
     await connectDB()
     const dbTestimonials = await Testimonial.find({ active: true }).sort({ createdAt: -1 }).lean()
@@ -48,11 +56,15 @@ export default async function HomePage() {
     const waMsg = encodeURIComponent("Hi! I'd like to learn more about insurance options.")
     const waUrl = `https://wa.me/${waNumber}?text=${waMsg}`
 
-    // If CMS blocks exist, render those
+    // If CMS blocks exist, render those — but always use the new HomeHero for the hero section
     if (page && (page as any).blocks?.length > 0) {
+        const remainingBlocks = (page as any).blocks.filter((b: any) => b.type !== "home_hero")
         return (
             <div className="max-w-none">
-                <PageRenderer blocks={(page as any).blocks} isHome={true} />
+                <HomeHero heroData={heroData} waUrl={waUrl} />
+                {remainingBlocks.length > 0 && (
+                    <PageRenderer blocks={remainingBlocks} isHome={true} />
+                )}
             </div>
         )
     }
@@ -61,7 +73,7 @@ export default async function HomePage() {
     return (
         <>
             {/* 1. HERO */}
-            <HomeHero waUrl={waUrl} />
+            <HomeHero heroData={heroData} waUrl={waUrl} />
 
             {/* 2. TRUST / ACHIEVEMENT SECTION */}
             <TrustSection />
@@ -252,8 +264,16 @@ export default async function HomePage() {
                                     <p className="text-sm font-medium leading-relaxed mb-6 text-slate-600 italic">&ldquo;{r.body}&rdquo;</p>
                                 </div>
                                 <div className="flex items-center gap-3 pt-4.5" style={{ borderTop: "1px solid #F1F5F9" }}>
-                                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shrink-0 relative select-none" style={{ background: "linear-gradient(135deg, #FFF7ED, #FFEDD5)", color: "#EA580C", border: "1.5px solid #FFDBB5", boxShadow: "0 2px 8px rgba(234,88,12,0.15)" }}>
-                                        {r.initials}
+                                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shrink-0 relative overflow-hidden select-none" style={{ background: "linear-gradient(135deg, #FFF7ED, #FFEDD5)", color: "#EA580C", border: "1.5px solid #FFDBB5", boxShadow: "0 2px 8px rgba(234,88,12,0.15)" }}>
+                                        {r.photo ? (
+                                            <img
+                                                src={r.photo}
+                                                alt={r.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            r.initials
+                                        )}
                                     </div>
                                     <div>
                                         <p className="text-sm font-bold text-slate-800 leading-none">{r.name}</p>

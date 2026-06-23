@@ -17,6 +17,7 @@ import {
     ExternalLink,
     Sliders,
     MessageCircle,
+    Sparkles,
 } from "lucide-react"
 
 interface NavItem {
@@ -44,6 +45,12 @@ const NAV_ITEMS: NavItem[] = [
         label: "Testimonials",
         href: "/admin/testimonials",
         icon: <MessageCircle className="w-[18px] h-[18px]" />,
+        roles: ["super_admin", "admin"],
+    },
+    {
+        label: "Hero Section",
+        href: "/admin/hero",
+        icon: <Sparkles className="w-[18px] h-[18px]" />,
         roles: ["super_admin", "admin"],
     },
     {

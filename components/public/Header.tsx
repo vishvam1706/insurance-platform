@@ -135,9 +135,9 @@ const HEALTH_COLUMNS: MegaColumn[] = [
 ]
 
 const TOP_NAV = [
-    { label: "Life Insurance",   href: "/term-life", section: "term-life", columns: TERM_LIFE_COLUMNS },
-    { label: "Health Insurance", href: "/health",    section: "health",    columns: HEALTH_COLUMNS },
-    { label: "Claims",           href: "/claims",    section: null,        columns: [] },
+    { label: "Life Insurance", href: "/term-life", section: "term-life", columns: TERM_LIFE_COLUMNS },
+    { label: "Health Insurance", href: "/health", section: "health", columns: HEALTH_COLUMNS },
+    { label: "Claims", href: "/claims", section: null, columns: [] },
 ]
 
 // icon background colour per column index
@@ -151,10 +151,10 @@ const COL_BG = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function PublicHeader() {
-    const [mobileOpen, setMobileOpen]     = useState(false)
-    const [mobileExp, setMobileExp]       = useState<string | null>(null)
-    const [activeMenu, setActiveMenu]     = useState<string | null>(null)
-    const [scrolled, setScrolled]         = useState(false)
+    const [mobileOpen, setMobileOpen] = useState(false)
+    const [mobileExp, setMobileExp] = useState<string | null>(null)
+    const [activeMenu, setActiveMenu] = useState<string | null>(null)
+    const [scrolled, setScrolled] = useState(false)
     const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     useEffect(() => {
@@ -163,7 +163,7 @@ export default function PublicHeader() {
         return () => window.removeEventListener("scroll", onScroll)
     }, [])
 
-    const openMenu  = (label: string) => { if (leaveTimer.current) clearTimeout(leaveTimer.current); setActiveMenu(label) }
+    const openMenu = (label: string) => { if (leaveTimer.current) clearTimeout(leaveTimer.current); setActiveMenu(label) }
     const startClose = () => { leaveTimer.current = setTimeout(() => setActiveMenu(null), 150) }
 
     const activeNav = TOP_NAV.find((n) => n.label === activeMenu)
@@ -185,7 +185,7 @@ export default function PublicHeader() {
 
                 {/* Logo */}
                 <Link href="/" className="flex items-center shrink-0 group">
-                    <Image src="/logo.png" alt="Policymine" width={140} height={40}
+                    <Image src="/logo_final.png" alt="Policymine" width={140} height={40}
                         className="h-9 w-auto object-contain transition-opacity group-hover:opacity-75" priority />
                 </Link>
 
@@ -193,7 +193,7 @@ export default function PublicHeader() {
                 <nav className="hidden md:flex items-center gap-0.5">
                     {TOP_NAV.map((item) => {
                         const hasDrop = item.columns.length > 0
-                        const isOpen  = activeMenu === item.label
+                        const isOpen = activeMenu === item.label
                         return (
                             <div key={item.label} className="relative"
                                 onMouseEnter={() => hasDrop && openMenu(item.label)}>

@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
         }
 
         const body = await req.json()
-        const { name, role, body: testimonialBody, rating, initials, active } = body
+        const { name, role, body: testimonialBody, rating, initials, active, photo } = body
 
         if (!name || !role || !testimonialBody || !initials) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
@@ -52,7 +52,8 @@ export async function POST(req: NextRequest) {
             body: testimonialBody,
             rating: rating ?? 5,
             initials,
-            active: active ?? true
+            active: active ?? true,
+            photo
         })
 
         return NextResponse.json({ success: true, testimonial }, { status: 201 })

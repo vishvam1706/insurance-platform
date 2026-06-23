@@ -184,7 +184,7 @@ export default function PublicFooter() {
                         <div className="col-span-2 pr-0 md:pr-8">
                             <Link href="/" className="inline-flex items-center gap-2 mb-5 group">
                                 <Image
-                                    src="/logo.png"
+                                    src="/logo_final.png"
                                     alt="Policymine Insurance"
                                     width={130}
                                     height={36}

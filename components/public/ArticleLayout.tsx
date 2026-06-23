@@ -191,7 +191,7 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                     <div className="max-w-7xl mx-auto px-6 py-4 sm:py-5 relative flex flex-col md:flex-row md:items-center justify-between gap-4">
 
                         {/* Overlapping advisor image - visible from sm screens up */}
-                        <div className="hidden sm:block absolute bottom-0 left-4 md:left-8 w-[100px] md:w-[130px] h-[110%] select-none pointer-events-none z-10">
+                        <div className="hidden sm:block absolute bottom-0 left-4 md:left-8 w-[140px] md:w-[180px] h-[145%] select-none pointer-events-none z-10">
                             <img
                                 src="/images/w.png"
                                 alt="MS Bhati - Advisor"
@@ -200,7 +200,7 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                         </div>
 
                         {/* Title & description */}
-                        <div className="ml-4 flex flex-col text-left sm:pl-28 md:pl-32 max-w-xl">
+                        <div className="ml-4 flex flex-col text-left sm:pl-36 md:pl-44 max-w-xl">
                             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#F97316] mb-1">
                                 Need a Human Touch?
                             </span>
@@ -210,7 +210,7 @@ export default function ArticleLayout({ children, defaultType, showSidebar = tru
                         </div>
 
                         {/* CTAs */}
-                        <div className="flex flex-wrap items-center gap-2.5 z-20 mr-6 md:mr-8 sm:pl-28 md:pl-0">
+                        <div className="flex flex-wrap items-center gap-2.5 z-20 mr-6 md:mr-8 sm:pl-36 md:pl-0">
                             <Link
                                 href="/contact"
                                 className="inline-flex items-center gap-2 text-white font-black text-xs uppercase tracking-widest px-5 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-[0_6px_20px_-5px_rgba(249,115,22,0.3)] hover:shadow-[0_12px_30px_-5px_rgba(249,115,22,0.5)] shrink-0 select-none"

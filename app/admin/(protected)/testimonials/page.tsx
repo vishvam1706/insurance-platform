@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useEffect, useState } from "react"
 import axios from "axios"
@@ -20,6 +20,7 @@ interface Testimonial {
     rating: number
     initials: string
     active: boolean
+    photo?: string
     createdAt: string
 }
 
@@ -37,6 +38,7 @@ export default function TestimonialsAdminPage() {
     const [rating, setRating] = useState(5)
     const [initials, setInitials] = useState("")
     const [active, setActive] = useState(true)
+    const [photo, setPhoto] = useState("")
     const [saving, setSaving] = useState(false)
 
     useEffect(() => {
@@ -65,6 +67,7 @@ export default function TestimonialsAdminPage() {
         setRating(5)
         setInitials("")
         setActive(true)
+        setPhoto("")
         setModalOpen(true)
     }
 
@@ -77,6 +80,7 @@ export default function TestimonialsAdminPage() {
         setRating(t.rating)
         setInitials(t.initials)
         setActive(t.active)
+        setPhoto(t.photo || "")
         setModalOpen(true)
     }
 
@@ -104,7 +108,7 @@ export default function TestimonialsAdminPage() {
 
         setSaving(true)
         try {
-            const payload = { name, role, body, rating, initials, active }
+            const payload = { name, role, body, rating, initials, active, photo }
             if (isEditing) {
                 await axios.put(`/api/testimonials/${currentId}`, payload)
                 toast.success("Testimonial updated successfully")
@@ -197,8 +201,16 @@ export default function TestimonialsAdminPage() {
                         >
                             {/* Initials & Active Badge */}
                             <div className="flex items-center justify-between mb-4">
-                                <div className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-black bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                    {t.initials}
+                                <div className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shrink-0 relative overflow-hidden select-none bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                    {t.photo ? (
+                                        <img
+                                            src={t.photo}
+                                            alt={t.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        t.initials
+                                    )}
                                 </div>
                                 <button 
                                     onClick={() => toggleActive(t)}
@@ -335,6 +347,16 @@ export default function TestimonialsAdminPage() {
                                     rows={4}
                                     className="rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-800 resize-none"
                                     required
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">Photo URL (Optional)</Label>
+                                <Input 
+                                    value={photo}
+                                    onChange={(e) => setPhoto(e.target.value)}
+                                    placeholder="e.g. /images/person1.png"
+                                    className="rounded-xl border border-slate-200 px-3.5 py-2 text-sm font-semibold text-slate-800"
                                 />
                             </div>
 

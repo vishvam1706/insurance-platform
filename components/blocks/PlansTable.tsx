@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { PlansTableData } from "@/types/blocks"
 import { Star, Award, ShieldCheck, ArrowRight, Sparkles } from "lucide-react"
@@ -105,19 +105,30 @@ export default function PlansTable({ data, isHome = false }: { data: PlansTableD
                                     <div className="grid lg:grid-cols-[1.5fr_1fr_1fr_1.1fr] gap-6 items-center">
 
                                         {/* Column 1: Plan / Insurer Name */}
-                                        <div className="text-left space-y-2">
-                                            <div className="flex items-center gap-2.5 flex-wrap">
-                                                <h3
-                                                    className="font-extrabold text-slate-900 tracking-tight transition-colors duration-200 group-hover:text-[var(--brand-dark)]"
-                                                    style={{ fontSize: "var(--fs-h3)", fontFamily: "var(--font-heading)" }}
-                                                >
-                                                    {row.plan}
-                                                </h3>
-                                                {i === 0 && (
-                                                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider bg-[var(--brand-light)] text-[var(--brand-dark)] border border-[var(--brand-100)] select-none animate-pulse">
-                                                        <Sparkles className="w-3 h-3 shrink-0" /> Best Choice
-                                                    </span>
-                                                )}
+                                        <div className="flex items-center gap-4 text-left">
+                                            {row.logo && (
+                                                <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
+                                                    <img
+                                                        src={row.logo}
+                                                        alt={row.plan}
+                                                        className="w-full h-full object-contain p-1"
+                                                    />
+                                                </div>
+                                            )}
+                                            <div className="space-y-1.5 min-w-0">
+                                                <div className="flex items-center gap-2.5 flex-wrap">
+                                                    <h3
+                                                        className="font-extrabold text-slate-900 tracking-tight transition-colors duration-200 group-hover:text-[var(--brand-dark)]"
+                                                        style={{ fontSize: "var(--fs-h3)", fontFamily: "var(--font-heading)" }}
+                                                    >
+                                                        {row.plan}
+                                                    </h3>
+                                                    {i === 0 && (
+                                                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider bg-[var(--brand-light)] text-[var(--brand-dark)] border border-[var(--brand-100)] select-none animate-pulse">
+                                                            <Sparkles className="w-3 h-3 shrink-0" /> Best Choice
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
 

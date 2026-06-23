@@ -1,233 +1,293 @@
 "use client"
 
 import Link from "next/link"
-import { CheckCircle, MessageCircle, CalendarDays, Star, Users, ShieldCheck, Globe } from "lucide-react"
+import { CalendarDays, MessageCircle, Phone } from "lucide-react"
 import { motion } from "framer-motion"
 
+export interface HeroStepImage {
+    label: string
+    image: string
+}
+
+export interface HeroData {
+    headlineLine1: string
+    headlineLine2: string
+    subtitle: string
+    heroImage: string
+    stepImages?: HeroStepImage[]
+    ctaText: string
+    ctaLink: string
+    secondaryCtaText: string
+    secondaryCtaLink: string
+    phoneNumbers: string[]
+    backgroundGradient: {
+        from: string
+        to: string
+    }
+}
+
 interface Props {
+    heroData?: HeroData | null
     waUrl: string
 }
 
-const TRUST_CHIPS = [
-    { icon: <ShieldCheck className="w-3.5 h-3.5" />, label: "Trusted Advisors" },
-    { icon: <Star className="w-3.5 h-3.5" />, label: "Plan Comparison" },
-    { icon: <CheckCircle className="w-3.5 h-3.5" />, label: "Claim Support" },
-    { icon: <Globe className="w-3.5 h-3.5" />, label: "Multi-Language" },
-    { icon: <Users className="w-3.5 h-3.5" />, label: "End-to-End" },
+const DEFAULT_STEPS: HeroStepImage[] = [
+    { label: "Retirement", image: "/uploads/step_elderly.png" },
+    { label: "Family", image: "/uploads/step_middleage.png" },
+    { label: "Career", image: "/uploads/step_young_adult.png" },
+    { label: "Education", image: "/uploads/step_teenager.png" },
+    { label: "Childhood", image: "/uploads/step_child.png" },
 ]
 
+const DEFAULT_HERO: HeroData = {
+    headlineLine1: "EVERY AGE",
+    headlineLine2: "HAS A RISK",
+    subtitle: "Every stage needs an insurance plan",
+    heroImage: "/uploads/hero_staircase.png",
+    stepImages: DEFAULT_STEPS,
+    ctaText: "Book Free Consultation",
+    ctaLink: "/contact",
+    secondaryCtaText: "Get WhatsApp Support",
+    secondaryCtaLink: "",
+    phoneNumbers: [],
+    backgroundGradient: { from: "#FFFFFF", to: "#FFFFFF" },
+}
 
+// Step block heights (px) — tallest left, shortest right
+// Increased proportionally to fill the extra vertical space (130vh vs 100vh)
+const STEP_HEIGHT_PX = [260, 202, 150, 102, 60] as const
+// Person image heights scale with their step
+const PERSON_HEIGHT_PX = [220, 192, 166, 143, 114] as const
 
-export default function HomeHero({ waUrl }: Props) {
+export default function HomeHero({ heroData, waUrl }: Props) {
+    const data = heroData ?? DEFAULT_HERO
+    const secondaryLink = data.secondaryCtaLink || waUrl
+    const steps = data.stepImages && data.stepImages.length > 0 ? data.stepImages : DEFAULT_STEPS
+
+    // Total height of staircase zone = tallest step + tallest person + small gap
+    const staircaseH = STEP_HEIGHT_PX[0] + PERSON_HEIGHT_PX[0] + 16
+
     return (
-        <>
-            <section className="relative bg-white overflow-hidden">
-                {/* Ambient orb glows */}
-                <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none blur-[120px]"
-                    style={{ background: "radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 65%)" }} />
-                <div className="absolute bottom-0 -left-20 w-[350px] h-[350px] rounded-full pointer-events-none blur-[100px]"
-                    style={{ background: "radial-gradient(circle, rgba(249,115,22,0.04) 0%, transparent 70%)" }} />
+        <section
+            className="relative overflow-hidden flex flex-col h-[calc(100vh-68px)] bg-[radial-gradient(120%_120%_at_50%_0%,#F0F9FF_0%,#FAF5FF_50%,#FFFFFF_100%)]"
+        >
+            {/* Modern decorative background elements */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+                src="/uploads/hero_bg.png"
+                alt="Background Design"
+                className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
+            />
+            <div className="absolute inset-0 pointer-events-none opacity-40" style={{
+                backgroundImage: "radial-gradient(circle at 1px 1px, #CBD5E1 1.5px, transparent 0)",
+                backgroundSize: "24px 24px"
+            }} />
+            <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-300/20 blur-[120px] pointer-events-none animate-pulse" style={{ animationDuration: "12s" }} />
+            <div className="absolute top-[20%] right-[-10%] w-[450px] h-[450px] rounded-full bg-purple-200/25 blur-[100px] pointer-events-none animate-pulse" style={{ animationDuration: "16s" }} />
+            <div className="absolute bottom-[30%] left-[20%] w-[350px] h-[350px] rounded-full bg-orange-100/30 blur-[90px] pointer-events-none animate-pulse" style={{ animationDuration: "10s" }} />
+            {/* ══════════════════════════════════════════
+                TOP — Centered text block
+            ══════════════════════════════════════════ */}
+            <div className="max-w-7xl mx-auto w-full px-6 pt-12 pb-2 flex justify-center lg:justify-start relative z-30 flex-shrink-0">
+                <div className="max-w-xl text-center lg:text-left flex flex-col items-center lg:items-start">
 
-                {/* Thin orange top accent bar */}
-                <div className="h-[3px] w-full" style={{ background: "linear-gradient(90deg, #F97316, #FBBF24, #F97316)" }} />
+                    <motion.span
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.01 }}
+                        className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full mb-4 bg-orange-500/10 text-orange-400 border border-orange-500/20"
+                    >
+                        ★ Trust & Protection
+                    </motion.span>
 
-                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[1.1fr_0.9fr] min-h-[620px] items-stretch">
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.55, ease: "easeOut", delay: 0.05 }}
+                        className="font-black uppercase leading-[0.92] tracking-tight text-[clamp(2.4rem,6.5vw,4.6rem)] text-[#1565C0] font-[family:var(--font-heading)]"
+                    >
+                        {data.headlineLine1}<br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">{data.headlineLine2}</span>
+                    </motion.h1>
 
-                    {/* ── LEFT — Text content ──────────────────────────── */}
-                    <div className="flex flex-col justify-center py-16 lg:py-20 pr-0 lg:pr-14 text-left">
+                    <motion.p
+                        initial={{ opacity: 0, y: 14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, ease: "easeOut", delay: 0.18 }}
+                        className="mt-4 text-base sm:text-xl font-medium leading-snug text-[#334155] font-[family:var(--font-body)]"
+                    >
+                        {data.subtitle}
+                    </motion.p>
 
-                        {/* Eyebrow pill */}
+                    {/* CTA Buttons */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.45, ease: "easeOut", delay: 0.28 }}
+                        className="flex justify-center lg:justify-start mt-4 w-full"
+                    >
+                        <Link
+                            href={data.ctaLink || "/contact"}
+                            className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-[15px] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] bg-[#F97316] hover:bg-[#EA580C] text-white shadow-[0_4px_18px_rgba(249,115,22,0.32)] hover:shadow-[0_6px_24px_rgba(249,115,22,0.42)]"
+                        >
+                            <CalendarDays className="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
+                            {data.ctaText || "Book Free Consultation"}
+                        </Link>
+                    </motion.div>
+
+                    {/* Phone Numbers */}
+                    {data.phoneNumbers && data.phoneNumbers.length > 0 && (
                         <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, ease: "easeOut" }}
-                            className="inline-flex items-center gap-2 mb-6 self-start"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.4, delay: 0.4 }}
+                            className="flex flex-wrap gap-4 mt-5 justify-center lg:justify-start w-full"
                         >
-                            <span
-                                className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-full border select-none"
-                                style={{
-                                    color: "#EA580C",
-                                    background: "#FFF7ED",
-                                    borderColor: "#FFEDD5",
-                                }}
-                            >
-                                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                                Certified Advice · Zero Spam · No Pressure
-                            </span>
-                        </motion.div>
-
-                        {/* H1 */}
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.55, ease: "easeOut", delay: 0.05 }}
-                            className="font-bold text-[#0F172A] leading-[1.06] tracking-tight mb-5"
-                            style={{
-                                fontFamily: "var(--font-heading)",
-                                fontSize: "clamp(2.4rem, 5.2vw, 3.6rem)",
-                            }}
-                        >
-                            Protect Your Family
-                            <br />
-                            With{" "}
-                            <span className="relative inline-block">
-                                <span
-                                    className="relative z-10"
-                                    style={{
-                                        background: "linear-gradient(135deg, #F97316, #FBBF24)",
-                                        WebkitBackgroundClip: "text",
-                                        WebkitTextFillColor: "transparent",
-                                        backgroundClip: "text",
-                                    }}
+                            {data.phoneNumbers.map((phone, idx) => (
+                                <a
+                                    key={idx}
+                                    href={`tel:${phone.replace(/\s/g, "")}`}
+                                    className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-700 transition-colors duration-200"
                                 >
-                                    Smarter Insurance
-                                </span>
-                                {/* Highlight underline squiggle */}
-                                <span
-                                    className="absolute -bottom-1 left-0 right-0 h-[5px] rounded-full opacity-25"
-                                    style={{ background: "linear-gradient(90deg, #F97316, #FBBF24)" }}
-                                />
-                            </span>{" "}
-                            Decisions
-                        </motion.h1>
-
-                        {/* Sub-copy */}
-                        <motion.p
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, ease: "easeOut", delay: 0.12 }}
-                            className="text-base sm:text-lg leading-relaxed mb-8 max-w-lg"
-                            style={{ color: "#475569", fontFamily: "var(--font-body)" }}
-                        >
-                            Get personalized insurance guidance, transparent plan comparisons,
-                            and expert claim support — all in one place.
-                        </motion.p>
-
-                        {/* Trust Chips — interactive pill grid */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, ease: "easeOut", delay: 0.18 }}
-                            className="flex flex-wrap gap-2 mb-9"
-                        >
-                            {TRUST_CHIPS.map((chip) => (
-                                <span
-                                    key={chip.label}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border select-none cursor-default transition-all duration-200 hover:scale-[1.04] hover:shadow-sm"
-                                    style={{
-                                        color: "#374151",
-                                        background: "#F9FAFB",
-                                        borderColor: "#E5E7EB",
-                                    }}
-                                    onMouseEnter={e => {
-                                        const el = e.currentTarget as HTMLElement
-                                        el.style.background = "#FFF7ED"
-                                        el.style.borderColor = "#FFEDD5"
-                                        el.style.color = "#EA580C"
-                                    }}
-                                    onMouseLeave={e => {
-                                        const el = e.currentTarget as HTMLElement
-                                        el.style.background = "#F9FAFB"
-                                        el.style.borderColor = "#E5E7EB"
-                                        el.style.color = "#374151"
-                                    }}
-                                >
-                                    <span className="text-orange-500">{chip.icon}</span>
-                                    {chip.label}
-                                </span>
+                                    <Phone className="w-3.5 h-3.5" />
+                                    {phone}
+                                </a>
                             ))}
                         </motion.div>
-
-                        {/* CTA Buttons */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, ease: "easeOut", delay: 0.24 }}
-                            className="flex flex-col sm:flex-row gap-3 mb-10"
-                        >
-                            <Link href="/contact" className="btn-primary group">
-                                <CalendarDays className="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
-                                Book Free Consultation
-                            </Link>
-                            <a
-                                href={waUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn-outline group"
-                            >
-                                <MessageCircle className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
-                                Get WhatsApp Support
-                            </a>
-                        </motion.div>
-
-
-                    </div>
-
-                    {/* ── RIGHT — Photo + Floating Glass Cards ───────── */}
-                    <div className="hidden lg:block relative" style={{ background: "#F8FAFC" }}>
-                        {/* Main photo */}
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                            src="/uploads/ditto_hero_advisor.png"
-                            alt="Policymine advisor helping a customer"
-                            className="absolute inset-0 w-full h-full object-cover object-center"
-                        />
-                        {/* Edge fade into white */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/30 via-transparent to-transparent" />
-
-                        {/* Floating glass card — Advisors Online */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
-                            className="absolute bottom-8 left-6 rounded-2xl px-5 py-4 border"
-                            style={{
-                                background: "rgba(255,255,255,0.92)",
-                                backdropFilter: "blur(16px)",
-                                borderColor: "rgba(255,255,255,0.6)",
-                                boxShadow: "0 8px 32px rgba(15,23,42,0.12)",
-                                maxWidth: 230,
-                            }}
-                        >
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: "#16A34A" }}>
-                                    Advisors Online
-                                </p>
-                            </div>
-                            <p className="text-sm font-bold text-[#0F172A] leading-snug">
-                                Avg. response under 2 minutes
-                            </p>
-                            <p className="text-[11px] mt-1 font-normal" style={{ color: "#94A3B8" }}>
-                                Mon–Sat · 9 AM – 9 PM IST
-                            </p>
-                        </motion.div>
-
-                        {/* Floating glass card — Trust badge top */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 }}
-                            className="absolute top-10 right-6 rounded-xl px-4 py-2.5 border flex items-center gap-2.5"
-                            style={{
-                                background: "rgba(255,255,255,0.88)",
-                                backdropFilter: "blur(14px)",
-                                borderColor: "#FFEDD5",
-                                boxShadow: "0 4px 16px rgba(249,115,22,0.1)",
-                            }}
-                        >
-                            <div className="w-7 h-7 rounded-full bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
-                                <ShieldCheck className="w-4 h-4 text-orange-500" />
-                            </div>
-                            <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: "#EA580C" }}>100% Certified</p>
-                                <p className="text-[10px] text-slate-500 font-medium">Certified Advisory</p>
-                            </div>
-                        </motion.div>
-                    </div>
+                    )}
                 </div>
-            </section>
-            <div className="w-full h-px" style={{ background: "linear-gradient(90deg, transparent, #E2E8F0 50%, transparent)" }} />
-        </>
+            </div>
+
+            {/* ══════════════════════════════════════════
+                BOTTOM — Full-width staircase (desktop)
+                flex-1 so it fills remaining 130vh space
+            ══════════════════════════════════════════ */}
+            <div className="hidden lg:flex flex-col justify-end absolute bottom-0 left-0 w-full overflow-hidden z-10 pointer-events-none">
+                <motion.div
+                    className="flex items-end w-full"
+                    style={{ height: `${staircaseH}px` }}
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: { opacity: 1, transition: { staggerChildren: 0.09 } },
+                    }}
+                >
+                    {[...steps].reverse().map((step, idx) => {
+                        const originalIdx = steps.length - 1 - idx
+                        const stepH = STEP_HEIGHT_PX[originalIdx] ?? 60
+                        const personH = PERSON_HEIGHT_PX[originalIdx] ?? 114
+
+                        return (
+                            <motion.div
+                                key={idx}
+                                className="relative flex-1 flex flex-col items-center justify-end group pointer-events-auto"
+                                style={{ height: "100%" }}
+                                variants={{
+                                    hidden: { opacity: 0, y: 36 },
+                                    visible: {
+                                        opacity: 1, y: 0,
+                                        transition: { type: "spring", stiffness: 85, damping: 15 },
+                                    },
+                                }}
+                            >
+                                {/* Person image — anchored to top of step */}
+                                {step.image && (
+                                    <div
+                                        className="absolute flex items-end justify-center w-full z-10 transition-transform duration-300 group-hover:-translate-y-2"
+                                        style={{ bottom: `${stepH}px`, height: `${personH}px` }}
+                                    >
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                            src={step.image}
+                                            alt={step.label}
+                                            className="w-auto object-contain object-bottom transition-transform duration-300 group-hover:scale-105"
+                                            style={{
+                                                maxHeight: `${personH}px`,
+                                                filter: "url(#remove-white-bg) drop-shadow(0 8px 18px rgba(0,0,0,0.16))",
+                                            }}
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Step block */}
+                                <div
+                                    className="relative w-full flex flex-col justify-end items-center pb-3 overflow-hidden bg-[#0A1128] border-r border-white/5 last:border-r-0"
+                                    style={{
+                                        height: `${stepH}px`,
+                                    }}
+                                >
+                                    {/* Top highlight for 3D depth */}
+                                    <div
+                                        className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-[#F97316] to-[#EA580C]"
+                                    />
+                                    {/* Orange hover accent */}
+                                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+                                    {/* Label */}
+                                    <span className="relative z-10 text-[10px] sm:text-[11px] font-extrabold text-white/90 tracking-[0.13em] uppercase text-center px-1 transition-colors duration-300 group-hover:text-orange-400">
+                                        {step.label}
+                                    </span>
+                                </div>
+                            </motion.div>
+                        )
+                    })}
+                </motion.div>
+            </div>
+
+            {/* ══════════════════════════════════════════
+                BOTTOM — Mobile horizontal scroll cards
+            ══════════════════════════════════════════ */}
+            <div className="lg:hidden w-full px-4 pb-10 overflow-hidden flex-1 flex items-end">
+                <motion.div
+                    className="flex overflow-x-auto gap-3 py-5 px-1 scrollbar-none snap-x w-full"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                    {[...steps].reverse().map((step, idx) => (
+                        <div
+                            key={idx}
+                            className="flex-none w-[140px] rounded-2xl flex flex-col items-center justify-end h-[260px] snap-center relative overflow-hidden bg-[#0A1128] shadow-[0_4px_14px_rgba(10,17,40,0.22)]"
+                        >
+                            <div
+                                className="absolute top-0 left-0 right-0 rounded-t-2xl h-[11px] bg-gradient-to-b from-[#F97316] to-[#EA580C]"
+                            />
+                            {step.image && (
+                                <div className="absolute top-4 bottom-12 left-2 right-2 flex items-end justify-center">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={step.image}
+                                        alt={step.label}
+                                        className="max-h-[155px] w-auto object-contain object-bottom"
+                                        style={{ filter: "url(#remove-white-bg) drop-shadow(0 4px 8px rgba(0,0,0,0.14))" }}
+                                    />
+                                </div>
+                            )}
+                            <span className="text-[10px] font-black text-white tracking-widest uppercase mt-auto pb-3 w-full text-center relative z-10 border-t border-white/20 pt-2 px-1">
+                                {step.label}
+                            </span>
+                        </div>
+                    ))}
+                </motion.div>
+            </div>
+
+            {/* SVG Filter to key out solid white backgrounds from step images */}
+            <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+                <defs>
+                    <filter id="remove-white-bg" colorInterpolationFilters="sRGB">
+                        <feColorMatrix
+                            type="matrix"
+                            values="
+                                1 0 0 0 0
+                                0 1 0 0 0
+                                0 0 1 0 0
+                                -3 -3 -3 9 -0.5
+                            "
+                        />
+                    </filter>
+                </defs>
+            </svg>
+
+        </section>
     )
 }

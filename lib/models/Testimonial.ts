@@ -7,6 +7,7 @@ export interface TestimonialDocument extends Document {
     rating: number
     initials: string
     active: boolean
+    photo?: string
     createdAt: Date
     updatedAt: Date
 }
@@ -19,6 +20,7 @@ const TestimonialSchema = new Schema<TestimonialDocument>(
         rating: { type: Number, default: 5 },
         initials: { type: String, required: true, trim: true },
         active: { type: Boolean, default: true },
+        photo: { type: String, trim: true },
     },
     { timestamps: true }
 )

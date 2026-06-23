@@ -42,10 +42,10 @@ export default async function InquiryDetailPage({
                     hasAccess = true
                 }
             }
-            
+
             const stateFilter = dbUser.states && dbUser.states.length > 0 ? dbUser.states : (dbUser.state ? [dbUser.state] : [])
             const langFilter = dbUser.languages && dbUser.languages.length > 0 ? dbUser.languages : (dbUser.language ? [dbUser.language] : [])
-            
+
             if (!hasAccess && (stateFilter.length > 0 || langFilter.length > 0)) {
                 const stateMatch = stateFilter.length > 0 ? stateFilter.includes(inq.state) : true
                 const langMatch = langFilter.length > 0 ? langFilter.includes(inq.language) : true

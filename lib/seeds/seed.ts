@@ -10,6 +10,7 @@ import PageContent from "../models/PageContent"
 import InsurancePlan from "../models/InsurancePlan"
 import SystemSettings from "../models/SystemSettings"
 import Testimonial from "../models/Testimonial"
+import HeroContent from "../models/HeroContent"
 
 async function seed() {
     const uri = process.env.MONGODB_URI
@@ -196,7 +197,8 @@ async function seed() {
             body: "The entire process was smooth and professionally handled. Everything was explained clearly before purchase.",
             rating: 5,
             initials: "RS",
-            active: true
+            active: true,
+            photo: "/images/person1.png"
         },
         {
             name: "Neha Mehta",
@@ -204,7 +206,8 @@ async function seed() {
             body: "I finally understood the actual difference between plans because of their simple guidance.",
             rating: 5,
             initials: "NM",
-            active: true
+            active: true,
+            photo: "/images/woman.png"
         },
         {
             name: "Amit Verma",
@@ -212,7 +215,8 @@ async function seed() {
             body: "Very supportive team during medical requirements and policy issuance process.",
             rating: 5,
             initials: "AV",
-            active: true
+            active: true,
+            photo: "/images/person2.png"
         },
         {
             name: "Priya Sharma",
@@ -220,7 +224,8 @@ async function seed() {
             body: "They genuinely focused on what was right for my family instead of pushing expensive plans.",
             rating: 5,
             initials: "PS",
-            active: true
+            active: true,
+            photo: "/images/person3.png"
         }
     ])
     console.log("✅ Testimonials seeded")
@@ -246,8 +251,8 @@ async function seed() {
                 data: {
                     title: "What is Term Insurance?",
                     publishedDate: "20 Feb, 2026",
-                    author: { name: "Swetlana Neog", role: "Editorial Associate" },
-                    reviewer: { name: "Gaurav Bhat", role: "IRDAI-Certified Expert at Policymine" },
+                    author: { name: "Swetlana Neog", role: "Editorial Associate", photo: "/images/person3.png" },
+                    reviewer: { name: "MS Bhati", role: "IRDAI-Certified Expert at Policymine", photo: "/images/person1.png" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -590,8 +595,8 @@ async function seed() {
                 data: {
                     title: "How to Buy Term Insurance in India: A Step-by-Step Guide",
                     publishedDate: "12 Jun, 2026",
-                    author: { name: "Avni Mittal", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "IRDAI-Certified Expert at Policymine" },
+                    author: { name: "Avni Mittal", role: "Insurance Writer", photo: "/images/woman.png" },
+                    reviewer: { name: "MS Bhati", role: "IRDAI-Certified Expert at Policymine", photo: "/images/person1.png" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -815,8 +820,8 @@ async function seed() {
                 type: "hero",
                 data: {
                     title: "Term Insurance vs Life Insurance",
-                    author: { name: "Swetlana Neog", role: "Editorial Associate" },
-                    reviewer: { name: "Gaurav Bhat", role: "IRDAI-Certified Expert at Policymine" },
+                    author: { name: "Swetlana Neog", role: "Editorial Associate", photo: "/images/person3.png" },
+                    reviewer: { name: "MS Bhati", role: "IRDAI-Certified Expert at Policymine", photo: "/images/person1.png" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -1220,8 +1225,8 @@ async function seed() {
                 data: {
                     title: "Best Term Insurance Plan: Top 5 Policies 2026",
                     subtitle: "Compare top-rated pure risk protection plans side-by-side. View claim settlement ratios, features, and expert Policymine ratings.",
-                    author: { name: "Gargi Thakur", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "IRDAI-Certified Expert at Policymine" },
+                    author: { name: "Gargi Thakur", role: "Insurance Writer", photo: "/images/person2.png" },
+                    reviewer: { name: "MS Bhati", role: "IRDAI-Certified Expert at Policymine", photo: "/images/person1.png" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -1365,8 +1370,8 @@ async function seed() {
                 data: {
                     title: "1 Crore Term Insurance Plan",
                     subtitle: "The gold standard of life protection. Understand why it is the perfect coverage amount and how to get it at the lowest premium.",
-                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
+                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer", photo: "/images/woman.png" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine", photo: "/images/person1.png" },
                 },
             },
             {
@@ -1431,8 +1436,8 @@ async function seed() {
                 data: {
                     title: "NRI Term Insurance in India",
                     subtitle: "Comprehensive guide for Non-Resident Indians (NRIs), OCIs, and PIOs seeking term life cover. Save up to 50% on premiums compared to foreign policies.",
-                    author: { name: "Subhashish Banerjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "IRDAI-Certified Expert at Policymine" },
+                    author: { name: "Subhashish Banerjee", role: "Insurance Writer", photo: "/images/person1.png" },
+                    reviewer: { name: "MS Bhati", role: "IRDAI-Certified Expert at Policymine", photo: "/images/person1.png" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -1572,8 +1577,8 @@ async function seed() {
                 data: {
                     title: "What is Health Insurance?",
                     subtitle: "A simple guide to healthcare cover. Understand how medical policies shield you from soaring hospital bills and protect your savings.",
-                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "Gaurav Bhat", role: "IRDAI-Certified Expert at Policymine" },
+                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer", photo: "/images/woman.png" },
+                    reviewer: { name: "MS Bhati", role: "IRDAI-Certified Expert at Policymine", photo: "/images/person1.png" },
                     certificationId: "SP0738578124",
                 },
             },
@@ -1700,8 +1705,8 @@ async function seed() {
                 data: {
                     title: "Best Health Insurance Plans 2026",
                     subtitle: "Handpicked medical policies with high claim ratios, extensive hospital networks, and zero room-rent limits.",
-                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
+                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer", photo: "/images/woman.png" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine", photo: "/images/person1.png" },
                 },
             },
             {
@@ -1755,8 +1760,8 @@ async function seed() {
                 data: {
                     title: "Family Floater Health Insurance",
                     subtitle: "One policy to protect your whole family. Save up to 35% on premiums compared to buying separate individual policies.",
-                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer" },
-                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine" },
+                    author: { name: "Pratyusha Chatterjee", role: "Insurance Writer", photo: "/images/woman.png" },
+                    reviewer: { name: "MS Bhati", role: "Insurance Expert at Policymine", photo: "/images/person1.png" },
                 },
             },
             {
@@ -2098,6 +2103,31 @@ async function seed() {
             { id: "tc1", type: "rich_text", data: { content: "<h2>Terms Of Use</h2><p>By accessing this website and using our services, users agree to the applicable terms, policies, and regulatory guidelines.</p><p>Policymine provides insurance-related guidance and assistance services. Final policy issuance, underwriting, premium decisions, and claim settlement are governed by the respective insurer’s terms and conditions. Users are advised to review all policy documents carefully before making purchase decisions.</p>" } }
         ]
     });
+
+    // ── HERO CONTENT ───────────────────────────────────────
+    await HeroContent.deleteMany({})
+    console.log("🗑  Cleared hero content")
+    await HeroContent.create({
+        key: "home_hero",
+        headlineLine1: "EVERY AGE",
+        headlineLine2: "HAS A RISK",
+        subtitle: "Every stage needs an insurance plan",
+        heroImage: "/uploads/hero_staircase.png",
+        stepImages: [
+            { label: "Childhood", image: "/uploads/step_child.png" },
+            { label: "Education", image: "/uploads/step_teenager.png" },
+            { label: "Career", image: "/uploads/step_young_adult.png" },
+            { label: "Family", image: "/uploads/step_middleage.png" },
+            { label: "Retirement", image: "/uploads/step_elderly.png" },
+        ],
+        ctaText: "Book Free Consultation",
+        ctaLink: "/contact",
+        secondaryCtaText: "Get WhatsApp Support",
+        secondaryCtaLink: "",
+        phoneNumbers: [],
+        backgroundGradient: { from: "#FFFFFF", to: "#FFFFFF" },
+    })
+    console.log("✅ Hero content seeded")
 
     console.log("Page content seeded")
     console.log("Seed complete! Login credentials:")

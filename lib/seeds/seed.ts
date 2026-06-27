@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import bcrypt from "bcryptjs"
 import * as dotenv from "dotenv"
 import path from "path"
+import { execSync } from "child_process"
 
 dotenv.config({ path: path.resolve(process.cwd(), ".env.local") })
 
@@ -469,7 +470,7 @@ async function seed() {
                     items: [
                         { heading: "No-Spam & No Salesmen", body: "We never spam you or push products you don't need." },
                         { heading: "Rated 4.9/5 on Google Reviews", body: "Trusted by over 15,000+ happy customers." },
-                        { heading: "Backed by Zerodha", body: "Part of the Rainmatter fintech ecosystem." },
+                        { heading: "Backed by Policymine", body: "Your trusted partner for unbiased insurance advice." },
                         { heading: "Dedicated Claim Support Team", body: "We stand by your family when they need it most." },
                         { heading: "100% Free Consultation", body: "Absolutely free, unbiased advice." },
                     ],
@@ -738,7 +739,7 @@ async function seed() {
                     items: [
                         { heading: "No-Spam & No Salesmen", body: "We never spam you or push products you don't need." },
                         { heading: "Rated 4.9/5 on Google Reviews", body: "Trusted by over 15,000+ happy customers." },
-                        { heading: "Backed by Zerodha", body: "Part of the Rainmatter fintech ecosystem." },
+                        { heading: "Backed by Policymine", body: "Your trusted partner for unbiased insurance advice." },
                         { heading: "Dedicated Claim Support Team", body: "We stand by your family when they need it most." },
                         { heading: "100% Free Consultation", body: "Absolutely free, unbiased advice." },
                     ],
@@ -969,7 +970,7 @@ async function seed() {
                     items: [
                         { heading: "No-Spam & No Salesmen", body: "We never spam you or push products you don't need." },
                         { heading: "Rated 4.9/5 on Google Reviews", body: "Trusted by over 15,000+ happy customers." },
-                        { heading: "Backed by Zerodha", body: "Part of the Rainmatter fintech ecosystem." },
+                        { heading: "Backed by Policymine", body: "Your trusted partner for unbiased insurance advice." },
                         { heading: "Dedicated Claim Support Team", body: "We stand by your family when they need it most." },
                         { heading: "100% Free Consultation", body: "Absolutely free, unbiased advice." },
                     ],
@@ -1299,7 +1300,7 @@ async function seed() {
                     items: [
                         { heading: "No-Spam & No Salesmen", body: "We never spam you or push products you don't need." },
                         { heading: "Rated 4.9/5 on Google Reviews", body: "Trusted by over 15,000+ happy customers." },
-                        { heading: "Backed by Zerodha", body: "Part of the Rainmatter fintech ecosystem." },
+                        { heading: "Backed by Policymine", body: "Your trusted partner for unbiased insurance advice." },
                         { heading: "Dedicated Claim Support Team", body: "We stand by your family when they need it most." },
                         { heading: "100% Free Consultation", body: "Absolutely free, unbiased advice." },
                     ],
@@ -2129,7 +2130,14 @@ async function seed() {
     })
     console.log("✅ Hero content seeded")
 
-    console.log("Page content seeded")
+    console.log("Running detailed pages seed...")
+    try {
+        execSync("npx tsx lib/seeds/seed-pages.ts", { stdio: "inherit" })
+        console.log("✅ Detailed pages seeded successfully")
+    } catch (err) {
+        console.error("❌ Detailed pages seed failed:", err)
+    }
+
     console.log("Seed complete! Login credentials:")
     console.log("   Super Admin: superadmin@platform.com / SuperAdmin@123")
     console.log("   Admin:       admin@platform.com / Admin@123")

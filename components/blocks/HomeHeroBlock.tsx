@@ -189,13 +189,13 @@ export default function HomeHeroBlock({ data, isHome = false }: { data: HomeHero
                                 </svg>
 
                                 <div className="flex flex-col items-center gap-0.5">
-                                    {/* Zerodha Kite Logo */}
-                                    <svg viewBox="0 0 100 100" className="w-6 h-6 text-[#2453a5] fill-current" >
-                                        <path d="M50,12 L80,42 L50,72 L20,42 Z" />
-                                        <path d="M42,42 C42,47 45,50 50,50 C55,50 58,47 58,42 C58,37 55,34 50,34 C45,34 42,37 42,42 Z" fill="white" />
+                                    {/* Trust Shield Icon */}
+                                    <svg viewBox="0 0 24 24" className="w-6 h-6 text-[#2453a5] fill-none stroke-current" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                        <path d="m9 11 2 2 4-4" />
                                     </svg>
                                     <p className="text-[9.5px] font-bold text-slate-400 leading-tight uppercase tracking-widest whitespace-nowrap">
-                                        Backed by Policymine
+                                        100% Verified
                                     </p>
                                 </div>
 

@@ -185,8 +185,8 @@ export default function PublicHeader() {
 
                 {/* Logo */}
                 <Link href="/" className="flex items-center shrink-0 group">
-                    <Image src="/logo_final.png" alt="Policymine" width={140} height={40}
-                        className="h-9 w-auto object-contain transition-opacity group-hover:opacity-75" priority />
+                    <Image src="/logo_final.png" alt="Policymine" width={180} height={52}
+                        className="h-12 w-auto object-contain transition-opacity group-hover:opacity-75" priority />
                 </Link>
 
                 {/* Desktop nav pills */}

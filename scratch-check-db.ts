@@ -1,13 +1,13 @@
 import { connectDB } from "./lib/mongodb";
-import PageContent from "./lib/models/PageContent";
+import HeroContent from "./lib/models/HeroContent";
 import dotenv from "dotenv";
 
 dotenv.config({ path: ".env.local" });
 
 async function run() {
     await connectDB();
-    const pages = await PageContent.find({}, { pageKey: 1, title: 1, published: 1 }).lean();
-    console.log("Pages in Database:", JSON.stringify(pages, null, 2));
+    const hero = await HeroContent.findOne({ key: "home_hero" }).lean();
+    console.log("HeroContent in Database:", JSON.stringify(hero, null, 2));
     process.exit(0);
 }
 

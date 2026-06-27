@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     title: { default: "Policymine Insurance", template: "%s | Policymine Insurance" },
     description: "Smarter Insurance Decisions — Expert Guidance, Free Consultation",
     icons: {
-        icon: "/logo.png",
-        shortcut: "/logo.png",
-        apple: "/logo.png",
+        icon: "/logo_final.png",
+        shortcut: "/logo_final.png",
+        apple: "/logo_final.png",
     },
 }
 

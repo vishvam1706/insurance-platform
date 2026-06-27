@@ -186,9 +186,9 @@ export default function PublicFooter() {
                                 <Image
                                     src="/logo_final.png"
                                     alt="Policymine Insurance"
-                                    width={130}
-                                    height={36}
-                                    className="h-8 w-auto object-contain transition-opacity duration-300 group-hover:opacity-75"
+                                    width={180}
+                                    height={50}
+                                    className="h-12 w-auto object-contain transition-opacity duration-300 group-hover:opacity-75"
                                 />
                             </Link>
                             <p className="text-[13px] leading-relaxed mb-5" style={{ color: "var(--text-muted)", maxWidth: "300px" }}>

@@ -64,6 +64,20 @@ export default function HomeHero({ heroData, waUrl }: Props) {
     const secondaryLink = data.secondaryCtaLink || waUrl
     const steps = data.stepImages && data.stepImages.length > 0 ? data.stepImages : DEFAULT_STEPS
 
+    const orderMap: Record<string, number> = {
+        "childhood": 0,
+        "education": 1,
+        "career": 2,
+        "family": 3,
+        "retirement": 4
+    }
+
+    const sortedSteps = [...steps].sort((a, b) => {
+        const orderA = orderMap[a.label.toLowerCase()] ?? 0
+        const orderB = orderMap[b.label.toLowerCase()] ?? 0
+        return orderA - orderB
+    })
+
     // Total height of staircase zone = tallest step + tallest person + small gap
     const staircaseH = STEP_HEIGHT_PX[0] + PERSON_HEIGHT_PX[0] + 16
 
@@ -173,10 +187,10 @@ export default function HomeHero({ heroData, waUrl }: Props) {
                         visible: { opacity: 1, transition: { staggerChildren: 0.09 } },
                     }}
                 >
-                    {[...steps].reverse().map((step, idx) => {
-                        const originalIdx = steps.length - 1 - idx
-                        const stepH = STEP_HEIGHT_PX[originalIdx] ?? 60
-                        const personH = PERSON_HEIGHT_PX[originalIdx] ?? 114
+                    {sortedSteps.map((step, idx) => {
+                        const stepIdx = sortedSteps.length - 1 - idx
+                        const stepH = STEP_HEIGHT_PX[stepIdx] ?? 60
+                        const personH = PERSON_HEIGHT_PX[stepIdx] ?? 114
 
                         return (
                             <motion.div
@@ -244,7 +258,7 @@ export default function HomeHero({ heroData, waUrl }: Props) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    {[...steps].reverse().map((step, idx) => (
+                    {sortedSteps.map((step, idx) => (
                         <div
                             key={idx}
                             className="flex-none w-[140px] rounded-2xl flex flex-col items-center justify-end h-[260px] snap-center relative overflow-hidden bg-[#0A1128] shadow-[0_4px_14px_rgba(10,17,40,0.22)]"

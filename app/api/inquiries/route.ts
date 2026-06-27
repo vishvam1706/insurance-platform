@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import Inquiry from "@/lib/models/Inquiry"
+import User from "@/lib/models/User"
 import { getAuthUser } from "@/lib/auth"
 import { InquirySchema } from "@/lib/validations/inquiry.schema"
 import { sendInquiryConfirmation } from "@/lib/email"

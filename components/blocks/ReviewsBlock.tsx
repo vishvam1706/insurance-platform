@@ -59,7 +59,7 @@ export default function ReviewsBlock({ data, isHome = false }: { data: ReviewsBl
                             </h2>
 
                             <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-body">
-                                Read genuine feedback from {totalCount.toLocaleString()}+ Indian families who protected their future with Policymine'ss spam-free advisory.
+                                Read genuine feedback from {totalCount.toLocaleString()}+ Indian families who protected their future with Policymine's spam-free advisory.
                             </p>
                         </div>
 

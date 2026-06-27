@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { getAuthUser } from "@/lib/auth"
 import LoginForm from "@/components/admin/LoginForm"
 import { Shield, ShieldCheck, Lock, BarChart3, Users, FileText } from "lucide-react"
+import Image from "next/image"
 
 export const metadata: Metadata = {
     title: "Admin Login — Insurance Platform",
@@ -35,10 +36,14 @@ export default async function LoginPage() {
                 <div className="relative z-10 flex flex-col justify-between w-full px-12 xl:px-16 py-10">
                     {/* Logo */}
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                            <Shield className="w-5 h-5 text-white" />
-                        </div>
-                        <span className="text-white text-lg font-semibold tracking-tight">Insurance Platform</span>
+                        <Image
+                            src="/logo_final.png"
+                            alt="Policymine"
+                            width={140}
+                            height={40}
+                            className="h-9 w-auto object-contain brightness-0 invert"
+                            priority
+                        />
                     </div>
 
                     {/* Hero text + feature list */}
@@ -78,7 +83,7 @@ export default async function LoginPage() {
 
                     {/* Footer */}
                     <p className="text-slate-600 text-xs">
-                        © {new Date().getFullYear()} Insurance Platform. All rights reserved.
+                        © {new Date().getFullYear()} Policymine. All rights reserved.
                     </p>
                 </div>
             </div>
@@ -87,10 +92,14 @@ export default async function LoginPage() {
             <div className="w-full lg:w-[45%] flex flex-col">
                 {/* Mobile header */}
                 <div className="lg:hidden flex items-center gap-3 px-6 py-5 border-b border-slate-100">
-                    <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center">
-                        <Shield className="w-4.5 h-4.5 text-white" />
-                    </div>
-                    <span className="text-slate-900 font-semibold">Insurance Platform</span>
+                    <Image
+                        src="/logo_final.png"
+                        alt="Policymine"
+                        width={140}
+                        height={40}
+                        className="h-9 w-auto object-contain"
+                        priority
+                    />
                 </div>
 
                 <div className="flex-1 flex items-center justify-center px-6 sm:px-10 py-12">

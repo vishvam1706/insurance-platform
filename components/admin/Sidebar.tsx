@@ -20,6 +20,8 @@ import {
     Sparkles,
 } from "lucide-react"
 
+import Image from "next/image"
+
 interface NavItem {
     label: string
     href: string
@@ -104,7 +106,7 @@ export default function AdminSidebar({ role }: SidebarProps) {
             <aside
                 className={cn(
                     // Base styles
-                    "fixed inset-y-0 left-0 z-50 flex flex-col bg-slate-900 transition-transform duration-300 ease-in-out",
+                    "fixed inset-y-0 left-0 z-50 flex flex-col bg-slate-900 border-r border-slate-800 transition-transform duration-300 ease-in-out",
                     // Mobile: slide in/out
                     "w-[280px] lg:w-[260px]",
                     sidebarOpen ? "translate-x-0" : "-translate-x-full",
@@ -113,25 +115,25 @@ export default function AdminSidebar({ role }: SidebarProps) {
                 )}
             >
                 {/* Logo + Close (mobile) */}
-                <div className="flex items-center gap-3 px-5 py-5 border-b border-slate-800">
-                    <div
-                        className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20"
-                        style={{ background: "var(--brand)" }}
-                    >
-                        <Shield className="w-5 h-5 text-white" />
-                    </div>
+                <div className="flex items-center gap-3 px-5 py-5 bg-white border-b border-slate-200">
                     <div className="min-w-0 flex-1">
-                        <p className="text-white font-semibold text-sm truncate leading-tight">
-                            Insurance Platform
-                        </p>
-                        <p className="text-slate-400 text-xs truncate capitalize">
+                        <Link href="/" className="inline-block">
+                            <Image
+                                src="/logo_final.png"
+                                alt="Policymine"
+                                width={160}
+                                height={44}
+                                className="h-11 w-auto object-contain"
+                            />
+                        </Link>
+                        <p className="text-slate-600 text-xs font-semibold truncate capitalize mt-1">
                             {role.replace("_", " ")}
                         </p>
                     </div>
                     {/* Close button — mobile only */}
                     <button
                         onClick={() => setSidebarOpen(false)}
-                        className="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                        className="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                         aria-label="Close sidebar"
                     >
                         <X className="w-5 h-5" />

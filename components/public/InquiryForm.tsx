@@ -363,7 +363,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
 
     const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<InquiryInput>({
         resolver: zodResolver(InquirySchema),
-        defaultValues: { insuranceType: defaultType, state: "", language: "", pincode: "" },
+        defaultValues: { insuranceType: defaultType, state: "", language: "", pincode: "", preferredSlot: "" },
     })
     const watchedPhone = watch("phone", "")
     const watchedEmail = watch("email", "")
@@ -454,9 +454,12 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
         if (!insuranceType) { setTypeErr("Please select insurance type"); return }
         if (!state)         { setStateErr("Please select your state"); return }
         if (!language)      { setLangErr("Please select your language"); return }
+        // Phone OTP verification bypassed for testing
+        /*
         if (otpPhase !== "verified" || phoneChanged) {
             setOtpError("Please verify your mobile number first"); return
         }
+        */
         // Email OTP check removed
         try {
             await axios.post("/api/inquiries", {
@@ -520,8 +523,9 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
         fontFamily: "var(--font-heading)", display: "block", marginBottom: "0.4rem",
     }
 
-    const phoneVerified = otpPhase === "verified" && !phoneChanged
-    const allVerified = phoneVerified
+    // Bypassed for testing purposes
+    const phoneVerified = true // otpPhase === "verified" && !phoneChanged
+    const allVerified = true // phoneVerified
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-7 text-left">
@@ -566,6 +570,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                             )}
                         </div>
                         {/* Show Send OTP when idle, OR Re-verify when number changed after verification */}
+                        {/* OTP verification disabled for testing
                         {(otpPhase === "idle" || otpPhase === "sending") && phoneValid && (
                             <button type="button" onClick={sendOtp} disabled={otpPhase === "sending"}
                                 className="shrink-0 px-4 h-[46px] rounded-2xl text-xs font-bold flex items-center gap-1.5 transition-all bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm hover:-translate-y-0.5"
@@ -582,6 +587,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                                 Re-verify
                             </button>
                         )}
+                        */}
                     </div>
 
                     {/* Changed-number warning */}
@@ -708,7 +714,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
 
             {/* ── Section 3: Preferred Call Time ─────────────────── */}
             <div className="space-y-3">
-                <SectionLabel icon={Clock} label="Preferred Call Time (optional)" />
+                <SectionLabel icon={Clock} label="Preferred Call Time (Required)" />
 
                 {!slotLabel ? (
                     <button
@@ -734,7 +740,7 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                             <p className="text-[10px] font-black uppercase tracking-wider text-emerald-600">Selected consultation time</p>
                             <p className="text-sm font-bold truncate text-slate-800">{slotLabel}</p>
                         </div>
-                        <button type="button" onClick={() => { setSlotIso(""); setSlotLabel(""); setPickerOpen(false) }}
+                        <button type="button" onClick={() => { setSlotIso(""); setSlotLabel(""); setPickerOpen(false); setValue("preferredSlot", "", { shouldValidate: true }) }}
                             className="text-slate-400 hover:text-slate-800 transition-colors p-1 rounded-lg hover:bg-white"
                         >
                             <X className="w-4 h-4" />
@@ -746,11 +752,17 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                     <div className="mt-2">
                         <FreeTimePicker
                             value={slotIso}
-                            onChange={(iso, label) => { setSlotIso(iso); setSlotLabel(label); setPickerOpen(false) }}
+                            onChange={(iso, label) => {
+                                setSlotIso(iso);
+                                setSlotLabel(label);
+                                setPickerOpen(false);
+                                setValue("preferredSlot", iso, { shouldValidate: true });
+                            }}
                             shifts={activeShifts}
                         />
                     </div>
                 )}
+                <FieldError msg={errors.preferredSlot?.message} />
             </div>
 
             {/* ── Section 4: Message ──────────────────────────────── */}

@@ -1,4 +1,4 @@
-export type InsuranceType = "term" | "health"
+export type InsuranceType = "term" | "health" | "retirement" | "child" | "wealth" | "business"
 export type InquiryStatus = "new" | "contacted" | "resolved" | "not_reachable"
 
 export interface StatusHistoryEntry {

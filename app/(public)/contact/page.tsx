@@ -36,11 +36,11 @@ export default async function ContactPage() {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
                 <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-start">
 
-                    {/* LEFT — Sidebar */}
+                    {/* LEFT — Sidebar (sticky handled inside component) */}
                     <ContactSidebar />
 
                     {/* RIGHT — Form card */}
-                    <div className="lg:sticky lg:top-24">
+                    <div>
                         <div className="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-100/80 p-8">
 
                             {/* Header */}

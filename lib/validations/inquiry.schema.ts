@@ -6,7 +6,7 @@ export const InquirySchema = z.object({
         .string()
         .regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
     email: z.string().email("Enter a valid email address").optional().or(z.literal("")),
-    insuranceType: z.enum(["term", "health"], {
+    insuranceType: z.enum(["term", "health", "retirement", "child", "wealth", "business"], {
         message: "Please select insurance type",
     }),
     state: z.string().min(1, "Please select your state"),
@@ -14,6 +14,11 @@ export const InquirySchema = z.object({
     pincode: z.string().regex(/^\d{6}$/, "Enter a valid 6-digit Pincode"),
     preferredSlot: z.string().min(1, "Please select your preferred call time"),
     message: z.string().max(500).optional(),
+    // New fields
+    dob: z.string().optional(),
+    whoFor: z.enum(["self", "family"]).optional().or(z.literal("")),
+    healthRating: z.enum(["healthy", "medium", "notgood", "poor"]).optional().or(z.literal("")),
+    healthNote: z.string().max(1000).optional(),
 })
 
 export const UpdateInquirySchema = z.object({

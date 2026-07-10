@@ -19,8 +19,9 @@ import {
 import {
     Loader2, CheckCircle2, CalendarDays,
     ChevronLeft, ChevronRight, ChevronDown,
-    Clock, X, ShieldCheck, AlertCircle, Smartphone, Mail,
-    Sparkles, User, MapPin, Globe, MessageSquare
+    Clock, X, ShieldCheck, AlertCircle, Smartphone,
+    Sparkles, User, Globe, MessageSquare,
+    Shield, Heart, Baby, Briefcase, TrendingUp, Umbrella, Activity, Users
 } from "lucide-react"
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -311,6 +312,23 @@ function FieldError({ msg }: { msg?: string }) {
 // ─── Main Form ────────────────────────────────────────────────────────────────
 type OtpPhase = "idle" | "sending" | "sent" | "verifying" | "verified"
 
+// Insurance products config
+const INSURANCE_PRODUCTS = [
+    { key: "term",       icon: Shield,      label: "Pure Protection",          sub: "Term Insurance" },
+    { key: "health",     icon: Heart,       label: "Health Insurance",         sub: "Medical Cover" },
+    { key: "retirement", icon: Umbrella,    label: "Retirement Planning",      sub: "Structured Income" },
+    { key: "child",      icon: Baby,        label: "Child Future Planning",    sub: "Education Goals" },
+    { key: "wealth",     icon: TrendingUp,  label: "Investment & Wealth",      sub: "Wealth Creation" },
+    { key: "business",   icon: Briefcase,   label: "Business & Keyman",        sub: "Business Risk" },
+]
+
+const HEALTH_OPTIONS = [
+    { key: "healthy",  label: "Healthy",   color: "emerald" },
+    { key: "medium",   label: "Medium",    color: "amber" },
+    { key: "notgood",  label: "Not Good",  color: "orange" },
+    { key: "poor",     label: "Poor",      color: "red" },
+]
+
 export default function InquiryForm({ defaultType, compact = false }: { defaultType?: "term" | "health"; compact?: boolean }) {
     const [done, setDone] = useState(false)
     const [insuranceType, setType] = useState(defaultType || "")
@@ -323,6 +341,11 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
     const [typeErr, setTypeErr] = useState("")
     const [stateErr, setStateErr] = useState("")
     const [langErr, setLangErr] = useState("")
+    // New fields
+    const [dob, setDob] = useState("")
+    const [whoFor, setWhoFor] = useState<"self" | "family" | "">("")
+    const [healthRating, setHealthRating] = useState("")
+    const [healthNote, setHealthNote] = useState("")
 
     // Dynamic settings
     const [allowedLanguages, setAllowedLanguages] = useState<string[]>([])
@@ -472,6 +495,10 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
                 language,
                 pincode: data.pincode,
                 preferredSlot: slotIso || undefined,
+                dob: dob || undefined,
+                whoFor: whoFor || undefined,
+                healthRating: healthRating || undefined,
+                healthNote: healthNote || undefined,
             })
             setDone(true)
         } catch (err) {
@@ -646,21 +673,127 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
             <div className="space-y-4">
                 <SectionLabel icon={Globe} label="Your Preferences" />
 
-                {/* Insurance Type */}
+                {/* Insurance Type — clickable pill cards */}
                 <div>
                     <label style={labelCls}>Insurance Type</label>
-                    <Select value={insuranceType} onValueChange={(v) => { setType(v); setValue("insuranceType", v as "term" | "health"); setTypeErr("") }}>
-                        <SelectTrigger
-                            className={cn(selectCls, typeErr && "border-red-400")}
-                        >
-                            <SelectValue placeholder="Select insurance type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="term">Term Life Insurance</SelectItem>
-                            <SelectItem value="health">Health Insurance</SelectItem>
-                        </SelectContent>
-                    </Select>
+                    <div className="grid grid-cols-2 gap-2.5 mt-1">
+                        {INSURANCE_PRODUCTS.map(({ key, icon: Icon, label, sub }) => {
+                            const active = insuranceType === key
+                            return (
+                                <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() => { setType(key); setValue("insuranceType", key as any); setTypeErr("") }}
+                                    className={cn(
+                                        "flex items-center gap-2.5 px-3 py-2.5 rounded-xl border text-left transition-all duration-150 hover:shadow-sm",
+                                        active
+                                            ? "border-orange-400 bg-orange-50 shadow-sm"
+                                            : "border-slate-200 bg-white hover:border-orange-200"
+                                    )}
+                                >
+                                    <div className={cn(
+                                        "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
+                                        active ? "bg-orange-500 text-white" : "bg-slate-100 text-slate-500"
+                                    )}>
+                                        <Icon className="w-4 h-4" />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <p className={cn("text-[11px] font-extrabold leading-none truncate", active ? "text-orange-700" : "text-slate-800")}>{label}</p>
+                                        <p className="text-[9.5px] font-semibold text-slate-400 mt-0.5 truncate">{sub}</p>
+                                    </div>
+                                    {active && <CheckCircle2 className="w-3.5 h-3.5 text-orange-500 shrink-0 ml-auto" />}
+                                </button>
+                            )
+                        })}
+                    </div>
                     <FieldError msg={typeErr} />
+                </div>
+
+                {/* DOB */}
+                <div>
+                    <label style={labelCls}>Date of Birth</label>
+                    <input
+                        type="date"
+                        value={dob}
+                        onChange={e => setDob(e.target.value)}
+                        max={new Date().toISOString().split("T")[0]}
+                        className={cn(fieldCls, "cursor-pointer")}
+                    />
+                </div>
+
+                {/* Who is this for */}
+                <div>
+                    <label style={labelCls}>Who is this for?</label>
+                    <div className="flex gap-3 mt-1">
+                        {([{ key: "self", label: "Yourself", icon: User }, { key: "family", label: "Family", icon: Users }] as const).map(({ key, label, icon: Icon }) => {
+                            const active = whoFor === key
+                            return (
+                                <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() => setWhoFor(key)}
+                                    className={cn(
+                                        "flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border font-bold text-sm transition-all duration-150",
+                                        active
+                                            ? "border-orange-400 bg-orange-50 text-orange-700 shadow-sm"
+                                            : "border-slate-200 bg-white text-slate-600 hover:border-orange-200"
+                                    )}
+                                >
+                                    <Icon className={cn("w-4 h-4", active ? "text-orange-500" : "text-slate-400")} />
+                                    {label}
+                                    {active && <CheckCircle2 className="w-3.5 h-3.5 text-orange-500" />}
+                                </button>
+                            )
+                        })}
+                    </div>
+                </div>
+
+                {/* Health Rating */}
+                <div>
+                    <label style={labelCls}>Rate Your Health</label>
+                    <div className="grid grid-cols-4 gap-2 mt-1">
+                        {HEALTH_OPTIONS.map(({ key, label, color }) => {
+                            const active = healthRating === key
+                            const colorMap: Record<string, string> = {
+                                emerald: active ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-slate-200 text-slate-600 hover:border-emerald-300",
+                                amber:   active ? "border-amber-400 bg-amber-50 text-amber-700"     : "border-slate-200 text-slate-600 hover:border-amber-300",
+                                orange:  active ? "border-orange-400 bg-orange-50 text-orange-700"  : "border-slate-200 text-slate-600 hover:border-orange-300",
+                                red:     active ? "border-red-400 bg-red-50 text-red-700"           : "border-slate-200 text-slate-600 hover:border-red-300",
+                            }
+                            const dotMap: Record<string, string> = {
+                                emerald: "bg-emerald-400", amber: "bg-amber-400", orange: "bg-orange-400", red: "bg-red-400"
+                            }
+                            return (
+                                <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() => { setHealthRating(key); if (key !== "poor") setHealthNote("") }}
+                                    className={cn(
+                                        "flex flex-col items-center gap-1.5 py-3 rounded-xl border font-semibold text-xs transition-all duration-150",
+                                        colorMap[color]
+                                    )}
+                                >
+                                    <div className={cn("w-2.5 h-2.5 rounded-full", dotMap[color])} />
+                                    {label}
+                                </button>
+                            )
+                        })}
+                    </div>
+
+                    {/* Conditional textarea for Poor */}
+                    {healthRating === "poor" && (
+                        <div className="mt-3 animate-fade-up">
+                            <label style={{ ...labelCls, color: "#EF4444" }}>Tell us more about your health condition</label>
+                            <textarea
+                                value={healthNote}
+                                onChange={e => setHealthNote(e.target.value)}
+                                rows={3}
+                                placeholder="e.g. I have diabetes and hypertension..."
+                                className={cn(fieldCls, "resize-none border-red-200 focus:border-red-400 focus:ring-red-50")}
+                            />
+                            <p className="text-[10px] text-slate-400 font-medium mt-1">This helps our advisor prepare specific plan options for your situation.</p>
+                        </div>
+                    )}
                 </div>
 
                 {/* State + Language — 2 col */}

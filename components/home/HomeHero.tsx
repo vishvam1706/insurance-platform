@@ -45,7 +45,7 @@ const DEFAULT_HERO: HeroData = {
     subtitle: "Every stage needs an insurance plan",
     heroImage: "/uploads/hero_staircase.png",
     stepImages: DEFAULT_STEPS,
-    ctaText: "Book Free Consultation",
+    ctaText: "Book a Free Consultation",
     ctaLink: "/contact",
     secondaryCtaText: "Get WhatsApp Support",
     secondaryCtaLink: "",
@@ -145,7 +145,7 @@ export default function HomeHero({ heroData, waUrl }: Props) {
                             className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-[15px] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] bg-[#F97316] hover:bg-[#EA580C] text-white shadow-[0_4px_18px_rgba(249,115,22,0.32)] hover:shadow-[0_6px_24px_rgba(249,115,22,0.42)]"
                         >
                             <CalendarDays className="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
-                            {data.ctaText || "Book Free Consultation"}
+                            {data.ctaText || "Book a Free Consultation"}
                         </Link>
                     </motion.div>
 

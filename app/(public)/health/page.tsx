@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
-import { ArrowRight, Heart, Award, CheckCircle2, Phone, Sparkles, BookOpen, Clock } from "lucide-react"
+import { ArrowRight, Heart, Award, CheckCircle2, Phone, Sparkles, BookOpen, Clock, AlertTriangle, HeartHandshake, IndianRupee, Users } from "lucide-react"
 
 export const revalidate = 1800
 
@@ -33,81 +33,86 @@ export default async function HealthHubPage() {
             <div className="absolute top-12 left-12 w-96 h-96 rounded-full blur-[100px] pointer-events-none opacity-[0.03]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
             <div className="absolute bottom-12 right-12 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none opacity-[0.03]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
 
-            {/* ── Editorial Hero ── */}
-            <section className="relative overflow-hidden pt-20 lg:pt-28 pb-24">
-                <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-16 lg:gap-24 items-center">
+            {/* ── Ultra-Modern Editorial Hero ── */}
+            <section className="relative overflow-hidden min-h-[100vh] flex items-center pt-20 pb-20">
+                <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
+                    <div className="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center">
 
-                        {/* Left Column */}
-                        <div className="text-left space-y-7">
-                            <span
-                                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest"
-                                style={{ background: "var(--brand-light)", color: "var(--brand-dark)", border: "1px solid var(--brand-100)", fontFamily: "var(--font-heading)" }}
-                            >
-                                <Heart className="w-4 h-4 animate-pulse" style={{ color: "var(--brand)" }} />
-                                Complete Health Protection
-                            </span>
-
-                            <h1
-                                className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight"
-                                style={{ fontFamily: "var(--font-heading)" }}
-                            >
-                                Your Ultimate Guide to<br />
-                                <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500">Health Insurance.</span>
-                            </h1>
-
-                            <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl font-medium" style={{ fontFamily: "var(--font-body)" }}>
-                                Protect your family from rising medical costs with the right health plan. Expert-certified guides with zero jargon.
-                            </p>
-
-                            {/* Trust badges */}
-                            <div className="grid sm:grid-cols-2 gap-4 pt-2">
-                                {[
-                                    "IRDAI-Certified Advisors",
-                                    "Zero Spam Guaranteed",
-                                    "100% Free Consultation",
-                                    "Dedicated Claims Support",
-                                ].map((trust) => (
-                                    <div key={trust} className="flex items-center gap-3 text-xs sm:text-sm font-bold text-slate-700 transition-transform duration-200 hover:translate-x-1">
-                                        <CheckCircle2 className="w-4.5 h-4.5 shrink-0" style={{ color: "var(--brand)" }} />
-                                        {trust}
-                                    </div>
-                                ))}
+                        {/* Left Column: Modern Glassmorphism & High Contrast Text */}
+                        <div className="text-left space-y-8">
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 shadow-[0_2px_10px_rgba(239,68,68,0.05)]">
+                                <span className="flex h-2 w-2 rounded-full bg-red-500 animate-ping" />
+                                <span className="text-[10px] font-black uppercase tracking-wider text-red-700">Crucial Decision Required</span>
                             </div>
 
-                            <div className="pt-6">
+                            <div className="space-y-4">
+                                <h1
+                                    className="text-4xl sm:text-5xl lg:text-[3.85rem] font-extrabold leading-[1.05] text-slate-900 tracking-tight"
+                                    style={{ fontFamily: "var(--font-heading)" }}
+                                >
+                                    Your Ultimate Guide to<br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500">
+                                        Health Insurance
+                                    </span>
+                                </h1>
+
+                                <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
+                                    A medical emergency shouldn't destroy your life savings. Compare certified plans and protect your family from crushing hospital debt.
+                                </p>
+                            </div>
+
+                            {/* Situation Cards */}
+                            <div className="space-y-4 max-w-xl">
+                                <div className="group relative rounded-2xl bg-white border border-red-100 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_8px_30px_rgba(239,68,68,0.05)]">
+                                    <div className="flex gap-4">
+                                        <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0 border border-red-100">
+                                            <AlertTriangle className="w-5 h-5 text-red-500" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-extrabold text-red-800 mb-1">Scenario A: Emergency Without Insurance</h3>
+                                            <p className="text-slate-600 text-xs leading-relaxed">
+                                                Average ICU stays cost <strong className="text-slate-950 font-bold">₹15L+</strong>. Families are forced to sell assets, exhaust life savings, or take high-interest loans during emergencies.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="group relative rounded-2xl bg-white border border-emerald-100 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_8px_30px_rgba(16,185,129,0.05)]">
+                                    <div className="flex gap-4">
+                                        <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100">
+                                            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-extrabold text-emerald-800 mb-1">Scenario B: Covered by Policymine</h3>
+                                            <p className="text-slate-600 text-xs leading-relaxed">
+                                                100% cashless hospitalization across 13,000+ top hospitals. Zero out-of-pocket room rent limits and complete peace of mind.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-2">
                                 <Link
                                     href="/contact"
-                                    className="btn-primary inline-flex items-center gap-2.5 rounded-2xl shadow-md"
+                                    className="btn-primary inline-flex items-center gap-2.5 rounded-2xl shadow-lg hover:shadow-orange-500/20 transition-all duration-300 px-8 py-3.5"
                                 >
-                                    <Phone className="w-4 h-4 shrink-0 animate-pulse" />
+                                    <Phone className="w-4 h-4 shrink-0" />
                                     Compare Health Plans
                                 </Link>
                             </div>
                         </div>
 
-                        {/* Right Column: Illustration Frame */}
-                        <div className="relative group transition-all duration-500 hover:scale-[1.02]">
-                            <div className="absolute -inset-4 rounded-[40px] opacity-20 blur-2xl group-hover:opacity-40 transition-opacity duration-300 pointer-events-none" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
-                            <div className="relative rounded-[36px] overflow-hidden border bg-white p-5 shadow-[0_32px_60px_-15px_rgba(15,23,42,0.03)]" style={{ borderColor: "var(--brand-100)" }}>
-                                <div className="w-full h-96 rounded-2xl border flex items-center justify-center" style={{ background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)", borderColor: "var(--brand-light)" }}>
-                                    <div className="text-center space-y-4 p-8">
-                                        <div className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center" style={{ background: "var(--brand-light)" }}>
-                                            <Heart className="w-10 h-10" style={{ color: "var(--brand-dark)" }} />
-                                        </div>
-                                        <p className="font-black text-slate-800 text-xl" style={{ fontFamily: "var(--font-heading)" }}>Health Insurance Guides</p>
-                                        <p className="text-slate-500 text-sm font-medium">Expert-reviewed, zero jargon</p>
-                                        <div className="flex justify-center gap-3 pt-2">
-                                            {["Plans", "Benefits", "Family", "Tax"].map((tag) => (
-                                                <span key={tag} className="px-3 py-1 rounded-full text-xs font-bold" style={{ background: "var(--brand-100)", color: "var(--brand-dark)" }}>{tag}</span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="absolute top-9 right-9 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-1.5 shadow-sm border" style={{ borderColor: "var(--brand-100)" }}>
-                                    <Sparkles className="w-4 h-4 animate-pulse" style={{ color: "var(--brand-dark)" }} />
-                                    <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest font-sans">Verified Guides</span>
-                                </div>
+                        {/* Right Column: Comparative Split-Screen Illustration */}
+                        <div className="relative group transition-all duration-500 hover:scale-[1.01]">
+                            <div className="absolute -inset-4 rounded-[40px] opacity-25 blur-3xl group-hover:opacity-45 transition-opacity duration-300 pointer-events-none" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
+                            <div className="relative rounded-[36px] overflow-hidden border bg-white p-4 shadow-[0_32px_60px_-15px_rgba(15,23,42,0.03)]" style={{ borderColor: "var(--brand-100)" }}>
+                                <img
+                                    src="/uploads/health_comparison_exact.png"
+                                    alt="Emergency Without Insurance vs Covered by Policymine"
+                                    className="w-full object-cover rounded-2xl border shadow-sm"
+                                    style={{ borderColor: "var(--brand-light)", aspectRatio: "1/1" }}
+                                />
                             </div>
                         </div>
 
@@ -249,6 +254,9 @@ export default async function HealthHubPage() {
 
                 </div>
             </section>
+
+
+
         </div>
     )
 }

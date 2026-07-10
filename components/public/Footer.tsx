@@ -29,7 +29,7 @@ const LINKS = {
         { label: "About Us", href: "/about" },
         { label: "Claim Support", href: "/claims" },
         { label: "Careers Hub", href: "/careers" },
-        { label: "Book Free Call", href: "/contact" },
+        { label: "Book a Free Call", href: "/contact" },
     ],
 }
 
@@ -152,7 +152,7 @@ export default function PublicFooter() {
                                 }}
                             >
                                 <Phone className="w-4 h-4" />
-                                Book Free Call
+                                Book a Free Call
                                 <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
                             </Link>
                             <a

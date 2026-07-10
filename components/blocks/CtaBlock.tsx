@@ -8,7 +8,7 @@ import { motion } from "framer-motion"
 export default function CtaBlock({ data, isHome = false }: { data: CtaBlockData, isHome?: boolean }) {
     const primaryCtaText = (data.bookCallText && data.bookCallText !== "Compare Plans" && data.bookCallText !== "Book a Free Call" && data.bookCallText !== "Book Free Call")
         ? data.bookCallText
-        : "Book Free Advisory Call";
+        : "Book a Free Advisory Call";
 
     // Motion variants
     const containerVariants = {

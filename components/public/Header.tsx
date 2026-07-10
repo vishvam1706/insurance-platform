@@ -225,7 +225,7 @@ export default function PublicHeader() {
                     style={{ background: "linear-gradient(135deg,#059669 0%,#0d9488 100%)" }}
                 >
                     <Phone className="w-3.5 h-3.5 shrink-0" />
-                    Book a Free Call
+                    Book a Free Consultation
                 </Link>
 
                 {/* Mobile hamburger */}

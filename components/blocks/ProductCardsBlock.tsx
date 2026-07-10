@@ -2,6 +2,7 @@
 
 import { ProductCardsBlockData } from "@/types/blocks"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import {
     Shield, Heart, TrendingUp, Umbrella,
     GraduationCap, Briefcase, ArrowRight, Sparkles, Check
@@ -15,6 +16,15 @@ const ICON_MAP: Record<string, React.ReactNode> = {
     retirement: <Umbrella className="w-5 h-5" />,
     child: <GraduationCap className="w-5 h-5" />,
     business: <Briefcase className="w-5 h-5" />,
+}
+
+const DEFAULT_IMAGES: Record<string, string> = {
+    term: "/uploads/card_term_insurance.png",
+    health: "/uploads/card_health_insurance.png",
+    wealth: "/uploads/card_wealth_plans.png",
+    retirement: "/uploads/card_retirement.png",
+    child: "/uploads/card_child_future.png",
+    business: "/uploads/card_business_keyman.png",
 }
 
 const getIconKey = (href = "", title = "") => {
@@ -32,10 +42,14 @@ const THEMES: Record<string, {
     badge: string; cta: string
     icon: string; badgeCls: string; accentBar: string
     topBar: string; checkIcon: string; arrow: string
-    features: string[]
+    features: { label: string; href?: string }[]
+    titleOverride?: string
+    sortOrder: number
 }> = {
     term: {
         badge: "Best for Family Protection", cta: "Explore Term Cover",
+        titleOverride: "Pure Protection (Term Insurance)",
+        sortOrder: 1,
         icon: "text-orange-600 bg-orange-50 border-orange-200",
         badgeCls: "text-orange-700 bg-orange-50 border-orange-200",
         accentBar: "bg-orange-500",
@@ -43,13 +57,14 @@ const THEMES: Record<string, {
         checkIcon: "text-orange-600 bg-orange-50 border-orange-200",
         arrow: "group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white",
         features: [
-            "99.6% Claim Settlement Ratio — industry-leading",
-            "Return of premium at age 60 — zero-cost exit",
-            "10×–15× annual income pure life cover"
+            { label: "Sudden death — family gets full sum assured instantly", href: "/term-life/sudden-death" },
+            { label: "Return of premium at age 60 — zero-cost exit" },
+            { label: "10×–15× annual income pure life cover" }
         ]
     },
     health: {
         badge: "Best for Medical Costs", cta: "Explore Health Cover",
+        sortOrder: 2,
         icon: "text-orange-600 bg-orange-50 border-orange-200",
         badgeCls: "text-orange-700 bg-orange-50 border-orange-200",
         accentBar: "bg-orange-500",
@@ -57,27 +72,14 @@ const THEMES: Record<string, {
         checkIcon: "text-orange-600 bg-orange-50 border-orange-200",
         arrow: "group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white",
         features: [
-            "13,000+ cashless hospitals nationwide",
-            "No room rent caps or co-payments",
-            "Pre-existing illnesses covered in 2 years"
-        ]
-    },
-    wealth: {
-        badge: "Best for Wealth Creation", cta: "Explore Wealth Plans",
-        icon: "text-orange-600 bg-orange-50 border-orange-200",
-        badgeCls: "text-orange-700 bg-orange-50 border-orange-200",
-        accentBar: "bg-orange-500",
-        topBar: "bg-orange-500",
-        checkIcon: "text-orange-600 bg-orange-50 border-orange-200",
-        arrow: "group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white",
-        features: [
-            "Tax-free wealth growth + active life cover",
-            "Multi-cap & index fund market-linked growth",
-            "Maturity fully exempt under Sec 10(10D)"
+            { label: "Fear of leaving family with medical debt — fully covered", href: "/health/fear-of-leaving" },
+            { label: "No room rent caps or co-payments" },
+            { label: "Pre-existing illnesses covered in 2 years" }
         ]
     },
     retirement: {
         badge: "Best for Structured Income", cta: "Explore Retirement Plans",
+        sortOrder: 3,
         icon: "text-orange-600 bg-orange-50 border-orange-200",
         badgeCls: "text-orange-700 bg-orange-50 border-orange-200",
         accentBar: "bg-orange-500",
@@ -85,13 +87,14 @@ const THEMES: Record<string, {
         checkIcon: "text-orange-600 bg-orange-50 border-orange-200",
         arrow: "group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white",
         features: [
-            "Guaranteed stable monthly income for life",
-            "Compounding corpus with inflation shielding",
-            "Immediate & deferred annuity structures"
+            { label: "Fear of living too long — guaranteed income for life" },
+            { label: "Compounding corpus with inflation shielding" },
+            { label: "Immediate & deferred annuity structures" }
         ]
     },
     child: {
         badge: "Best for Kids Education", cta: "Explore Child Plans",
+        sortOrder: 4,
         icon: "text-orange-600 bg-orange-50 border-orange-200",
         badgeCls: "text-orange-700 bg-orange-50 border-orange-200",
         accentBar: "bg-orange-500",
@@ -99,13 +102,30 @@ const THEMES: Record<string, {
         checkIcon: "text-orange-600 bg-orange-50 border-orange-200",
         arrow: "group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white",
         features: [
-            "Insurer pays remaining premium on parent's death",
-            "Milestone payouts for higher education goals",
-            "Built for school & college fee inflation"
+            { label: "Insurer pays remaining premium on parent's death" },
+            { label: "Milestone payouts for higher education goals" },
+            { label: "Built for school & college fee inflation" }
+        ]
+    },
+    wealth: {
+        badge: "Best for Wealth Creation", cta: "Explore Wealth Plans",
+        sortOrder: 5,
+        icon: "text-orange-600 bg-orange-50 border-orange-200",
+        badgeCls: "text-orange-700 bg-orange-50 border-orange-200",
+        accentBar: "bg-orange-500",
+        topBar: "bg-orange-500",
+        checkIcon: "text-orange-600 bg-orange-50 border-orange-200",
+        arrow: "group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white",
+        features: [
+            { label: "Tax-free wealth growth + active life cover" },
+            { label: "Multi-cap & index fund market-linked growth" },
+            { label: "Maturity fully exempt under Sec 10(10D)" }
         ]
     },
     business: {
         badge: "Best for Business Risk", cta: "Explore Business Cover",
+        titleOverride: "Business & Keyman Insurance",
+        sortOrder: 6,
         icon: "text-orange-600 bg-orange-50 border-orange-200",
         badgeCls: "text-orange-700 bg-orange-50 border-orange-200",
         accentBar: "bg-orange-500",
@@ -113,9 +133,9 @@ const THEMES: Record<string, {
         checkIcon: "text-orange-600 bg-orange-50 border-orange-200",
         arrow: "group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white",
         features: [
-            "Premiums deductible as business expenses",
-            "Keyman cover for essential team members",
-            "Safeguards partnership & asset liability"
+            { label: "Premiums deductible as business expenses" },
+            { label: "Keyman cover for essential team members" },
+            { label: "Safeguards partnership & asset liability" }
         ]
     },
 }
@@ -133,6 +153,7 @@ const cardVariants = {
 } as const
 
 export default function ProductCardsBlock({ data }: { data: ProductCardsBlockData; isHome?: boolean }) {
+    const router = useRouter()
     const cards = data.cards || []
 
     return (
@@ -166,38 +187,57 @@ export default function ProductCardsBlock({ data }: { data: ProductCardsBlockDat
                     whileInView="visible"
                     viewport={{ once: true, margin: "-60px" }}
                 >
-                    {cards.map((card: any, i: number) => {
+                    {[...cards].sort((a: any, b: any) => {
+                        const keyA = getIconKey(a.href, a.title)
+                        const keyB = getIconKey(b.href, b.title)
+                        const orderA = (THEMES[keyA] ?? DEFAULT_THEME).sortOrder
+                        const orderB = (THEMES[keyB] ?? DEFAULT_THEME).sortOrder
+                        return orderA - orderB
+                    }).map((card: any, i: number) => {
                         const key = getIconKey(card.href, card.title)
                         const icon = ICON_MAP[key]
                         const theme = THEMES[key] ?? DEFAULT_THEME
                         const badge = card.badge || theme.badge
                         const label = card.ctaText || theme.cta
-                        const isPhoto = !!card.imageUrl
+                        const resolvedImage = card.imageUrl || DEFAULT_IMAGES[key]
+                        const isPhoto = !!resolvedImage
+                        const displayTitle = theme.titleOverride || card.title
 
                         return (
                             <motion.div key={i} variants={cardVariants}>
-                                <Link
-                                    href={card.href || "#"}
-                                    className="group relative rounded-[24px] overflow-hidden border border-slate-200 bg-white flex flex-col min-h-[390px] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-slate-200/80 hover:border-slate-300 block animate-border-card"
+                                <div
+                                    role="link"
+                                    tabIndex={0}
+                                    onClick={() => router.push(card.href || "#")}
+                                    onKeyDown={(e) => e.key === "Enter" && router.push(card.href || "#")}
+                                    className="group relative rounded-[24px] overflow-hidden border border-slate-200 bg-white flex flex-col min-h-[390px] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-slate-200/80 hover:border-slate-300 cursor-pointer animate-border-card"
                                 >
                                     {/* Coloured top bar */}
                                     <div className={`h-1 w-full ${theme.topBar} rounded-t-[23px] shrink-0`} />
 
                                     {/* Image or Icon header */}
                                     {isPhoto ? (
-                                        <div className="relative w-full h-[145px] overflow-hidden bg-slate-100 rounded-t-[23px] shrink-0">
+                                        <div className="relative w-full h-[155px] overflow-hidden shrink-0">
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
-                                                src={card.imageUrl}
+                                                src={resolvedImage}
                                                 alt={card.title}
                                                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                             />
-                                            {/* Badge overlay */}
-                                            <div className="absolute top-3.5 left-3.5 z-10">
-                                                <span className={`inline-flex items-center gap-1 text-[9px] font-black px-2.5 py-1 rounded-full border uppercase tracking-wider ${theme.badgeCls}`}>
+                                            {/* Gradient fade into card body */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent pointer-events-none" />
+                                            {/* Badge overlay — frosted glass */}
+                                            <div className="absolute top-3 left-3 z-10">
+                                                <span className="inline-flex items-center gap-1 text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider bg-white/85 backdrop-blur-sm text-orange-700 border border-orange-200 shadow-sm">
                                                     <Sparkles className="w-2.5 h-2.5" />
                                                     {badge}
                                                 </span>
+                                            </div>
+                                            {/* Icon pill — bottom right */}
+                                            <div className="absolute bottom-3 right-3 z-10">
+                                                <div className={`w-9 h-9 rounded-xl flex items-center justify-center border shadow-md bg-white/90 backdrop-blur-sm ${theme.icon}`}>
+                                                    {icon}
+                                                </div>
                                             </div>
                                         </div>
                                     ) : (
@@ -218,7 +258,7 @@ export default function ProductCardsBlock({ data }: { data: ProductCardsBlockDat
                                         {/* Title + desc */}
                                         <div className="space-y-1.5">
                                             <h3 className="text-[18px] font-black text-slate-900 tracking-tight leading-snug">
-                                                {card.title}
+                                                {displayTitle}
                                             </h3>
                                             <p className="text-slate-500 text-[12.5px] font-medium leading-relaxed line-clamp-2">
                                                 {card.desc}
@@ -235,7 +275,17 @@ export default function ProductCardsBlock({ data }: { data: ProductCardsBlockDat
                                                     <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${theme.checkIcon}`}>
                                                         <Check className="w-2.5 h-2.5 stroke-[3px]" />
                                                     </div>
-                                                    <span className="text-[11.5px] font-semibold text-slate-600 leading-relaxed">{feat}</span>
+                                                    {feat.href ? (
+                                                        <Link
+                                                            href={feat.href}
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            className="text-[11.5px] font-semibold text-orange-600 leading-relaxed underline underline-offset-2 decoration-orange-300 hover:text-orange-700 hover:decoration-orange-500 transition-colors duration-150"
+                                                        >
+                                                            {feat.label}
+                                                        </Link>
+                                                    ) : (
+                                                        <span className="text-[11.5px] font-semibold text-slate-600 leading-relaxed">{feat.label}</span>
+                                                    )}
                                                 </li>
                                             ))}
                                         </ul>
@@ -252,7 +302,7 @@ export default function ProductCardsBlock({ data }: { data: ProductCardsBlockDat
                                             </div>
                                         </div>
                                     </div>
-                                </Link>
+                                </div>
                             </motion.div>
                         )
                     })}

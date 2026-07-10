@@ -18,6 +18,10 @@ export interface InquiryDocument extends Document {
     pincode: string
     preferredSlot?: string
     message?: string
+    dob?: string
+    whoFor?: string
+    healthRating?: string
+    healthNote?: string
     status: InquiryStatus
     notes?: string
     assignedTo?: mongoose.Types.ObjectId
@@ -33,7 +37,7 @@ const InquirySchema = new Schema<InquiryDocument>(
         email: { type: String, required: true, lowercase: true, trim: true },
         insuranceType: {
             type: String,
-            enum: ["term", "health"],
+            enum: ["term", "health", "retirement", "child", "wealth", "business"],
             required: true,
         },
         state: { type: String, required: true, trim: true },
@@ -41,6 +45,10 @@ const InquirySchema = new Schema<InquiryDocument>(
         pincode: { type: String, required: true, trim: true },
         preferredSlot: { type: String },
         message: { type: String, trim: true },
+        dob: { type: String, trim: true },
+        whoFor: { type: String, enum: ["self", "family", ""], trim: true },
+        healthRating: { type: String, enum: ["healthy", "medium", "notgood", "poor", ""], trim: true },
+        healthNote: { type: String, trim: true },
         status: {
             type: String,
             enum: ["new", "contacted", "resolved", "not_reachable"],

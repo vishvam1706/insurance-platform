@@ -24,7 +24,7 @@ export default function HomeTrust({ data }: { data: HomeTrustBlockData }) {
             <div className="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-12 lg:gap-16 items-start">
                     
-                    {/* Left Sticky Sidebar */}
+                    {/* Left Sticky Sidebar — Full Photo */}
                     <div className="lg:sticky lg:top-24 space-y-6">
                         <div className="space-y-4 text-left">
                             <div className="flex items-center gap-3">
@@ -41,36 +41,22 @@ export default function HomeTrust({ data }: { data: HomeTrustBlockData }) {
                             )}
                         </div>
 
-                        {/* Interactive Verification Badge */}
-                        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-[0_4px_20px_rgba(15,23,42,0.02)] flex items-start gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
-                                <ShieldCheck className="w-5 h-5 text-orange-500" />
-                            </div>
-                            <div className="text-left">
-                                <p className="text-xs font-black uppercase tracking-widest text-orange-600 font-heading">
-                                    Certified Advisors
-                                </p>
-                                <p className="text-xs text-slate-600 font-semibold mt-1 leading-relaxed font-body">
-                                    Operating with complete compliance under direct regulatory frameworks.
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Advisor Trust Callout with photo */}
-                        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-[0_4px_20px_rgba(15,23,42,0.02)] flex items-center gap-4">
+                        {/* Full Photo */}
+                        <div className="relative rounded-3xl overflow-hidden shadow-2xl" style={{ aspectRatio: "4/5" }}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                                src={data.advisorImage || "/images/person2.png"}
-                                alt="Expert Advisor"
-                                className="w-12 h-12 rounded-full object-cover object-center bg-slate-100 border border-slate-200 shadow-xs shrink-0 animate-pulse"
+                                src="/uploads/trust_section_advisor.png"
+                                alt="Trusted Insurance Advisors"
+                                className="w-full h-full object-cover object-center"
                             />
-                            <div className="text-left">
-                                <p className="text-xs font-bold text-slate-900 font-heading">
-                                    {data.advisorTitle || "Confused about coverage?"}
-                                </p>
-                                <p className="text-[11px] text-slate-600 font-semibold leading-normal mt-0.5 font-body">
-                                    {data.advisorText || "Talk to MS Bhati or any certified advisor for free. No spam, ever."}
-                                </p>
+                            {/* Gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent pointer-events-none" />
+                            {/* Floating badge */}
+                            <div className="absolute bottom-5 left-5 right-5">
+                                <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-2.5 shadow-lg border border-white/50">
+                                    <ShieldCheck className="w-4 h-4 text-orange-500 shrink-0" />
+                                    <span className="text-xs font-bold text-slate-800">Certified Insurance Advisors</span>
+                                </div>
                             </div>
                         </div>
                     </div>

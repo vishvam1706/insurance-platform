@@ -35,6 +35,7 @@ import ChoosepolicymineCtaBlock from "../home/ChoosePmPartnersCta"
 import HomeGuidance from "../home/HomeGuidance"
 import HomeTrust from "../home/HomeTrust"
 import HomeUnderstanding from "../home/HomeUnderstanding"
+import HomeVideoSection from "../home/HomeVideoSection"
 import HomeProcess from "../home/HomeProcess"
 
 const HOMEPAGE_BLOCKS = new Set([
@@ -48,7 +49,8 @@ const HOMEPAGE_BLOCKS = new Set([
     "home_guidance",
     "home_trust",
     "home_understanding",
-    "home_process"
+    "home_process",
+    "home_video_section",
 ])
 
 export default function PageRenderer({ blocks, isHome = false }: { blocks: Block[], isHome?: boolean }) {
@@ -100,6 +102,7 @@ export default function PageRenderer({ blocks, isHome = false }: { blocks: Block
                     case "home_trust": rendered = <HomeTrust data={d} />; break
                     case "home_understanding": rendered = <HomeUnderstanding data={d} />; break
                     case "home_process": rendered = <HomeProcess data={d} />; break
+                    case "home_video_section": rendered = <HomeVideoSection />; break
                     default: rendered = null
                 }
 

@@ -1,10 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
-import { Plus, Minus, HelpCircle, Star, PhoneCall, ShieldCheck, Search, Sparkles, ArrowRight } from "lucide-react"
+import { Plus, Minus, HelpCircle, ShieldCheck, Search } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import Link from "next/link"
 
 interface FaqItem { q: string; a: string }
 
@@ -52,12 +50,6 @@ export default function HomeFaq({ items }: Props = {}) {
     function toggle(idx: number) { setOpenIndex(prev => prev === idx ? null : idx) }
     function goToPage(p: number) { setPage(p); setOpenIndex(0) }
 
-    const TRUST_ITEMS = [
-        { icon: <Star className="w-3.5 h-3.5 text-amber-500" />, iconBg: "bg-amber-50 border-amber-200", label: "Highly Rated", sub: "22,000+ reviews" },
-        { icon: <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />, iconBg: "bg-emerald-50 border-emerald-200", label: "100% Free", sub: "No consultation fees" },
-        { icon: <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />, iconBg: "bg-blue-50 border-blue-200", label: "Safe & Secure", sub: "Encrypted & protected" },
-    ]
-
     return (
         <section className="relative overflow-hidden py-16 sm:py-24 bg-slate-50 border-t border-slate-100">
 
@@ -84,68 +76,28 @@ export default function HomeFaq({ items }: Props = {}) {
                 {/* ── Main Grid ── */}
                 <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-10 items-start">
 
-                    {/* ── Left: Compact Trust Panel ── */}
-                    <div className="flex flex-col gap-3 lg:sticky lg:top-24">
-
-                        {/* Advisor image — compact aspect ratio */}
-                        <div className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
-                            <div className="relative w-full aspect-[3/2]">
-                                <Image
-                                    src="/uploads/faq_advisor.png"
-                                    alt="Policymine Advisor"
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                            <div className="px-3.5 py-3 border-t border-slate-100">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-orange-500 mb-0.5">Your Advisor</p>
-                                <p className="text-[13px] font-extrabold text-slate-900 leading-snug">Here to help — not sell.</p>
-                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">Real people. Zero pressure.</p>
-                            </div>
-                        </div>
-
-                        {/* Trust items — ultra compact */}
-                        {TRUST_ITEMS.map((s, i) => (
-                            <div
-                                key={i}
-                                className="rounded-xl p-3 flex items-center gap-3 bg-white border border-slate-200 hover:border-slate-300 transition-all duration-200"
-                            >
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border ${s.iconBg}`}>
-                                    {s.icon}
-                                </div>
-                                <div>
-                                    <p className="text-[12.5px] font-extrabold text-slate-900 leading-none">{s.label}</p>
-                                    <p className="text-[10.5px] text-slate-500 font-medium mt-0.5">{s.sub}</p>
+                    {/* ── Left: Full Photo Panel ── */}
+                    <div className="lg:sticky lg:top-24">
+                        <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-orange-100" style={{ aspectRatio: "4/5" }}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                src="/uploads/faq_left_panel.png"
+                                alt="Policymine advisor helping a couple"
+                                className="w-full h-full object-cover"
+                            />
+                            {/* Gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent pointer-events-none" />
+                            {/* Floating badge */}
+                            <div className="absolute bottom-5 left-5 right-5">
+                                <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-2.5 shadow-lg border border-white/50 w-full">
+                                    <ShieldCheck className="w-4 h-4 text-orange-500 shrink-0" />
+                                    <div>
+                                        <p className="text-xs font-black text-slate-900 leading-none">Here to help — not sell</p>
+                                        <p className="text-[10px] font-semibold text-slate-500 mt-0.5">Free consultation · No spam · Ever</p>
+                                    </div>
                                 </div>
                             </div>
-                        ))}
-
-                        {/* Spam-free — compact */}
-                        <div className="rounded-xl bg-orange-50 border border-orange-200 p-3.5 flex items-start gap-2.5">
-                            <div className="w-7 h-7 rounded-lg bg-white border border-orange-200 flex items-center justify-center shrink-0 mt-0.5">
-                                <Sparkles className="w-3.5 h-3.5 text-orange-500" />
-                            </div>
-                            <div>
-                                <p className="text-[12px] font-extrabold text-slate-900 leading-none">Spam-Free Promise</p>
-                                <p className="text-[11px] text-slate-600 font-medium mt-1 leading-relaxed">
-                                    We never call unless you ask — ever.
-                                </p>
-                            </div>
                         </div>
-
-                        {/* CTA */}
-                        <Link
-                            href="/contact"
-                            className="rounded-xl bg-slate-900 hover:bg-slate-800 p-3.5 flex items-center justify-between gap-3 transition-colors group"
-                        >
-                            <div>
-                                <p className="text-[13px] font-extrabold text-white leading-none">Still have questions?</p>
-                                <p className="text-[11px] text-slate-400 font-medium mt-0.5">Talk to an advisor — free.</p>
-                            </div>
-                            <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center shrink-0 group-hover:bg-orange-400 transition-colors">
-                                <ArrowRight className="w-3.5 h-3.5 text-white" />
-                            </div>
-                        </Link>
                     </div>
 
                     {/* ── Right: Search + Accordion + Pagination ── */}

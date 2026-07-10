@@ -1,4 +1,4 @@
-﻿export type BlockType =
+export type BlockType =
     | "hero"
     | "rich_text"
     | "image_block"
@@ -35,6 +35,7 @@
     | "home_trust"
     | "home_understanding"
     | "home_process"
+    | "home_video_section"
 
 export interface Block {
     id: string

@@ -124,7 +124,7 @@ export default function ChoosepolicymineCta({ waUrl }: Props) {
                             }}
                         >
                             <CalendarDays className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
-                            Schedule Free Consultation
+                            Schedule a Free Consultation
                         </Link>
 
                         {/* WhatsApp outlined */}

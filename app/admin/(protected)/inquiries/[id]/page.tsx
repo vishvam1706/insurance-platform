@@ -6,10 +6,30 @@ import { getAuthUser } from "@/lib/auth"
 import { formatDateTime } from "@/lib/utils"
 import InquiryStatusBadge from "@/components/admin/InquiryStatusBadge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Phone, Mail, MapPin, Calendar, ArrowLeft } from "lucide-react"
+import {
+    Phone, Mail, MapPin, Calendar, ArrowLeft,
+    User, Heart, Baby, Briefcase, TrendingUp, Umbrella, Shield,
+    Cake, Users, Activity, FileText
+} from "lucide-react"
 import Link from "next/link"
 
 export const metadata: Metadata = { title: "Inquiry Detail" }
+
+const INSURANCE_LABEL: Record<string, { label: string; icon: React.ReactNode }> = {
+    term:       { label: "Pure Protection (Term Insurance)",     icon: <Shield className="w-4 h-4 text-orange-500" /> },
+    health:     { label: "Health Insurance",                     icon: <Heart className="w-4 h-4 text-red-500" /> },
+    retirement: { label: "Retirement Planning",                  icon: <Umbrella className="w-4 h-4 text-blue-500" /> },
+    child:      { label: "Child Future Planning",                icon: <Baby className="w-4 h-4 text-purple-500" /> },
+    wealth:     { label: "Investment & Wealth Plans",            icon: <TrendingUp className="w-4 h-4 text-emerald-500" /> },
+    business:   { label: "Business & Keyman Insurance",          icon: <Briefcase className="w-4 h-4 text-amber-500" /> },
+}
+
+const HEALTH_LABEL: Record<string, { label: string; color: string }> = {
+    healthy: { label: "Healthy",  color: "text-emerald-700 bg-emerald-50 border-emerald-200" },
+    medium:  { label: "Medium",   color: "text-amber-700 bg-amber-50 border-amber-200" },
+    notgood: { label: "Not Good", color: "text-orange-700 bg-orange-50 border-orange-200" },
+    poor:    { label: "Poor",     color: "text-red-700 bg-red-50 border-red-200" },
+}
 
 export default async function InquiryDetailPage({
     params,
@@ -28,7 +48,6 @@ export default async function InquiryDetailPage({
 
     if (!inquiry) notFound()
 
-    // Serialize BSON types (ObjectId, Date) to plain strings
     const inq = JSON.parse(JSON.stringify(inquiry)) as any
 
     // Employee guard
@@ -38,27 +57,23 @@ export default async function InquiryDetailPage({
         if (dbUser) {
             let hasAccess = false
             if (dbUser.pincodes && dbUser.pincodes.length > 0) {
-                if (dbUser.pincodes.includes(inq.pincode)) {
-                    hasAccess = true
-                }
+                if (dbUser.pincodes.includes(inq.pincode)) hasAccess = true
             }
-
             const stateFilter = dbUser.states && dbUser.states.length > 0 ? dbUser.states : (dbUser.state ? [dbUser.state] : [])
             const langFilter = dbUser.languages && dbUser.languages.length > 0 ? dbUser.languages : (dbUser.language ? [dbUser.language] : [])
-
             if (!hasAccess && (stateFilter.length > 0 || langFilter.length > 0)) {
                 const stateMatch = stateFilter.length > 0 ? stateFilter.includes(inq.state) : true
                 const langMatch = langFilter.length > 0 ? langFilter.includes(inq.language) : true
-                if (stateMatch && langMatch) {
-                    hasAccess = true
-                }
+                if (stateMatch && langMatch) hasAccess = true
             }
-
             if (!hasAccess) notFound()
         } else {
             notFound()
         }
     }
+
+    const insuranceMeta = INSURANCE_LABEL[inq.insuranceType] ?? { label: inq.insuranceType, icon: <Shield className="w-4 h-4" /> }
+    const healthMeta = inq.healthRating ? HEALTH_LABEL[inq.healthRating] : null
 
     return (
         <div className="space-y-6 max-w-2xl pt-3 sm:pt-5 lg:pt-6">
@@ -84,24 +99,95 @@ export default async function InquiryDetailPage({
                 </div>
             </div>
 
+            {/* ── Contact Information ── */}
             <Card className="border border-slate-200">
                 <CardHeader>
                     <CardTitle className="text-base">Contact Information</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <Row icon={<Phone className="w-4 h-4" />} label="Phone" value={inq.phone} />
-                    <Row icon={<Mail className="w-4 h-4" />} label="Email" value={inq.email} />
+                    <Row icon={<Mail className="w-4 h-4" />} label="Email" value={inq.email || "—"} />
                     <Row icon={<MapPin className="w-4 h-4" />} label="State, Language & Pincode" value={`${inq.state} · ${inq.language} · ${inq.pincode}`} />
-                    <Row icon={<Calendar className="w-4 h-4" />} label="Insurance Type" value={inq.insuranceType === "term" ? "Term Life" : "Health"} />
-                    {inq.preferredSlot && (
-                        <Row icon={<Calendar className="w-4 h-4" />} label="Preferred Slot" value={inq.preferredSlot} />
+                    {inq.dob && (
+                        <Row icon={<Cake className="w-4 h-4" />} label="Date of Birth" value={inq.dob} />
                     )}
                 </CardContent>
             </Card>
 
+            {/* ── Policy Preferences ── */}
+            <Card className="border border-slate-200">
+                <CardHeader>
+                    <CardTitle className="text-base">Policy Preferences</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+
+                    {/* Insurance Type */}
+                    <div className="flex items-start gap-3">
+                        <span className="text-slate-400 mt-0.5">{insuranceMeta.icon}</span>
+                        <div>
+                            <p className="text-xs text-slate-500 font-medium">Insurance Type</p>
+                            <p className="text-sm text-slate-900 font-semibold">{insuranceMeta.label}</p>
+                        </div>
+                    </div>
+
+                    {/* Who For */}
+                    {inq.whoFor && (
+                        <div className="flex items-start gap-3">
+                            <span className="text-slate-400 mt-0.5">
+                                {inq.whoFor === "family" ? <Users className="w-4 h-4" /> : <User className="w-4 h-4" />}
+                            </span>
+                            <div>
+                                <p className="text-xs text-slate-500 font-medium">Who Is This For?</p>
+                                <p className="text-sm text-slate-900 font-semibold capitalize">{inq.whoFor === "self" ? "Yourself" : "Family"}</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Health Rating */}
+                    {inq.healthRating && healthMeta && (
+                        <div className="flex items-start gap-3">
+                            <span className="text-slate-400 mt-0.5"><Activity className="w-4 h-4" /></span>
+                            <div>
+                                <p className="text-xs text-slate-500 font-medium">Health Rating</p>
+                                <span className={`inline-block mt-0.5 text-xs font-bold px-2.5 py-1 rounded-full border ${healthMeta.color}`}>
+                                    {healthMeta.label}
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Health Note (shown only if Poor) */}
+                    {inq.healthNote && (
+                        <div className="flex items-start gap-3">
+                            <span className="text-slate-400 mt-0.5"><FileText className="w-4 h-4" /></span>
+                            <div>
+                                <p className="text-xs text-slate-500 font-medium">Health Condition Details</p>
+                                <p className="text-sm text-slate-900 mt-0.5 bg-red-50 border border-red-100 rounded-xl p-3 leading-relaxed">{inq.healthNote}</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Preferred Slot */}
+                    {inq.preferredSlot && (
+                        <Row icon={<Calendar className="w-4 h-4" />} label="Preferred Call Slot" value={inq.preferredSlot} />
+                    )}
+                </CardContent>
+            </Card>
+
+            {/* ── Message ── */}
+            {inq.message && (
+                <Card className="border border-slate-200">
+                    <CardHeader><CardTitle className="text-base">Message from Client</CardTitle></CardHeader>
+                    <CardContent>
+                        <p className="text-sm text-slate-700 whitespace-pre-wrap">{inq.message}</p>
+                    </CardContent>
+                </Card>
+            )}
+
+            {/* ── Advisor Notes ── */}
             {inq.notes && (
                 <Card className="border border-slate-200">
-                    <CardHeader><CardTitle className="text-base">Notes</CardTitle></CardHeader>
+                    <CardHeader><CardTitle className="text-base">Advisor Notes</CardTitle></CardHeader>
                     <CardContent>
                         <p className="text-sm text-slate-700 whitespace-pre-wrap">{inq.notes}</p>
                     </CardContent>

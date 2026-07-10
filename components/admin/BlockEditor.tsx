@@ -94,6 +94,7 @@ const BLOCK_META: Record<BlockType, { label: string; color: string; defaultData:
     home_trust: { label: "Home Trust", color: "bg-green-100 text-green-800", defaultData: { title: "Why Customers Trust Policymine", items: [] } },
     home_understanding: { label: "Home Understanding", color: "bg-cyan-100 text-cyan-800", defaultData: { title: "Insurance Should Be Understood — Not Just Purchased", subtitle: "", items: [] } },
     home_process: { label: "Home Process", color: "bg-emerald-100 text-emerald-800", defaultData: { title: "Simple, Transparent & Guided Process", subtitle: "", steps: [] } },
+    home_video_section: { label: "Home Video Section", color: "bg-orange-100 text-orange-700", defaultData: {} },
 }
 
 // Render the right editor for a block type
@@ -136,6 +137,7 @@ function BlockEditorSwitch({ block, onChange }: { block: Block; onChange: (data:
         case "home_trust": return <HomeTrustEditor data={d as any} onChange={onChange as any} />
         case "home_understanding": return <HomeUnderstandingEditor data={d as any} onChange={onChange as any} />
         case "home_process": return <HomeProcessEditor data={d as any} onChange={onChange as any} />
+        case "home_video_section": return <p className="text-xs text-slate-500 p-3 bg-orange-50 rounded-lg border border-orange-100">🎬 <strong>Home Video Section</strong> — Edit the content (thumbnails, YouTube links, titles) via <strong>CMS → Video Section</strong> editor. This block controls the position only.</p>
         default: return <p className="text-xs text-slate-400">Unknown block type: {block.type}</p>
     }
 }
@@ -382,7 +384,7 @@ const BLOCK_GROUPS: { label: string; types: BlockType[] }[] = [
     { label: "Tables", types: ["features_table", "comparison_table", "pros_cons_table", "plans_table", "insurer_metrics", "policy_features_list", "real_example_comparison"] },
     { label: "Interactive", types: ["insurer_selector", "calculator_embed", "frequently_compared"] },
     { label: "Social & CTAs", types: ["reviews", "cta_block", "faq"] },
-    { label: "Homepage", types: ["home_hero", "product_cards", "policymine_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_policymine_cta", "home_guidance", "home_trust", "home_understanding", "home_process"] },
+    { label: "Homepage", types: ["home_hero", "product_cards", "policymine_experience", "comparison_section", "insurance_checklist", "home_faq", "choose_policymine_cta", "home_guidance", "home_trust", "home_understanding", "home_process", "home_video_section"] },
 ]
 
 // Add block picker with outside-click close

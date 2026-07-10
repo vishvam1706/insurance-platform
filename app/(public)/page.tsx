@@ -14,6 +14,7 @@ import TrustSection from "@/components/home/TrustSection"
 import BrandPositioning from "@/components/home/BrandPositioning"
 import AboutSummary from "@/components/home/AboutSummary"
 import HomeHighlights from "@/components/home/HomeHighlights"
+import HomeVideoSection from "@/components/home/HomeVideoSection"
 import { Shield, Heart, ArrowRight, Star, Sparkles, TrendingUp, PiggyBank, GraduationCap, Briefcase } from "lucide-react"
 import Link from "next/link"
 
@@ -78,7 +79,10 @@ export default async function HomePage() {
             {/* 2. TRUST / ACHIEVEMENT SECTION */}
             <TrustSection />
 
-            {/* 3. BRAND POSITIONING */}
+            {/* 3. VIDEO SECTION — Health & Term explainer videos */}
+            <HomeVideoSection />
+
+            {/* 4. BRAND POSITIONING */}
             <BrandPositioning />
 
             {/* 4. WHY CHOOSE Policymine (Checklist / Comparison) */}

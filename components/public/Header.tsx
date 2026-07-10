@@ -181,7 +181,7 @@ export default function PublicHeader() {
             onMouseLeave={startClose}
         >
             {/* ── Top bar ── */}
-            <div className="flex items-center justify-between px-6 sm:px-10 lg:px-16" style={{ height: 80 }}>
+            <div className="flex items-center justify-between px-6 sm:px-10 lg:px-16" style={{ height: 68 }}>
 
                 {/* Logo */}
                 <Link href="/" className="flex items-center shrink-0 group">

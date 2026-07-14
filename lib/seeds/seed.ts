@@ -2123,7 +2123,7 @@ async function seed() {
             { label: "Childhood", image: "/uploads/step_child.png" },
             { label: "Education", image: "/uploads/step_teenager.png" },
             { label: "Career", image: "/uploads/step_young_adult.png" },
-            { label: "Family", image: "/uploads/step_middleage.png" },
+            { label: "Family", image: "/uploads/step_family.png" },
             { label: "Retirement", image: "/uploads/step_elderly.png" },
         ],
         ctaText: "Book Free Consultation",

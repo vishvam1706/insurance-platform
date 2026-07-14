@@ -2,7 +2,8 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
-import { ArrowRight, Heart, Award, CheckCircle2, Phone, Sparkles, BookOpen, Clock, AlertTriangle, HeartHandshake, IndianRupee, Users } from "lucide-react"
+import { ArrowRight, Heart, Award, CheckCircle2, Phone, BookOpen, Clock, AlertTriangle } from "lucide-react"
+import HeroCarousel from "@/components/public/HeroCarousel"
 
 export const revalidate = 1800
 
@@ -10,6 +11,59 @@ export const metadata: Metadata = {
     title: "Health Insurance — Smarter Family Protection | Policymine",
     description: "Learn everything about health insurance in India. Read certified guides on plans, benefits, family coverage, and tax savings. Compare top insurers and consult experts for free.",
 }
+
+const HEALTH_SLIDES = [
+    {
+        tagline: "One hospital bill can erase years of savings. Get Health Insurance today.",
+        image: "/uploads/health_slide_1.png",
+        alt: "One hospital bill can erase years of savings",
+    },
+    {
+        tagline: "Health emergencies don't wait. Neither should your Health Insurance.",
+        image: "/uploads/health_slide_2.png",
+        alt: "Health emergencies don't wait",
+    },
+    {
+        tagline: "Protect your health. Protect your wealth.",
+        image: "/uploads/health_slide_3.png",
+        alt: "Protect your health and wealth",
+    },
+    {
+        tagline: "Don't let medical bills become your biggest illness.",
+        image: "/uploads/health_slide_4.png",
+        alt: "Don't let medical bills become your biggest illness",
+    },
+    {
+        tagline: "Health Insurance today. Financial peace of mind tomorrow.",
+        image: "/uploads/health_slide_5.png",
+        alt: "Health Insurance today, peace of mind tomorrow",
+    },
+    {
+        tagline: "Hospital costs are rising. Be prepared, not surprised.",
+        image: "/uploads/health_slide_6.png",
+        alt: "Hospital costs are rising, be prepared",
+    },
+    {
+        tagline: "Your savings deserve protection too. Buy Health Insurance.",
+        image: "/uploads/health_slide_7.png",
+        alt: "Your savings deserve protection",
+    },
+    {
+        tagline: "Stay covered before life catches you off guard.",
+        image: "/uploads/health_slide_8.png",
+        alt: "Stay covered before life catches you off guard",
+    },
+    {
+        tagline: "A small premium today can save lakhs tomorrow.",
+        image: "/uploads/health_slide_9.png",
+        alt: "A small premium today saves lakhs tomorrow",
+    },
+    {
+        tagline: "Recovery should be your priority—not hospital bills.",
+        image: "/uploads/health_slide_10.png",
+        alt: "Recovery should be your priority, not hospital bills",
+    },
+]
 
 async function getHealthPages() {
     await connectDB()
@@ -33,90 +87,24 @@ export default async function HealthHubPage() {
             <div className="absolute top-12 left-12 w-96 h-96 rounded-full blur-[100px] pointer-events-none opacity-[0.03]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
             <div className="absolute bottom-12 right-12 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none opacity-[0.03]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
 
-            {/* ── Ultra-Modern Editorial Hero ── */}
+            {/* ── Hero Carousel ── */}
             <section className="relative overflow-hidden min-h-[100vh] flex items-center pt-20 pb-20">
                 <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
-                    <div className="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center">
-
-                        {/* Left Column: Modern Glassmorphism & High Contrast Text */}
-                        <div className="text-left space-y-8">
-                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 shadow-[0_2px_10px_rgba(239,68,68,0.05)]">
-                                <span className="flex h-2 w-2 rounded-full bg-red-500 animate-ping" />
-                                <span className="text-[10px] font-black uppercase tracking-wider text-red-700">Crucial Decision Required</span>
-                            </div>
-
-                            <div className="space-y-4">
-                                <h1
-                                    className="text-4xl sm:text-5xl lg:text-[3.85rem] font-extrabold leading-[1.05] text-slate-900 tracking-tight"
-                                    style={{ fontFamily: "var(--font-heading)" }}
-                                >
-                                    Your Ultimate Guide to<br />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500">
-                                        Health Insurance
-                                    </span>
-                                </h1>
-
-                                <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
-                                    A medical emergency shouldn't destroy your life savings. Compare certified plans and protect your family from crushing hospital debt.
-                                </p>
-                            </div>
-
-                            {/* Situation Cards */}
-                            <div className="space-y-4 max-w-xl">
-                                <div className="group relative rounded-2xl bg-white border border-red-100 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_8px_30px_rgba(239,68,68,0.05)]">
-                                    <div className="flex gap-4">
-                                        <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0 border border-red-100">
-                                            <AlertTriangle className="w-5 h-5 text-red-500" />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-sm font-extrabold text-red-800 mb-1">Scenario A: Emergency Without Insurance</h3>
-                                            <p className="text-slate-600 text-xs leading-relaxed">
-                                                Average ICU stays cost <strong className="text-slate-950 font-bold">₹15L+</strong>. Families are forced to sell assets, exhaust life savings, or take high-interest loans during emergencies.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="group relative rounded-2xl bg-white border border-emerald-100 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_8px_30px_rgba(16,185,129,0.05)]">
-                                    <div className="flex gap-4">
-                                        <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100">
-                                            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-sm font-extrabold text-emerald-800 mb-1">Scenario B: Covered by Policymine</h3>
-                                            <p className="text-slate-600 text-xs leading-relaxed">
-                                                100% cashless hospitalization across 13,000+ top hospitals. Zero out-of-pocket room rent limits and complete peace of mind.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="pt-2">
-                                <Link
-                                    href="/contact"
-                                    className="btn-primary inline-flex items-center gap-2.5 rounded-2xl shadow-lg hover:shadow-orange-500/20 transition-all duration-300 px-8 py-3.5"
-                                >
-                                    <Phone className="w-4 h-4 shrink-0" />
-                                    Compare Health Plans
-                                </Link>
-                            </div>
-                        </div>
-
-                        {/* Right Column: Comparative Split-Screen Illustration */}
-                        <div className="relative group transition-all duration-500 hover:scale-[1.01]">
-                            <div className="absolute -inset-4 rounded-[40px] opacity-25 blur-3xl group-hover:opacity-45 transition-opacity duration-300 pointer-events-none" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
-                            <div className="relative rounded-[36px] overflow-hidden border bg-white p-4 shadow-[0_32px_60px_-15px_rgba(15,23,42,0.03)]" style={{ borderColor: "var(--brand-100)" }}>
-                                <img
-                                    src="/uploads/health_comparison_exact.png"
-                                    alt="Emergency Without Insurance vs Covered by Policymine"
-                                    className="w-full object-cover rounded-2xl border shadow-sm"
-                                    style={{ borderColor: "var(--brand-light)", aspectRatio: "1/1" }}
-                                />
-                            </div>
-                        </div>
-
-                    </div>
+                    <HeroCarousel
+                        slides={HEALTH_SLIDES}
+                        ctaHref="/contact"
+                        ctaLabel="Compare Health Plans"
+                        badge="Crucial Decision Required"
+                        title={
+                            <>
+                                Your Ultimate Guide to<br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500">
+                                    Health Insurance
+                                </span>
+                            </>
+                        }
+                        subtitle="A medical emergency shouldn't destroy your life savings. Compare certified plans and protect your family from crushing hospital debt."
+                    />
                 </div>
             </section>
 
@@ -254,8 +242,6 @@ export default async function HealthHubPage() {
 
                 </div>
             </section>
-
-
 
         </div>
     )

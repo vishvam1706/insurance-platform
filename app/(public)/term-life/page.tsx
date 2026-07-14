@@ -2,7 +2,8 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { connectDB } from "@/lib/mongodb"
 import PageContent from "@/lib/models/PageContent"
-import { ArrowRight, Shield, Award, CheckCircle2, Phone, Sparkles, BookOpen, Clock, AlertTriangle, HeartHandshake, IndianRupee, Users } from "lucide-react"
+import { ArrowRight, Shield, Award, CheckCircle2, Phone, BookOpen, Clock, AlertTriangle } from "lucide-react"
+import HeroCarousel from "@/components/public/HeroCarousel"
 
 export const revalidate = 1800 // Cache static page on Edge CDN, revalidate at most every 30 minutes
 
@@ -10,6 +11,59 @@ export const metadata: Metadata = {
     title: "Term Life Insurance — Smarter Family Protection | Policymine",
     description: "Learn how pure term life insurance protects your family at the lowest premium. Read certified guides and consult with expert planners.",
 }
+
+const TERM_SLIDES = [
+    {
+        tagline: "Your family deserves security, even in your absence.",
+        image: "/uploads/term_slide_1.png",
+        alt: "Your family deserves security even in your absence",
+    },
+    {
+        tagline: "Protect your family's future with a Term Plan.",
+        image: "/uploads/term_slide_2.png",
+        alt: "Protect your family's future with a Term Plan",
+    },
+    {
+        tagline: "Life is uncertain. Your family's future shouldn't be.",
+        image: "/uploads/term_slide_3.png",
+        alt: "Life is uncertain, your family's future shouldn't be",
+    },
+    {
+        tagline: "Don't leave your family's future to chance.",
+        image: "/uploads/term_slide_4.png",
+        alt: "Don't leave your family's future to chance",
+    },
+    {
+        tagline: "One decision today. A lifetime of protection for your loved ones.",
+        image: "/uploads/term_slide_5.png",
+        alt: "One decision today, a lifetime of protection",
+    },
+    {
+        tagline: "Love protects. So should you. Get a Term Plan.",
+        image: "/uploads/term_slide_6.png",
+        alt: "Love protects, so should you",
+    },
+    {
+        tagline: "Secure their tomorrow, today.",
+        image: "/uploads/term_slide_7.png",
+        alt: "Secure their tomorrow today",
+    },
+    {
+        tagline: "A small premium. A lifetime of financial security.",
+        image: "/uploads/term_slide_8.png",
+        alt: "A small premium, a lifetime of financial security",
+    },
+    {
+        tagline: "Your income may stop. Your family's needs won't.",
+        image: "/uploads/term_slide_9.png",
+        alt: "Your income may stop, your family's needs won't",
+    },
+    {
+        tagline: "Term Insurance: Because your responsibility doesn't end with you.",
+        image: "/uploads/term_slide_10.png",
+        alt: "Term Insurance, your responsibility doesn't end with you",
+    },
+]
 
 async function getTermPages() {
     await connectDB()
@@ -32,90 +86,26 @@ export default async function TermLifeHubPage() {
             {/* Background mesh gradients */}
             <div className="absolute inset-0 gold-mesh opacity-50 pointer-events-none" />
             <div className="absolute top-12 left-12 w-96 h-96 rounded-full blur-[100px] pointer-events-none opacity-[0.03]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
-            <div className="absolute bottom-12 right-12 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none opacity-[0.03]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />            {/* ── Ultra-Modern Editorial Hero ── */}
+            <div className="absolute bottom-12 right-12 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none opacity-[0.03]" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
+
+            {/* ── Hero Carousel ── */}
             <section className="relative overflow-hidden min-h-[100vh] flex items-center pt-20 pb-20">
                 <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
-                    <div className="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center">
-                        
-                        {/* Left Column: Modern Glassmorphism & High Contrast Text */}
-                        <div className="text-left space-y-8">
-                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 shadow-[0_2px_10px_rgba(239,68,68,0.05)]">
-                                <span className="flex h-2 w-2 rounded-full bg-red-500 animate-ping" />
-                                <span className="text-[10px] font-black uppercase tracking-wider text-red-700">Crucial Decision Required</span>
-                            </div>
-                            
-                            <div className="space-y-4">
-                                <h1
-                                    className="text-4xl sm:text-5xl lg:text-[3.85rem] font-extrabold leading-[1.05] text-slate-900 tracking-tight"
-                                    style={{ fontFamily: "var(--font-heading)" }}
-                                >
-                                    Your Ultimate Guide to<br />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500">
-                                        Term Life Insurance
-                                    </span>
-                                </h1>
-                                
-                                <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-xl font-medium">
-                                    Don't leave your family's future to chance. Compare pure protection term plans and build a bulletproof safety net today.
-                                </p>
-                            </div>
-
-                            {/* Situation Cards */}
-                            <div className="space-y-4 max-w-xl">
-                                <div className="group relative rounded-2xl bg-white border border-red-100 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_8px_30px_rgba(239,68,68,0.05)]">
-                                    <div className="flex gap-4">
-                                        <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0 border border-red-100">
-                                            <AlertTriangle className="w-5 h-5 text-red-500" />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-sm font-extrabold text-red-800 mb-1">Scenario A: Family Without Term Cover</h3>
-                                            <p className="text-slate-600 text-xs leading-relaxed">
-                                                An unexpected sudden death leaves your family vulnerable. Outstanding home loans, credit bills, and lost future income can trigger a severe financial crisis overnight.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="group relative rounded-2xl bg-white border border-emerald-100 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_8px_30px_rgba(16,185,129,0.05)]">
-                                    <div className="flex gap-4">
-                                        <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100">
-                                            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-sm font-extrabold text-emerald-800 mb-1">Scenario B: Covered by Policymine</h3>
-                                            <p className="text-slate-600 text-xs leading-relaxed">
-                                                A guaranteed <strong className="text-slate-950 font-bold">₹1 Cr+</strong> direct tax-free payout to your nominee from just ₹600/month. Rest easy knowing their lifestyle and goals are fully protected.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="pt-2">
-                                <Link 
-                                    href="/contact" 
-                                    className="btn-primary inline-flex items-center gap-2.5 rounded-2xl shadow-lg hover:shadow-orange-500/20 transition-all duration-300 px-8 py-3.5"
-                                >
-                                    <Phone className="w-4 h-4 shrink-0" />
-                                    Compare Term Plans
-                                </Link>
-                            </div>
-                        </div>
-
-                        {/* Right Column: Comparative Split-Screen Illustration */}
-                        <div className="relative group transition-all duration-500 hover:scale-[1.01]">
-                            <div className="absolute -inset-4 rounded-[40px] opacity-25 blur-3xl group-hover:opacity-45 transition-opacity duration-300 pointer-events-none" style={{ background: "radial-gradient(circle, var(--brand) 0%, transparent 70%)" }} />
-                            <div className="relative rounded-[36px] overflow-hidden border bg-white p-4 shadow-[0_32px_60px_-15px_rgba(15,23,42,0.03)]" style={{ borderColor: "var(--brand-100)" }}>
-                                <img
-                                    src="/uploads/term_comparison_exact.png"
-                                    alt="Without Term Insurance vs Covered by Policymine"
-                                    className="w-full object-cover rounded-2xl border shadow-sm"
-                                    style={{ borderColor: "var(--brand-light)", aspectRatio: "1/1" }}
-                                />
-                            </div>
-                        </div>
-
-                    </div>
+                    <HeroCarousel
+                        slides={TERM_SLIDES}
+                        ctaHref="/contact"
+                        ctaLabel="Compare Term Plans"
+                        badge="Crucial Decision Required"
+                        title={
+                            <>
+                                Your Ultimate Guide to<br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500">
+                                    Term Life Insurance
+                                </span>
+                            </>
+                        }
+                        subtitle="Don't leave your family's future to chance. Compare pure protection term plans and build a bulletproof safety net today."
+                    />
                 </div>
             </section>
 
@@ -254,8 +244,6 @@ export default async function TermLifeHubPage() {
 
                 </div>
             </section>
-
-
 
         </div>
     )

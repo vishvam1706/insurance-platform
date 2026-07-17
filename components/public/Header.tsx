@@ -183,10 +183,9 @@ export default function PublicHeader() {
             {/* ── Top bar ── */}
             <div className="flex items-center justify-between px-6 sm:px-10 lg:px-16" style={{ height: 68 }}>
 
-                {/* Logo */}
                 <Link href="/" className="flex items-center shrink-0 group">
-                    <Image src="/logo_final.png" alt="Policymine" width={220} height={64}
-                        className="h-16 w-auto object-contain transition-transform group-hover:scale-[1.02] duration-200" priority />
+                    <Image src="/logo_final.png" alt="Policymine" width={180} height={40}
+                        className="h-10 w-auto object-contain transition-transform group-hover:scale-[1.02] duration-200" priority />
                 </Link>
 
                 {/* Desktop nav pills */}

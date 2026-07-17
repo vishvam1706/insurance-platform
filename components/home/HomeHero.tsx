@@ -83,7 +83,7 @@ export default function HomeHero({ heroData, waUrl }: Props) {
 
     return (
         <section
-            className="relative overflow-hidden flex flex-col h-[calc(100vh-68px)] bg-[radial-gradient(120%_120%_at_50%_0%,#F0F9FF_0%,#FAF5FF_50%,#FFFFFF_100%)]"
+            className="relative overflow-hidden flex flex-col min-h-[calc(100vh-68px)] lg:h-[calc(100vh-68px)] bg-[radial-gradient(120%_120%_at_50%_0%,#F0F9FF_0%,#FAF5FF_50%,#FFFFFF_100%)] pb-4 lg:pb-0"
         >
             {/* Modern decorative background elements */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -173,13 +173,12 @@ export default function HomeHero({ heroData, waUrl }: Props) {
             </div>
 
             {/* ══════════════════════════════════════════
-                BOTTOM — Full-width staircase (desktop)
-                flex-1 so it fills remaining 130vh space
+                BOTTOM — Full-width staircase (responsive scrollable stairs)
+                flex-1 so it fills remaining space
             ══════════════════════════════════════════ */}
-            <div className="hidden lg:flex flex-col justify-end absolute bottom-0 left-0 w-full overflow-hidden z-10 pointer-events-none">
+            <div className="relative mt-auto lg:absolute lg:bottom-0 lg:left-0 w-full overflow-hidden z-10 pointer-events-none pb-4 lg:pb-0">
                 <motion.div
-                    className="flex items-end w-full"
-                    style={{ height: `${staircaseH}px` }}
+                    className="flex items-end w-full h-[240px] lg:h-[496px] overflow-x-auto lg:overflow-x-hidden gap-4 lg:gap-0 px-6 lg:px-0 scrollbar-none snap-x lg:snap-none pointer-events-auto"
                     initial="hidden"
                     animate="visible"
                     variants={{
@@ -189,16 +188,26 @@ export default function HomeHero({ heroData, waUrl }: Props) {
                 >
                     {sortedSteps.map((step, idx) => {
                         const stepIdx = sortedSteps.length - 1 - idx
-                        const stepH = STEP_HEIGHT_PX[stepIdx] ?? 60
-                        const personH = PERSON_HEIGHT_PX[stepIdx] ?? 114
+                        const stepHDesktop = [260, 202, 150, 102, 60][stepIdx] ?? 60
+                        const stepHMobile = [110, 85, 64, 46, 30][stepIdx] ?? 30
+                        
+                        const personHDesktop = [220, 192, 166, 143, 114][stepIdx] ?? 114
+                        const personHMobile = [96, 84, 72, 61, 49][stepIdx] ?? 49
 
                         return (
                             <motion.div
                                 key={idx}
-                                className="relative flex-1 flex flex-col items-center justify-end group pointer-events-auto"
-                                style={{ height: "100%" }}
+                                className="relative flex-shrink-0 lg:flex-shrink w-[130px] sm:w-[150px] lg:w-auto lg:flex-1 flex flex-col items-center justify-end group snap-center pointer-events-auto"
+                                style={{
+                                    height: "100%",
+                                    // Pass heights as CSS custom properties for clean responsive scaling in Tailwind
+                                    "--step-h-desktop": `${stepHDesktop}px`,
+                                    "--step-h-mobile": `${stepHMobile}px`,
+                                    "--person-h-desktop": `${personHDesktop}px`,
+                                    "--person-h-mobile": `${personHMobile}px`,
+                                } as React.CSSProperties}
                                 variants={{
-                                    hidden: { opacity: 0, y: 36 },
+                                    hidden: { opacity: 0, y: 20 },
                                     visible: {
                                         opacity: 1, y: 0,
                                         transition: { type: "spring", stiffness: 85, damping: 15 },
@@ -208,16 +217,14 @@ export default function HomeHero({ heroData, waUrl }: Props) {
                                 {/* Person image — anchored to top of step */}
                                 {step.image && (
                                     <div
-                                        className="absolute flex items-end justify-center w-full z-10 transition-transform duration-300 group-hover:-translate-y-2"
-                                        style={{ bottom: `${stepH}px`, height: `${personH}px` }}
+                                        className="absolute flex items-end justify-center w-full z-10 transition-transform duration-300 group-hover:-translate-y-2 h-[var(--person-h-mobile)] lg:h-[var(--person-h-desktop)] bottom-[var(--step-h-mobile)] lg:bottom-[var(--step-h-desktop)]"
                                     >
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
                                             src={step.image}
                                             alt={step.label}
-                                            className="w-auto object-contain object-bottom transition-transform duration-300 group-hover:scale-105"
+                                            className="w-auto object-contain object-bottom transition-transform duration-300 group-hover:scale-105 max-h-[var(--person-h-mobile)] lg:max-h-[var(--person-h-desktop)]"
                                             style={{
-                                                maxHeight: `${personH}px`,
                                                 filter: "url(#remove-white-bg) drop-shadow(0 8px 18px rgba(0,0,0,0.16))",
                                             }}
                                         />
@@ -226,62 +233,22 @@ export default function HomeHero({ heroData, waUrl }: Props) {
 
                                 {/* Step block */}
                                 <div
-                                    className="relative w-full flex flex-col justify-end items-center pb-3 overflow-hidden bg-[#0A1128] border-r border-white/5 last:border-r-0"
-                                    style={{
-                                        height: `${stepH}px`,
-                                    }}
+                                    className="relative w-full flex flex-col justify-end items-center pb-3 overflow-hidden bg-[#0A1128] border-r border-white/5 last:border-r-0 h-[var(--step-h-mobile)] lg:h-[var(--step-h-desktop)] rounded-t-xl lg:rounded-t-none"
                                 >
                                     {/* Top highlight for 3D depth */}
                                     <div
-                                        className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-[#F97316] to-[#EA580C]"
+                                        className="absolute top-0 left-0 right-0 h-2 lg:h-4 bg-gradient-to-b from-[#F97316] to-[#EA580C]"
                                     />
                                     {/* Orange hover accent */}
                                     <div className="absolute top-0 left-0 right-0 h-[3px] bg-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
                                     {/* Label */}
-                                    <span className="relative z-10 text-[10px] sm:text-[11px] font-extrabold text-white/90 tracking-[0.13em] uppercase text-center px-1 transition-colors duration-300 group-hover:text-orange-400">
+                                    <span className="relative z-10 text-[10px] sm:text-[11px] font-extrabold text-white/90 tracking-[0.1em] lg:tracking-[0.13em] uppercase text-center px-1 transition-colors duration-300 group-hover:text-orange-400 whitespace-nowrap">
                                         {step.label}
                                     </span>
                                 </div>
                             </motion.div>
                         )
                     })}
-                </motion.div>
-            </div>
-
-            {/* ══════════════════════════════════════════
-                BOTTOM — Mobile horizontal scroll cards
-            ══════════════════════════════════════════ */}
-            <div className="lg:hidden w-full px-4 pb-10 overflow-hidden flex-1 flex items-end">
-                <motion.div
-                    className="flex overflow-x-auto gap-3 py-5 px-1 scrollbar-none snap-x w-full"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                >
-                    {sortedSteps.map((step, idx) => (
-                        <div
-                            key={idx}
-                            className="flex-none w-[140px] rounded-2xl flex flex-col items-center justify-end h-[260px] snap-center relative overflow-hidden bg-[#0A1128] shadow-[0_4px_14px_rgba(10,17,40,0.22)]"
-                        >
-                            <div
-                                className="absolute top-0 left-0 right-0 rounded-t-2xl h-[11px] bg-gradient-to-b from-[#F97316] to-[#EA580C]"
-                            />
-                            {step.image && (
-                                <div className="absolute top-4 bottom-12 left-2 right-2 flex items-end justify-center">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                        src={step.image}
-                                        alt={step.label}
-                                        className="max-h-[155px] w-auto object-contain object-bottom"
-                                        style={{ filter: "url(#remove-white-bg) drop-shadow(0 4px 8px rgba(0,0,0,0.14))" }}
-                                    />
-                                </div>
-                            )}
-                            <span className="text-[10px] font-black text-white tracking-widest uppercase mt-auto pb-3 w-full text-center relative z-10 border-t border-white/20 pt-2 px-1">
-                                {step.label}
-                            </span>
-                        </div>
-                    ))}
                 </motion.div>
             </div>
 

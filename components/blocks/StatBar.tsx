@@ -85,13 +85,13 @@ export default function StatBar({ data, isHome = false }: { data: StatBarData, i
                                 transition={{ type: "spring", stiffness: 350, damping: 22 }}
                             >
                                 <p
-                                    className="font-extrabold mb-1 tracking-tight bg-gradient-to-r from-[var(--brand-200)] via-[var(--brand)] to-[var(--brand-dark)] bg-clip-text text-transparent transition-transform duration-300 inline-block font-mono leading-none"
-                                    style={{ fontSize: "var(--fs-h1)", fontFamily: "var(--font-heading)" }}
+                                    className="font-extrabold mb-1 tracking-tight bg-gradient-to-r from-[var(--brand-200)] via-[var(--brand)] to-[var(--brand-dark)] bg-clip-text text-transparent transition-transform duration-300 inline-block font-mono leading-none text-2xl xs:text-3xl sm:text-4xl lg:text-5xl"
+                                    style={{ fontFamily: "var(--font-heading)" }}
                                 >
                                     {stat.value}
                                 </p>
                                 <p
-                                    className="text-[10px] md:text-xs font-black tracking-widest uppercase"
+                                    className="text-[9px] xs:text-[10px] md:text-xs font-black tracking-widest uppercase"
                                     style={{ color: "rgba(241, 245, 249, 0.65)", fontFamily: "var(--font-body)" }}
                                 >
                                     {stat.label}

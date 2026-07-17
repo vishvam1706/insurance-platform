@@ -83,7 +83,7 @@ export default function HomeHero({ heroData, waUrl }: Props) {
 
     return (
         <section
-            className="relative overflow-hidden flex flex-col min-h-[calc(100vh-68px)] lg:h-[calc(100vh-68px)] bg-[radial-gradient(120%_120%_at_50%_0%,#F0F9FF_0%,#FAF5FF_50%,#FFFFFF_100%)] pb-4 lg:pb-0"
+            className="relative overflow-hidden flex flex-col min-h-[calc(100vh-68px)] lg:min-h-0 lg:h-[calc(100vh-68px)] bg-[radial-gradient(120%_120%_at_50%_0%,#F0F9FF_0%,#FAF5FF_50%,#FFFFFF_100%)] pb-4 lg:pb-0"
         >
             {/* Modern decorative background elements */}
             {/* eslint-disable-next-line @next/next/no-img-element */}

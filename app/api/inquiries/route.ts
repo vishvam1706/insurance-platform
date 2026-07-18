@@ -115,9 +115,32 @@ export async function POST(req: NextRequest) {
 
         await connectDB()
 
-        const { phone } = parsed.data
-        // const isPhoneVerified = await hasActiveOtp(`verified:phone:${phone}`)
+        const { phone, preferredSlot } = parsed.data
 
+        // ── BUG-07 FIX: Server-side future-date validation on preferredSlot ──
+        if (preferredSlot) {
+            const slotDate = new Date(preferredSlot)
+            if (isNaN(slotDate.getTime()) || slotDate <= new Date()) {
+                return NextResponse.json(
+                    { error: "Preferred call time must be a valid future date and time." },
+                    { status: 400 }
+                )
+            }
+        }
+
+        // ── BUG-05 FIX: Duplicate submission guard (same phone within 5 minutes) ──
+        const recentDuplicate = await Inquiry.findOne({
+            phone,
+            createdAt: { $gte: new Date(Date.now() - 5 * 60 * 1000) },
+        }).lean()
+        if (recentDuplicate) {
+            return NextResponse.json(
+                { error: "You already submitted an inquiry recently. Please wait 5 minutes before submitting again." },
+                { status: 429 }
+            )
+        }
+
+        // const isPhoneVerified = await hasActiveOtp(`verified:phone:${phone}`)
         // Bypassed for testing purposes
         const isPhoneVerified = true
 
@@ -159,7 +182,9 @@ export async function POST(req: NextRequest) {
                 candidates.sort((a, b) => {
                     const countA = countMap.get(a._id.toString()) || 0
                     const countB = countMap.get(b._id.toString()) || 0
-                    return countA - countB
+                    // BUG-04 FIX: Deterministic tie-breaking — prefer the oldest employee (by account creation)
+                    if (countA !== countB) return countA - countB
+                    return new Date(a.createdAt as Date).getTime() - new Date(b.createdAt as Date).getTime()
                 })
 
                 assignedEmployeeId = candidates[0]._id
@@ -174,13 +199,15 @@ export async function POST(req: NextRequest) {
         // Push real-time update to admin panel via SSE
         inquiryEmitter.emit("new_inquiry", inquiry.toObject())
 
-        // Send confirmation email (non-blocking)
-        sendInquiryConfirmation({
-            to: inquiry.email,
-            name: inquiry.name,
-            insuranceType: inquiry.insuranceType,
-            preferredSlot: inquiry.preferredSlot,
-        }).catch(console.error)
+        // Send confirmation email (non-blocking) — only when a real email was provided
+        if (inquiry.email && inquiry.email.trim().length > 0) {
+            sendInquiryConfirmation({
+                to: inquiry.email,
+                name: inquiry.name,
+                insuranceType: inquiry.insuranceType,
+                preferredSlot: inquiry.preferredSlot,
+            }).catch(console.error)
+        }
 
         return NextResponse.json({ success: true, inquiry }, { status: 201 })
     } catch (err) {

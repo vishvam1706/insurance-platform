@@ -376,36 +376,19 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
     const [countdown, setCountdown] = useState(0)
     const otpRef = useRef<HTMLInputElement>(null)
 
-    // ── Email OTP state
-    const [emailOtpPhase, setEmailOtpPhase] = useState<OtpPhase>("idle")
-    const [emailOtpCode, setEmailOtpCode] = useState("")
-    const [emailOtpError, setEmailOtpError] = useState("")
-    const [verifiedEmail, setVerifiedEmail] = useState("")
-    const [emailCountdown, setEmailCountdown] = useState(0)
-    const emailOtpRef = useRef<HTMLInputElement>(null)
-
     const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<InquiryInput>({
         resolver: zodResolver(InquirySchema),
         defaultValues: { insuranceType: defaultType, state: "", language: "", pincode: "", preferredSlot: "" },
     })
     const watchedPhone = watch("phone", "")
-    const watchedEmail = watch("email", "")
     const phoneValid = /^[6-9]\d{9}$/.test(watchedPhone || "")
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(watchedEmail || "")
     const phoneChanged = verifiedPhone && verifiedPhone !== watchedPhone
-    const emailChanged = verifiedEmail && verifiedEmail !== watchedEmail
 
     useEffect(() => {
         if (countdown <= 0) return
         const t = setTimeout(() => setCountdown(c => c - 1), 1000)
         return () => clearTimeout(t)
     }, [countdown])
-
-    useEffect(() => {
-        if (emailCountdown <= 0) return
-        const t = setTimeout(() => setEmailCountdown(c => c - 1), 1000)
-        return () => clearTimeout(t)
-    }, [emailCountdown])
 
     // Auto-preselect language — only if mapped language is visible
     useEffect(() => {
@@ -448,42 +431,16 @@ export default function InquiryForm({ defaultType, compact = false }: { defaultT
         }
     }
 
-    async function sendEmailOtp() {
-        setEmailOtpPhase("sending"); setEmailOtpError("")
-        try {
-            await axios.post("/api/inquiries/verify?type=email", { email: watchedEmail })
-            setEmailOtpPhase("sent"); setEmailOtpCode(""); setEmailCountdown(30)
-            setTimeout(() => emailOtpRef.current?.focus(), 100)
-        } catch (err) {
-            setEmailOtpPhase("idle")
-            setEmailOtpError(axios.isAxiosError(err) ? err.response?.data?.error ?? "Failed to send OTP" : "Failed to send OTP")
-        }
-    }
-
-    async function verifyEmailOtp() {
-        if (emailOtpCode.length !== 6) { setEmailOtpError("Enter the 6-digit code"); return }
-        setEmailOtpPhase("verifying"); setEmailOtpError("")
-        try {
-            await axios.put("/api/inquiries/verify?type=email", { email: watchedEmail, code: emailOtpCode })
-            setEmailOtpPhase("verified"); setVerifiedEmail(watchedEmail || "")
-            toast.success("Email verified!")
-        } catch (err) {
-            setEmailOtpPhase("sent")
-            setEmailOtpError(axios.isAxiosError(err) ? err.response?.data?.error ?? "Invalid OTP" : "Invalid OTP")
-        }
-    }
-
     async function onSubmit(data: InquiryInput) {
         if (!insuranceType) { setTypeErr("Please select insurance type"); return }
         if (!state)         { setStateErr("Please select your state"); return }
         if (!language)      { setLangErr("Please select your language"); return }
-        // Phone OTP verification bypassed for testing
+        // Phone OTP verification temporarily bypassed for testing
         /*
         if (otpPhase !== "verified" || phoneChanged) {
             setOtpError("Please verify your mobile number first"); return
         }
         */
-        // Email OTP check removed
         try {
             await axios.post("/api/inquiries", {
                 name: data.name,

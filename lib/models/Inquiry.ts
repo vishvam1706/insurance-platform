@@ -34,7 +34,8 @@ const InquirySchema = new Schema<InquiryDocument>(
     {
         name: { type: String, required: true, trim: true },
         phone: { type: String, required: true, trim: true },
-        email: { type: String, required: true, lowercase: true, trim: true },
+        email: { type: String, required: false, default: "", lowercase: true, trim: true },
+
         insuranceType: {
             type: String,
             enum: ["term", "health", "retirement", "child", "wealth", "business"],

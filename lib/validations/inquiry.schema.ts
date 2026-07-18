@@ -12,7 +12,12 @@ export const InquirySchema = z.object({
     state: z.string().min(1, "Please select your state"),
     language: z.string().min(1, "Please select your preferred language"),
     pincode: z.string().regex(/^\d{6}$/, "Enter a valid 6-digit Pincode"),
-    preferredSlot: z.string().min(1, "Please select your preferred call time"),
+    preferredSlot: z.string()
+        .min(1, "Please select your preferred call time")
+        .refine(val => {
+            const d = new Date(val)
+            return !isNaN(d.getTime()) && d > new Date()
+        }, "Preferred call time must be a future date and time"),
     message: z.string().max(500).optional(),
     // New fields
     dob: z.string().optional(),

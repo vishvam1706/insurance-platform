@@ -27,7 +27,14 @@ export async function GET(req: NextRequest) {
       // Heartbeat every 25 s to keep the connection alive
       const heartbeat = setInterval(() => send({ type: "ping" }), 25_000)
 
-      const onNew = (inquiry: unknown) => send({ type: "new_inquiry", inquiry })
+      const onNew = (inquiry: any) => {
+        // BUG-06 FIX: Employees only receive events for their own assigned inquiries
+        if (user.role === "employee") {
+          const assignedId = inquiry.assignedTo?.toString()
+          if (!assignedId || assignedId !== user.userId) return
+        }
+        send({ type: "new_inquiry", inquiry })
+      }
       inquiryEmitter.on("new_inquiry", onNew)
 
       cleanup = () => {

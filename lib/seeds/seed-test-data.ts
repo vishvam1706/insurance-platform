@@ -1,4 +1,4 @@
-﻿/**
+/**
  * seed-test-data.ts
  * Run: npx tsx lib/seeds/seed-test-data.ts
  */
@@ -200,7 +200,7 @@ async function main() {
     const ph=await bcrypt.hash("Employee@123",12)
     const created: any[]=[]
     for(const emp of EMPLOYEES){
-        const d=await User.create({name:emp.name,email:emp.email,passwordHash:ph,role:"employee",states:emp.states,languages:emp.languages,pincodes:emp.pincodes,status:emp.status})
+        const d=await User.create({name:emp.name,email:emp.email,passwordHash:ph,role:"employee",states:emp.states,languages:emp.languages,pincodes:emp.pincodes,status:emp.status as any})
         created.push(d.toObject())
         console.log(`  ${emp.status==="inactive"?"[INACTIVE]":"[ACTIVE]  "} ${emp.name.padEnd(22)} states=${emp.states.join(",")} pincodes=[${emp.pincodes.join(",")}]`)
     }
@@ -217,7 +217,7 @@ async function main() {
             const emp=await assignEmployee(active,data.pincode,data.state,data.language)
             const isPincode=emp?.pincodes?.includes(data.pincode)
             const mt=!emp?"UNASSIGNED":isPincode?"PINCODE   ":"STATE+LANG"
-            await Inquiry.create({name:data.name,phone:data.phone,email:data.email??"",insuranceType:data.insuranceType,state:data.state,language:data.language,pincode:data.pincode,preferredSlot:data.preferredSlot,whoFor:data.whoFor,healthRating:data.healthRating,healthNote:data.healthNote,dob:data.dob,status:data.status??"new",assignedTo:emp?._id??null})
+            await Inquiry.create({name:data.name,phone:data.phone,email:data.email??"",insuranceType:data.insuranceType as any,state:data.state,language:data.language,pincode:data.pincode,preferredSlot:data.preferredSlot,whoFor:data.whoFor as any,healthRating:data.healthRating as any,healthNote:(data as any).healthNote,dob:data.dob,status:data.status??"new",assignedTo:emp?._id??null})
             total++
             if(emp){
                 const eid=emp._id.toString()

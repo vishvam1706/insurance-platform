@@ -5,9 +5,20 @@ import bcrypt from "bcryptjs"
 import { connectDB } from "@/lib/mongodb"
 import User from "@/lib/models/User"
 import { EmployeeSignupSchema } from "@/lib/validations/user.schema"
+import { isRateLimited } from "@/lib/rate-limit"
 
 export async function POST(req: NextRequest) {
     try {
+        // ── Rate limit: 5 signup attempts per IP per 30 minutes ──
+        const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "127.0.0.1"
+        const limited = await isRateLimited(`ratelimit:ip:${ip}:signup`, { limit: 5, windowMs: 30 * 60 * 1000 })
+        if (limited) {
+            return NextResponse.json(
+                { error: "Too many signup attempts. Please try again later." },
+                { status: 429 }
+            )
+        }
+
         const body = await req.json()
         const parsed = EmployeeSignupSchema.safeParse(body)
 

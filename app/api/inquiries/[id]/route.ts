@@ -73,6 +73,14 @@ export async function PATCH(
             return NextResponse.json({ error: "Inquiry not found" }, { status: 404 })
         }
 
+        // ── IDOR fix: employees may only update inquiries assigned to them ──
+        if (user.role === "employee") {
+            const assignedId = current.assignedTo?.toString()
+            if (!assignedId || assignedId !== user.userId) {
+                return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+            }
+        }
+
         const oldStatus = current.status
         const newStatus = parsed.data.status
         const statusChanged = newStatus && newStatus !== oldStatus

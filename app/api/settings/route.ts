@@ -5,12 +5,12 @@ import { connectDB } from "@/lib/mongodb"
 import SystemSettings from "@/lib/models/SystemSettings"
 import { getAuthUser } from "@/lib/auth"
 
-export async function GET() {
+export async function GET(req: NextRequest) {
     try {
         await connectDB()
-        
+
         let settings = await SystemSettings.findOne({ key: "global_settings" }).lean()
-        
+
         // If not initialized yet, seed defaults on the fly
         if (!settings) {
             settings = await SystemSettings.create({
@@ -42,7 +42,25 @@ export async function GET() {
                 ]
             })
         }
-        
+
+        // ── Auth-aware response ──────────────────────────────────────────────────
+        // The public InquiryForm needs languages, shifts & formActive to render.
+        // Unauthenticated callers receive only those 3 safe fields.
+        // Authenticated admins/super_admins receive the full settings document.
+        const user = await getAuthUser()
+        const isAdmin = user && (user.role === "admin" || user.role === "super_admin")
+
+        if (!isAdmin) {
+            const s = settings as any
+            return NextResponse.json({
+                settings: {
+                    languages: s.languages ?? [],
+                    shifts: s.shifts ?? [],
+                    formActive: s.formActive ?? true,
+                },
+            })
+        }
+
         return NextResponse.json({ settings })
     } catch (err) {
         console.error("GET /api/settings:", err)

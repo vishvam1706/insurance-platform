@@ -6,9 +6,20 @@ import { connectDB } from "@/lib/mongodb"
 import User from "@/lib/models/User"
 import { signToken, COOKIE_NAME, COOKIE_OPTIONS } from "@/lib/auth"
 import { LoginSchema } from "@/lib/validations/user.schema"
+import { isRateLimited } from "@/lib/rate-limit"
 
 export async function POST(req: NextRequest) {
     try {
+        // ── Rate limit: 10 login attempts per IP per 15 minutes ──
+        const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "127.0.0.1"
+        const limited = await isRateLimited(`ratelimit:ip:${ip}:login`, { limit: 10, windowMs: 15 * 60 * 1000 })
+        if (limited) {
+            return NextResponse.json(
+                { error: "Too many login attempts. Please try again in 15 minutes." },
+                { status: 429 }
+            )
+        }
+
         const body = await req.json()
         const parsed = LoginSchema.safeParse(body)
 

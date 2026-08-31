@@ -37,17 +37,24 @@ export async function GET(req: NextRequest) {
             "Created At",
         ]
 
+        // Sanitize a cell: neutralise CSV formula injection (Excel/Sheets)
+        // Values starting with =, +, -, @ are treated as formulas by spreadsheet apps.
+        const sanitizeCell = (value: unknown): string => {
+            const s = String(value ?? "")
+            return /^[=+\-@\t\r]/.test(s) ? `'${s}` : s
+        }
+
         const rows = inquiries.map((inq: any) => [
-            inq.name,
-            inq.phone,
-            inq.email,
-            inq.insuranceType,
-            inq.state,
-            inq.language,
-            inq.preferredSlot || "",
-            inq.status,
-            (inq.notes || "").replace(/,/g, ";"),
-            new Date(inq.createdAt).toLocaleString("en-IN"),
+            sanitizeCell(inq.name),
+            sanitizeCell(inq.phone),
+            sanitizeCell(inq.email),
+            sanitizeCell(inq.insuranceType),
+            sanitizeCell(inq.state),
+            sanitizeCell(inq.language),
+            sanitizeCell(inq.preferredSlot || ""),
+            sanitizeCell(inq.status),
+            sanitizeCell((inq.notes || "").replace(/,/g, ";")),
+            sanitizeCell(new Date(inq.createdAt).toLocaleString("en-IN")),
         ])
 
         const csv = [headers, ...rows]
